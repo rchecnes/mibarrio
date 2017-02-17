@@ -1,0 +1,365 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <div class="row">
+		<!-- /.col -->
+	    <div class="col-md-12">
+	      <div class="box box-primary">
+	        <div class="box-body no-padding">
+	          <!-- THE CALENDAR -->
+	          <div id="calendar"></div>
+	        </div>
+	        <!-- /.box-body -->
+	      </div>
+	      <!-- /. box -->
+	    </div>
+	    <!-- /.col -->
+    </div>
+
+    <div id="myModal" class="modal fade">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	        	<form role="form" method="POST" name="evento" id="evento" action="{{ path('evento_create') }} ">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title"><!----></h4>
+		            </div>
+		            <div class="modal-body">
+		            	<div class="form-group">
+		                  <label for="nombre">Nombre</label>
+		                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
+		                  <input type="hidden" class="form-control" id="fecha" name="fecha" placeholder="fecha">
+		                </div>
+			            <div class="row">
+			            	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+				                <div class="form-group">
+				                  <label for="tipo">Tipo de actividad</label>
+				                  <select class="form-control" id="tipo" name="tipo">
+				                    <option value="faena">Faena</option>
+				                    <option value="asamblea">Asamble</option>
+				                    <option value="marcha">Marcha</option>
+				                    <option value="salida">Salida</option>
+				                    <option value="desalojo">Desalojo</option>
+				                  </select>
+				                </div>
+			            	</div>
+			            	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			            		<div class="form-group">
+			            			<label for="tipo">Tipo de persona</label>
+				            		<div class="controls">
+							          <label class="radio-inline">
+							            <input type="radio" name="tipo_persona" id="tipo_persona_g" value="general" checked="checked">
+							            General
+							          </label>
+							          <label class="radio-inline">
+							            <input type="radio" name="tipo_persona" id="tipo_persona_d" value="dirigente">
+							            Dirigentes
+							          </label>
+							        </div>
+							    </div>
+			            	</div>
+			            </div>
+		                <div class="row">
+			                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			                	<div class="bootstrap-timepicker">
+				                  	<div class="form-group">
+					                  <label for="hora_inicio">Hora Inicio</label>
+					                  <div class="input-group">
+						                  <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
+						                  <div class="input-group-addon">
+						                     <i class="fa fa-clock-o"></i>
+						                  </div>
+						              </div>
+					                </div>
+					            </div>
+			                </div>
+			                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			                	<div class="bootstrap-timepicker">
+					                <div class="form-group">
+					                  <label>Hora Fin</label>
+					                  <div class="input-group">
+					                    <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
+					                    <div class="input-group-addon">
+					                      <i class="fa fa-clock-o"></i>
+					                    </div>
+					                  </div>
+					                </div>
+					              </div>
+			                </div>
+			            </div>
+		                <div class="form-group">
+		                  <label for="detalle">Detalle</label>
+		                  <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Detalles"></textarea>
+		                </div>
+		                <div class="form-group">
+		                  <label for="condicion">Estado</label>
+		                  <select class="form-control" id="condicion" name="condicion">
+		                    <option value="porconfirmar">Por confirmar</option>
+		                    <option value="confirmado">Confirmado</option>
+		                    <option value="realizandose">Realizandose</option>
+		                    <option value="finalizo">Finalizó</option>
+		                    <option value="cancelado">Cancelado</option>
+		                  </select>
+		                </div>
+			            
+		            </div>
+		           
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+		                <button type="button" class="btn btn-danger pull-center" id="guardar_registrar" name="enviar">Guardar y Registrar Asistencia</button>
+		                <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+	              </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+
+{% endblock %}
+
+{% block codeScript %}
+<script type="text/javascript">
+    $(document).ready(function(){
+    	
+    	/* initialize the calendar
+    	{#{eventos|raw}#}
+     -----------------------------------------------------------------*/
+	    //Date for the calendar events (dummy data)
+	    var date = new Date();
+	    var d = date.getDate(),
+	        m = date.getMonth(),
+	        y = date.getFullYear();
+
+	    //console.log(new Date(y, m, 1));
+
+
+	    $('#calendar').fullCalendar({
+	      header: {
+	        left: 'prev,next today',
+	        center: 'title',
+	        right: 'month,agendaWeek,agendaDay'
+	      },
+	      buttonText: {
+	        today: 'today',
+	        month: 'month',
+	        week: 'week',
+	        day: 'day'
+	      },
+	      //Random default events
+	      events: {{eventos|raw}},
+	      editable: false,
+	      droppable: false, // this allows things to be dropped onto the calendar !!!
+	      drop: function (date, allDay) { // this function is called when something is dropped
+
+	        // retrieve the dropped element's stored Event Object
+	        var originalEventObject = $(this).data('eventObject');
+
+	        // we need to copy it, so that multiple events don't have a reference to the same object
+	        var copiedEventObject = $.extend({}, originalEventObject);
+
+	        // assign it the date that was reported
+	        copiedEventObject.start = date;
+	        copiedEventObject.allDay = allDay;
+	        copiedEventObject.backgroundColor = $(this).css("background-color");
+	        copiedEventObject.borderColor = $(this).css("border-color");
+
+	        // render the event on the calendar
+	        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+	        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+	        // is the "remove after drop" checkbox checked?
+	        if ($('#drop-remove').is(':checked')) {
+	          // if so, remove the element from the "Draggable Events" list
+	          $(this).remove();
+	        }
+
+	      },
+	      eventRender: function(event, element)
+		  { 
+		  	var description = event.description;
+		  	if (description.length >= 20) {
+		  		description = description.substr(0, 20)+' ...';
+		  	}
+
+		  	var html_cont = '<div class="group-resumen">';
+		  	html_cont +='<p class="resumen"><b>Hora: </b>'+event.hora_inicio+' - '+event.hora_final+'</p>';
+		  	html_cont += '<p class="resumen"><b>Det.: </b>'+description +'</p>';
+		  	html_cont += '</div>';
+
+		  	//agremaos resumen
+		  	element.find('.fc-content').append(html_cont);
+
+		  	if (event.condicion == 'porconfirmar' || event.condicion == 'cancelado') {
+
+		  		var html_close = '<div class="box-tools pull-right closeon">';
+			  	html_close += '<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>';
+			  	html_close += '</div>';
+
+			  	element.find('.fc-content .fc-title').append(html_close);
+			  	
+		  	}
+		  	
+			//boton eliminar evento
+			element.find(".closeon").on("click",function() {
+               $('#calendar').fullCalendar('removeEvents',event._id);
+               //console.log(event);
+               $.ajax({
+               	type: 'POST',
+               	url: "{{ path('evento_delete') }}",
+               	data: {'id':event.id_event},
+               	success: function(data){
+               		$('#calendar').fullCalendar('removeEvents',event._id);
+               	}
+               })
+            });
+		  },
+          dayRender: function(date, cell){
+		    var myDate = new Date();
+            //dia agregados
+            var daysToRest = 1;
+			myDate.setDate(myDate.getDate() - daysToRest);
+
+            if (date < myDate){
+                $(cell).addClass('disabled');
+            }
+            else
+            {
+                //console.log("hoy o futuro");  
+            } 
+		  },
+	      dayClick: function(date, jsEvent, view){
+
+	      	var myDate = new Date();
+            //dia agregados
+            var daysToRest = 1;
+			myDate.setDate(myDate.getDate() - daysToRest);
+
+            if (date < myDate) {
+                //console.log("pasado");
+            }
+            else
+            {
+                //hoy o futuro
+                var action = "{{ path('evento_create') }}";
+	      	
+		      	$("#myModal #evento").attr('action',action);
+
+		      	$(".modal-title").html("Nuevo evento de calendario - "+date.format());
+		    	$("#myModal .modal-body #fecha").val(date.format());
+		    	//limpiamos para nuevo
+		    	$("#myModal .modal-body #nombre").val('').removeAttr("disabled");
+		    	$("#myModal .modal-body #tipo").val('faena').removeAttr("disabled");
+
+		    	$("#myModal .modal-body #hora_inicio").removeAttr("disabled");
+	    		$("#myModal .modal-body #hora_final").removeAttr("disabled");
+
+		    	$("#myModal .modal-body #condicion").val('porconfirmar').removeAttr("disabled");
+		    	$("#myModal .modal-body #detalle").val('').removeAttr("disabled");
+
+		    	$("#myModal .modal-body #tipo_persona_g").prop('checked',true).removeAttr('disabled');
+		    	$("#myModal .modal-body #tipo_persona_g").removeAttr('disabled');
+		    	$("#myModal .modal-body #tipo_persona_d").removeAttr('disabled');
+
+		    	$("#myModal #enviar").show();
+
+			    $("#myModal").modal('show');  
+            } 
+
+	      	
+	      },
+	      eventClick: function(calEvent, jsEvent, view){
+	      	console.log(calEvent);
+	      	var myDate = new Date();
+            //dia agregados
+            var daysToRest = 1;
+			myDate.setDate(myDate.getDate() - daysToRest);
+
+            if (calEvent['start']._d < myDate) {
+                //fechas pasadas
+                $("#myModal .modal-title").html("Editar evento de calendario - "+calEvent['_start']._i);
+                $("#myModal .modal-body #fecha").val(calEvent['_start']._i).attr("disabled","disabled");
+                $("#myModal .modal-body #nombre").val(calEvent['nombre']).attr("disabled","disabled");
+		    	$("#myModal .modal-body #tipo").val(calEvent['tipo']).attr("disabled","disabled");
+		    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']).attr("disabled","disabled");
+		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']).attr("disabled","disabled");
+		    	$("#myModal .modal-body #detalle").val(calEvent['detalle']).attr("disabled","disabled");
+		    	$("#myModal .modal-body #condicion").val(calEvent['condicion']).attr("disabled","disabled");
+
+		    	if (calEvent['tipo_persona'] == 'general') {
+		    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true);
+		    	}else{
+		    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true);
+		    	}
+		    	$("#myModal .modal-body #tipo_persona_g").attr('disabled', 'disabled');
+				$("#myModal .modal-body #tipo_persona_d").attr('disabled', 'disabled');
+		    	
+		    	$("#myModal #enviar").hide();
+            }else{
+            	var action = "{{ path('evento_index') }}";
+	      	
+		      	$("#myModal #evento").attr('action',action+calEvent['id_event']+'/update');
+
+		      	$("#myModal .modal-title").html("Editar evento de calendario - "+calEvent['_start']._i);
+		    	
+		    	if (calEvent['condicion'] == 'porconfirmar') {
+
+		    		$("#myModal .modal-body #fecha").val(calEvent['_start']._i);
+		    		$("#myModal .modal-body #nombre").val(calEvent['nombre']).removeAttr("disabled");
+			    	$("#myModal .modal-body #tipo").val(calEvent['tipo']).removeAttr("disabled");
+			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']).removeAttr("disabled");
+			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']).removeAttr("disabled");
+			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']).removeAttr("disabled");
+			    	$("#myModal .modal-body #condicion").val(calEvent['condicion']).removeAttr("disabled");
+
+			    	if (calEvent['tipo_persona'] == 'general') {
+			    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true);
+			    	}else{
+			    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true);
+			    	}
+
+			    	$("#myModal .modal-body #tipo_persona_g").attr('disabled', 'disabled');
+					$("#myModal .modal-body #tipo_persona_d").attr('disabled', 'disabled');
+		    	
+
+			    	$("#myModal #enviar").show();
+		    	}else{
+
+		    		$("#myModal .modal-body #fecha").val(calEvent['_start']._i);
+			    	$("#myModal .modal-body #nombre").val(calEvent['nombre']).attr("disabled","disabled");
+			    	$("#myModal .modal-body #tipo").val(calEvent['tipo']).attr("disabled","disabled");
+			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']).attr("disabled","disabled");
+			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']).attr("disabled","disabled");
+			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']).attr("disabled","disabled");
+
+			    	if (calEvent['condicion'] == 'finalizo') {
+			    		$("#myModal .modal-body #condicion").val(calEvent['condicion']).attr("disabled","disabled");
+			    		$("#myModal #enviar").hide();
+			    	}else{
+			    		$("#myModal .modal-body #condicion").val(calEvent['condicion']).removeAttr("disabled");
+			    		$("#myModal #enviar").show();
+			    	}
+
+			    	if (calEvent['tipo_persona'] == 'general') {
+			    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true);
+			    	}else{
+			    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true);
+			    	}
+
+			    	$("#myModal .modal-body #tipo_persona_g").attr('disabled', 'disabled');
+					$("#myModal .modal-body #tipo_persona_d").attr('disabled', 'disabled');
+		    	
+		    	}
+		    	
+            }
+	    	
+		    $("#myModal").modal('show');
+	      }
+	    });
+		
+	    //Timepicker
+	    $(".timepicker").timepicker({
+	      showInputs: false
+	    });
+	 })
+    </script>
+ {% endblock %}

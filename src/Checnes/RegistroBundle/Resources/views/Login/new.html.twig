@@ -1,0 +1,59 @@
+{% extends 'login.html.twig' %}
+
+{% block body %}
+<form class="form-horizontal" name="form_login" id="form_login" method="POST" action="{{path('create_user')}}">
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <p class="">Crear cuenta</p>
+        </div>
+    </div>
+    <br>
+	<div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input type="text" class="form-control" id="nombre" name="nombre"  placeholder="Nombres">
+    </div><br>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+        <input type="text" class="form-control" id="apellido" name="apellido"  placeholder="Apellidos">
+    </div><br>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+        <input type="text" class="form-control" id="email" name="email"  placeholder="Email">
+    </div>
+
+    <br>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+        <input type="password" class="form-control" id="password" name="password"  placeholder="Contraseña">
+    </div>
+    <br>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+        <input type="password" class="form-control" id="password_two" name="password_two"  placeholder="Vuelva a escribir la contraseña">
+    </div>
+    <br>
+    <div class="input-group ">
+        <label class="text-right"><input type="checkbox" id="termino" name="termino" checked="checked"> ¿Acepto los Términos del Servicio?</label>
+    </div>
+    <br>
+    
+    <div class="input-group">
+        <button type="submit" class="btn btn-block btn-danger btn-md">Crear cuenta</button>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block codeScript %}
+<script type="text/javascript">
+
+    $('#usuario, #password').on("keyup", function(e){
+        if(e.keyCode == 13)
+        {
+            $("#form_login").submit();
+        }
+    });
+
+</script>
+{% endblock %}

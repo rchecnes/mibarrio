@@ -1,0 +1,57 @@
+{% extends 'login.html.twig' %}
+
+{% block body %}
+
+
+<form class="form-horizontal" name="form_login" id="form_login" method="POST" action="{{path('validar_usuario')}}">
+    
+    <div class="row">
+        <div class="col-lg-6">
+            <p class="box-title">Iniciar sesión</p>
+        </div>
+        <div class="text-right col-lg-6">
+            <a href="{{path('new_user')}}">Crear cuenta</a>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+        <input type="text" class="form-control" id="usuario" name="usuario" value="{{usuario}}" placeholder="Email">
+    </div>
+    <br>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+        <input type="password" class="form-control" id="password" name="password" value="{{password}}" placeholder="Contraseña">
+    </div>
+    <br>
+    <div class="input-group">
+        <a><i class="fa fa-unlock-alt"></i>&nbsp;¿Has olvidado tu contraseña?</a>
+    </div>
+    <br>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <label>
+                <input type="checkbox" id="remenber" name="remenber" checked="checked"> Recordar
+            </label>
+        </div>
+        <div class="col-lg-4">
+            <button type="submit" value="Iniciar sesión" class="btn btn-block btn-danger btn-md">Iniciar sesión</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block codeScript %}
+<script type="text/javascript">
+
+    $('#usuario, #password').on("keyup", function(e){
+        if(e.keyCode == 13)
+        {
+            $("#form_login").submit();
+        }
+    });
+
+</script>
+{% endblock %}

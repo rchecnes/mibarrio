@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <!-- Bootstrap 3.3.6 -->
+            <link href="{{asset('plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+            <!-- Font Awesome -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+            <!-- Ionicons -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+            <!-- Mi barrio css -->
+            <link rel="stylesheet" href="{{asset('plugins/admin_lte/css/mibarrio.css') }}">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+      <!-- Main content -->
+      <header class="header-login">
+        dfvd
+      </header>
+      <section class="container-login">
+        {% block body %}{% endblock %}
+      </section>
+      <footer class="main-footer footer.login">
+        
+      </footer>
+
+      {% block javascripts %}
+        <!-- jQuery 2.2.0 -->
+        <script src="{{asset('plugins/jQuery/jQuery-2.2.0.min.js') }}"></script>
+        <!-- Bootstrap 3.3.6 -->
+        <script src="{{asset('plugins/bootstrap/js/bootstrap.min.js') }} "></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="http://cdn.jsdelivr.net/qtip2/2.2.0/basic/jquery.qtip.min.js"></script>
+
+      {% endblock %}
+
+      {% block codeScript %}
+
+      {% endblock %}
+    </body>
+</html>

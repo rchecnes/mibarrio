@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Lote</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ lote.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ lote.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ lote.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{% if lote.estado %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('lote_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('lote_edit', { 'id': lote.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -79,7 +79,7 @@ class EventoController extends Controller
         //print(json_encode($evento));
 
         return $this->render('ChecnesRegistroBundle:Evento:index.html.twig', array(
-            'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario'
+            'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario now'
         ));
     }
 

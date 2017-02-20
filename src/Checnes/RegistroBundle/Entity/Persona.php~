@@ -402,28 +402,4 @@ class Persona
     {
         return $this->usuario;
     }
-
-    /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return Persona
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return integer
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
 }

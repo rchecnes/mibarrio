@@ -25,10 +25,11 @@
 	color: #FFFFFF;
 	 
 }
-/*#calendar .fc-event-container .fc-content .box-tools{
-	z-index: 1000;
-}*/
 
+.fc-day-grid-event {
+    margin: 2px 2px 0 !important;
+    padding: 0 1px !important;
+}
 
 /***Login***/
 .header-login{

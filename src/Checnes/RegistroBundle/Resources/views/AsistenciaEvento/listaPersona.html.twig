@@ -1,0 +1,36 @@
+<form name="content-form" id="asistencia" name="asistencia"  method="POST" action="{{path('sav_asistencia')}}">
+  <div class="panel-body" id="content-table">
+	  <table class="table table-bordered dataTable" role="grid">
+	  	<tr role="row">
+	  		<th>Número</th>
+		  	<th>DNI</th>
+		  	<th>Nombre Completo</th>
+		  	<th>¿Asistio?</th>
+		</tr>
+		  {%set contador = 1%}
+		  {%for entity in personas %}
+		  	<tr>
+		  		<td>{{entity.numero}}</td>
+		  		<td>{{entity.dni}}</td>
+		  		<td>{{entity.nombres}}</td>
+		  		<td>
+		  			{%if entity.asistio == true %}
+		  				<input type="checkbox" checked="checked" name="asistio_{{contador}}" id="asistio_{{contador}}">
+		  			{%else%}
+		  				<input type="checkbox" name="asistio_{{contador}}" id="asistio_{{contador}}">
+		  			{%endif%}
+		  			
+		  			<input type="hidden" name="persona_{{contador}}" id="persona_{{contador}}" value="{{entity.id}}">
+		  		</td>
+		  	</tr>
+		  	{%set contador=contador+1%}
+		  {%endfor%}
+		  <input type="hidden" name="count_personas" id="count_personas" value="{{contador-1}}">
+		  <input type="hidden" name="evento" id="evento" value="{{evento}}">
+		  
+	  </table>
+  </div>
+  <div class="panel-footer">
+    <button type="submit" id="guardar" name="guardar" class="btn btn-primary">Grabar Asistencia</button>
+  </div>
+</form>

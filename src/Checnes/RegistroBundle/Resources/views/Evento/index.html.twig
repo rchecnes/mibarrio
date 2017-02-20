@@ -27,26 +27,23 @@
 		            </div>
 		            <div class="modal-body">
 		            	<div class="form-group">
-		                  <label for="nombre">Nombre</label>
-		                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
-		                  <input type="hidden" class="form-control" id="fecha" name="fecha" placeholder="fecha">
+		                  <!--<label for="nombre">Nombre</label>-->
+		                  <input type="hidden" class="form-control" id="nombre" name="nombre">
+		                  <input type="hidden" class="form-control" id="fecha" name="fecha">
+		                  <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
 		                </div>
 			            <div class="row">
 			            	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 				                <div class="form-group">
-				                  <label for="tipo">Tipo de actividad</label>
-				                  <select class="form-control" id="tipo" name="tipo">
-				                    <option value="faena">Faena</option>
-				                    <option value="asamblea">Asamble</option>
-				                    <option value="marcha">Marcha</option>
-				                    <option value="salida">Salida</option>
-				                    <option value="desalojo">Desalojo</option>
+				                  <label for="tipo">Tipo de actividad:</label>
+				                  <select class="form-control" id="tipo_actividad" name="tipo_actividad">
+				                    {{tipo_actividad_html|raw}}
 				                  </select>
 				                </div>
 			            	</div>
 			            	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 			            		<div class="form-group">
-			            			<label for="tipo">Tipo de persona</label>
+			            			<label for="tipo">Tipo de persona:</label>
 				            		<div class="controls">
 							          <label class="radio-inline">
 							            <input type="radio" name="tipo_persona" id="tipo_persona_g" value="general" checked="checked">
@@ -61,10 +58,10 @@
 			            	</div>
 			            </div>
 		                <div class="row">
-			                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			                	<div class="bootstrap-timepicker">
 				                  	<div class="form-group">
-					                  <label for="hora_inicio">Hora Inicio</label>
+					                  <label for="hora_inicio">Hora Inicio:</label>
 					                  <div class="input-group">
 						                  <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
 						                  <div class="input-group-addon">
@@ -74,10 +71,10 @@
 					                </div>
 					            </div>
 			                </div>
-			                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			                	<div class="bootstrap-timepicker">
 					                <div class="form-group">
-					                  <label>Hora Fin</label>
+					                  <label>Hora Fin:</label>
 					                  <div class="input-group">
 					                    <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
 					                    <div class="input-group-addon">
@@ -87,27 +84,42 @@
 					                </div>
 					              </div>
 			                </div>
+			                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			                	<div class="form-group">
+					                <label>Fecha Hasta:</label>
+					                <div class="input-group date">
+					                  <div class="input-group-addon">
+					                    <i class="fa fa-calendar"></i>
+					                  </div>
+					                  <input type="text" class="form-control pull-right datepicker" id="fecha_hasta" name="fecha_hasta">
+					                </div>
+					            </div>
+			                </div>
+
+			               
+
 			            </div>
 		                <div class="form-group">
-		                  <label for="detalle">Detalle</label>
-		                  <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Detalles"></textarea>
+		                  <label for="detalle">Detalles:</label>
+		                  <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento"></textarea>
 		                </div>
 		                <div class="form-group">
-		                  <label for="condicion">Estado</label>
-		                  <select class="form-control" id="condicion" name="condicion">
-		                    <option value="porconfirmar">Por confirmar</option>
-		                    <option value="confirmado">Confirmado</option>
-		                    <option value="realizandose">Realizandose</option>
-		                    <option value="finalizo">Finalizó</option>
-		                    <option value="cancelado">Cancelado</option>
-		                  </select>
+		                <fieldset>
+		                	<legend class="form-group"><label for="condicion">Estado</label></legend>
+			                    <label><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar"></input>Por confirmar</label>&nbsp;&nbsp;&nbsp;
+			                    <label><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>&nbsp;&nbsp;&nbsp;
+			                    <label><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>&nbsp;&nbsp;&nbsp;
+			                    <label><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>&nbsp;&nbsp;&nbsp;
+			                    <label><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
+		                </fieldset>
+		                  
 		                </div>
 			            
 		            </div>
 		           
 		            <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-		                <button type="button" class="btn btn-danger pull-center" id="guardar_registrar" name="enviar">Guardar y Registrar Asistencia</button>
+		                <button type="submit" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
 		                <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
 	              </div>
 	            </form>
@@ -120,6 +132,7 @@
 {% block codeScript %}
 <script type="text/javascript">
     $(document).ready(function(){
+    	
     	
     	/* initialize the calendar
     	{#{eventos|raw}#}
@@ -145,6 +158,9 @@
 	        week: 'week',
 	        day: 'day'
 	      },
+	      css:{
+	      	margin:'5px'
+	      },
 	      //Random default events
 	      events: {{eventos|raw}},
 	      editable: false,
@@ -162,6 +178,7 @@
 	        copiedEventObject.allDay = allDay;
 	        copiedEventObject.backgroundColor = $(this).css("background-color");
 	        copiedEventObject.borderColor = $(this).css("border-color");
+	        copiedEventObject.css({'margin':'20px'});
 
 	        // render the event on the calendar
 	        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
@@ -183,7 +200,7 @@
 
 		  	var html_cont = '<div class="group-resumen">';
 		  	html_cont +='<p class="resumen"><b>Hora: </b>'+event.hora_inicio+' - '+event.hora_final+'</p>';
-		  	html_cont += '<p class="resumen"><b>Det.: </b>'+description +'</p>';
+		  	//html_cont += '<p class="resumen"><b>Det.: </b>'+description +'</p>';
 		  	html_cont += '</div>';
 
 		  	//agremaos resumen
@@ -248,7 +265,7 @@
 		    	$("#myModal .modal-body #fecha").val(date.format());
 		    	//limpiamos para nuevo
 		    	$("#myModal .modal-body #nombre").val('').removeAttr("disabled");
-		    	$("#myModal .modal-body #tipo").val('faena').removeAttr("disabled");
+		    	$("#myModal .modal-body #tipo_actividad").removeAttr("disabled");
 
 		    	$("#myModal .modal-body #hora_inicio").removeAttr("disabled");
 	    		$("#myModal .modal-body #hora_final").removeAttr("disabled");
@@ -259,7 +276,9 @@
 		    	$("#myModal .modal-body #tipo_persona_g").prop('checked',true).removeAttr('disabled');
 		    	$("#myModal .modal-body #tipo_persona_g").removeAttr('disabled');
 		    	$("#myModal .modal-body #tipo_persona_d").removeAttr('disabled');
+		    	$("#myModal #cond_porconfirmar").prop('checked','checked');
 
+		    	
 		    	$("#myModal #enviar").show();
 
 			    $("#myModal").modal('show');  
@@ -276,7 +295,7 @@
 
             if (calEvent['start']._d < myDate) {
                 //fechas pasadas
-                $("#myModal .modal-title").html("Editar evento de calendario - "+calEvent['_start']._i);
+                $("#myModal .modal-title").html("<h3>Editar evento de calendario - "+calEvent['_start']._i+"</h3>");
                 $("#myModal .modal-body #fecha").val(calEvent['_start']._i).attr("disabled","disabled");
                 $("#myModal .modal-body #nombre").val(calEvent['nombre']).attr("disabled","disabled");
 		    	$("#myModal .modal-body #tipo").val(calEvent['tipo']).attr("disabled","disabled");
@@ -299,55 +318,67 @@
 	      	
 		      	$("#myModal #evento").attr('action',action+calEvent['id_event']+'/update');
 
-		      	$("#myModal .modal-title").html("Editar evento de calendario - "+calEvent['_start']._i);
+		      	$("#myModal .modal-title").html("<h3>Editar evento de calendario - "+calEvent['_start']._i+"</h3>");
 		    	
 		    	if (calEvent['condicion'] == 'porconfirmar') {
 
 		    		$("#myModal .modal-body #fecha").val(calEvent['_start']._i);
-		    		$("#myModal .modal-body #nombre").val(calEvent['nombre']).removeAttr("disabled");
-			    	$("#myModal .modal-body #tipo").val(calEvent['tipo']).removeAttr("disabled");
+			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']).removeAttr("disabled");
 			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']).removeAttr("disabled");
 			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']).removeAttr("disabled");
 			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']).removeAttr("disabled");
-			    	$("#myModal .modal-body #condicion").val(calEvent['condicion']).removeAttr("disabled");
+			    	$("#myModal .modal-body #cond_"+calEvent['condicion']).prop('checked','checked');
 
 			    	if (calEvent['tipo_persona'] == 'general') {
-			    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true);
+			    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true).removeAttr('disabled', 'disabled');
 			    	}else{
-			    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true);
+			    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true).removeAttr('disabled', 'disabled');
 			    	}
 
-			    	$("#myModal .modal-body #tipo_persona_g").attr('disabled', 'disabled');
-					$("#myModal .modal-body #tipo_persona_d").attr('disabled', 'disabled');
-		    	
-
-			    	$("#myModal #enviar").show();
+			    	$("#myModal .modal-body input[type='radio']").removeAttr('disabled');
+			    	$("#myModal #enviar, #myModal #guardar_registrar_asistencia").show();
 		    	}else{
+
+		    		$("#myModal .modal-body input[type='radio']").removeAttr('disabled');
 
 		    		$("#myModal .modal-body #fecha").val(calEvent['_start']._i);
 			    	$("#myModal .modal-body #nombre").val(calEvent['nombre']).attr("disabled","disabled");
-			    	$("#myModal .modal-body #tipo").val(calEvent['tipo']).attr("disabled","disabled");
+			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']).attr("disabled","disabled");
 			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']).attr("disabled","disabled");
 			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']).attr("disabled","disabled");
 			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']).attr("disabled","disabled");
 
-			    	if (calEvent['condicion'] == 'finalizo') {
-			    		$("#myModal .modal-body #condicion").val(calEvent['condicion']).attr("disabled","disabled");
-			    		$("#myModal #enviar").hide();
-			    	}else{
-			    		$("#myModal .modal-body #condicion").val(calEvent['condicion']).removeAttr("disabled");
-			    		$("#myModal #enviar").show();
-			    	}
 
 			    	if (calEvent['tipo_persona'] == 'general') {
-			    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true);
+			    		$("#myModal .modal-body #tipo_persona_g").prop('checked',true).attr('disabled', 'disabled');
+			    		$("#myModal .modal-body #tipo_persona_d").attr('disabled', 'disabled');
 			    	}else{
-			    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true);
+			    		$("#myModal .modal-body #tipo_persona_d").prop('checked',true).attr('disabled', 'disabled');
+			    		$("#myModal .modal-body #tipo_persona_g").attr('disabled', 'disabled');
 			    	}
 
-			    	$("#myModal .modal-body #tipo_persona_g").attr('disabled', 'disabled');
-					$("#myModal .modal-body #tipo_persona_d").attr('disabled', 'disabled');
-		    	
+			    	$("#myModal .modal-body #cond_"+calEvent['condicion']).prop('checked','checked');
+
+			    	switch(calEvent['condicion']) {
+					    case 'confirmado':
+					        $("#myModal .modal-body #cond_porconfirmar").attr('disabled', 'disabled');
+					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").show();
+					        break;
+					    case 'realizandose':
+					        $("#myModal .modal-body #cond_porconfirmar").attr('disabled', 'disabled');
+					        $("#myModal .modal-body #cond_confirmado").attr('disabled', 'disabled');
+					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").show();
+					        break;
+					    case 'finalizo':
+					        $("#myModal .modal-body input[type='radio']").attr('disabled','disabled');
+					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").hide();
+					        break;
+					    case 'cancelado':
+					        $("#myModal .modal-body input[type='radio']").attr('disabled','disabled');
+					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").hide();
+					        break;
+					}
+
 		    	}
 		    	
             }
@@ -360,6 +391,21 @@
 	    $(".timepicker").timepicker({
 	      showInputs: false
 	    });
+	    //Date picker
+	    var d = new Date();
+	    var date_act = d.getDate()+'/'+d.getMonth()+'/'+d.getFullYear();
+	    
+
+	    $('.datepicker').datepicker({
+	      autoclose: true,
+	      dateFormat: "dd/mm/yyyy",
+    	}).datepicker("setDate", date_act);
+
+    	$( "#guardar_registrar_asistencia").click(function(e) {
+    		e.preventDefault();
+    		$("#reg_asistencia").val('REG_ASISTENCIA');
+		  	$("#evento" ).submit();
+		});
 	 })
     </script>
  {% endblock %}

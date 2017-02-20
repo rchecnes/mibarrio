@@ -1,0 +1,120 @@
+<?php
+
+namespace Checnes\RegistroBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Evento
+ *
+ * @ORM\Table(name="evento")
+ * @ORM\Entity(repositoryClass="Checnes\RegistroBundle\Repository\EventoRepository")
+ */
+class Evento
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo_persona", type="string", length=255)
+     */
+    private $tipo_persona;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="condicion", type="string", length=50)
+     */
+    private $condicion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_inicio", type="datetimetz")
+     */
+    private $fecha_inicio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hora_inicio", type="string", nullable=true)
+     */
+    private $hora_inicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_fin", type="datetimetz")
+     */
+    private $fecha_fin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hora_final", type="string", nullable=true)
+     */
+    private $hora_final;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetimetz")
+     */
+    private $fecha_creacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
+     */
+    private $descripcion;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="estado", type="boolean")
+     */
+    private $estado;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AsistenciaEvento", mappedBy="evento")
+     */
+    private $asistencia_evento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Ano", inversedBy="evento")
+     * @ORM\JoinColumn(name="ano_id", referencedColumnName="id")
+     */
+    private $ano;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento")
+     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     */
+    private $usuario;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TipoActividad", inversedBy="evento")
+     * @ORM\JoinColumn(name="tipo_actividad_id", referencedColumnName="id")
+     */
+    private $tipo_actividad;
+
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->asistencia_evento = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    
+}

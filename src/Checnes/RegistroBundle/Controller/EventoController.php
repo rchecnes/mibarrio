@@ -58,16 +58,17 @@ class EventoController extends Controller
             }
 
             $evento[] = array(
-                'title'=>ucwords($entity->getTipo()).': '. $entity->getNombre(),//title for calendar
-                'nombre'=>$entity->getNombre(),//nombre for bd
+                'title'=>ucwords($entity->getTipoActividad()->getNombre()).':',//title for calendar
+                'nombre'=>"",//nombre for bd
                 'description'=>$entity->getDescripcion(),
                 'start'=>date_format($entity->getFechaInicio(), 'Y-m-d'),
                 'end'=>date_format($entity->getFechaFin(), 'Y-m-d'),
                 'backgroundColor'=>$background_color,
                 'borderColor'=>$border_color,
+                'class'=>'evento_calendar',
                 'id_event' => $entity->getId(),
                 'detalle' => $entity->getDescripcion(),
-                'tipo'=> $entity->getTipo(),
+                'tipo_actividad'=> $entity->getTipoActividad()->getId(),
                 'condicion'=>$entity->getCondicion(),
                 'hora_inicio'=>$entity->getHoraInicio(),
                 'hora_final'=>$entity->getHoraFinal(),
@@ -77,9 +78,16 @@ class EventoController extends Controller
         }
 
         //print(json_encode($evento));
+        
+        //Ge tipo actividad
+        $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
+        $html_op_tipac = '';
+        foreach ($tipo_actividad as $key => $entity) {
+            $html_op_tipac .= '<option value="'.$entity->getId().'">'.$entity->getNombre().'</option>';
+        }
 
         return $this->render('ChecnesRegistroBundle:Evento:index.html.twig', array(
-            'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario now'
+            'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario', 'tipo_actividad_html'=>$html_op_tipac
         ));
     }
 
@@ -99,10 +107,12 @@ class EventoController extends Controller
 
         $entity = new Evento();
 
-        $entity->setNombre($request->request->get('nombre'));
-        $entity->setTipo($request->request->get('tipo'));
-        $entity->setCondicion($request->request->get('condicion'));
+        $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
+        $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+        $obj_anio = $em->getRepository('ChecnesRegistroBundle:Ano')->find($ano_id);
 
+        $entity->setTipoActividad($obj_tipa);
+        $entity->setCondicion($request->request->get('condicion'));
         $entity->setCondicion($request->request->get('condicion'));
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha')));
@@ -112,8 +122,8 @@ class EventoController extends Controller
         $entity->setHoraFinal($request->request->get('hora_final'));
         $entity->setTipoPersona($request->request->get('tipo_persona'));
 
-        $entity->setUsuario($usuario_id);
-        $entity->setAno($ano_id);
+        $entity->setUsuario($obj_usu);
+        $entity->setAno($obj_anio);
 
         $entity->setEstado(1);
 
@@ -138,15 +148,19 @@ class EventoController extends Controller
             throw $this->createNotFoundException('Unable to find Evento entity.');
         }
 
-        $ano_id = $session->get("ano_id");
-        $usuario_id = $session->get("usuario_id");
+        $ano_id         = $session->get("ano_id");
+        $usuario_id     = $session->get("usuario_id");
+        $reg_asistencia = $request->request->get('reg_asistencia');
 
         if (strtolower($entity->getCondicion()) != 'finalizo') {
 
             if (strtolower($entity->getCondicion()) == 'porconfirmar') {
 
-                $entity->setNombre($request->request->get('nombre'));
-                $entity->setTipo($request->request->get('tipo'));
+                $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
+                $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+                $obj_anio = $em->getRepository('ChecnesRegistroBundle:Ano')->find($ano_id);
+
+                $entity->setTipoActividad($obj_tipa);
                 $entity->setCondicion($request->request->get('condicion'));
                 $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
                 $entity->setFechaFin(new \DateTime($request->request->get('fecha')));
@@ -156,8 +170,8 @@ class EventoController extends Controller
                 $entity->setHoraFinal($request->request->get('hora_final'));
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
 
-                $entity->setUsuario($usuario_id);
-                $entity->setAno($ano_id);
+                $entity->setUsuario($obj_usu);
+                $entity->setAno($obj_anio);
 
             }else{
                 $entity->setCondicion($request->request->get('condicion'));
@@ -169,7 +183,12 @@ class EventoController extends Controller
             $em->flush();
         }
         
-        return $this->redirectToRoute("evento_index");
+        if ($reg_asistencia == 'REG_ASISTENCIA') {
+            return $this->redirectToRoute("asistenciaevento_index",array('evento'=>$id));
+        }else{
+            return $this->redirectToRoute("evento_index");
+        }
+        
     }
 
     /**

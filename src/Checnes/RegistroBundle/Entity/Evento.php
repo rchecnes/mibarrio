@@ -24,20 +24,6 @@ class Evento
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
-     */
-    private $nombre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tipo", type="string", length=255)
-     */
-    private $tipo;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="tipo_persona", type="string", length=255)
      */
     private $tipo_persona;
@@ -115,6 +101,12 @@ class Evento
      */
     private $usuario;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TipoActividad", inversedBy="evento")
+     * @ORM\JoinColumn(name="tipo_actividad_id", referencedColumnName="id")
+     */
+    private $tipo_actividad;
+
     
     /**
      * Constructor
@@ -122,6 +114,12 @@ class Evento
     public function __construct()
     {
         $this->asistencia_evento = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString()
+    {
+    
+        return ucwords($this->getTipoActividad()->getNombre()).' - '.ucwords($this->getTipoPersona());
     }
 
     /**
@@ -135,51 +133,27 @@ class Evento
     }
 
     /**
-     * Set nombre
+     * Set tipoPersona
      *
-     * @param string $nombre
+     * @param string $tipoPersona
      *
      * @return Evento
      */
-    public function setNombre($nombre)
+    public function setTipoPersona($tipoPersona)
     {
-        $this->nombre = $nombre;
+        $this->tipo_persona = $tipoPersona;
 
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get tipoPersona
      *
      * @return string
      */
-    public function getNombre()
+    public function getTipoPersona()
     {
-        return $this->nombre;
-    }
-
-    /**
-     * Set tipo
-     *
-     * @param string $tipo
-     *
-     * @return Evento
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return string
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
+        return $this->tipo_persona;
     }
 
     /**
@@ -457,26 +431,26 @@ class Evento
     }
 
     /**
-     * Set tipoPersona
+     * Set tipoActividad
      *
-     * @param string $tipoPersona
+     * @param \Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad
      *
      * @return Evento
      */
-    public function setTipoPersona($tipoPersona)
+    public function setTipoActividad(\Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad = null)
     {
-        $this->tipo_persona = $tipoPersona;
+        $this->tipo_actividad = $tipoActividad;
 
         return $this;
     }
 
     /**
-     * Get tipoPersona
+     * Get tipoActividad
      *
-     * @return string
+     * @return \Checnes\RegistroBundle\Entity\TipoActividad
      */
-    public function getTipoPersona()
+    public function getTipoActividad()
     {
-        return $this->tipo_persona;
+        return $this->tipo_actividad;
     }
 }

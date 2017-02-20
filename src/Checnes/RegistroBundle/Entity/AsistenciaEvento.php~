@@ -253,28 +253,4 @@ class AsistenciaEvento
     {
         return $this->usuario;
     }
-
-    /**
-     * Set fechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     *
-     * @return AsistenciaEvento
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->fecha_modificacion = $fechaModificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaModificacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaModificacion()
-    {
-        return $this->fecha_modificacion;
-    }
 }

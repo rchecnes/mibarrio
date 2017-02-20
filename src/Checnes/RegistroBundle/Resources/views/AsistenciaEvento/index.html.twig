@@ -1,42 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	
-	<div class="box box-info">  
+  
+  <div class="box box-info">  
       <div class="box-body">
         <div class="form-group">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                {{ form_row(form.tipo_persona) }}
+                {{ form_row(form.evento) }}
               </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <label for="select" class="control-label">Evento</label>
               <select class="form-control" id="evento" name="evento">
                 <option value="">Seleccionar</option>
               </select>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
   </div>
 
+
+
   <div class="panel panel-info">
     <div class="panel-heading">
       <h3 class="panel-title" id="content-title">--</h3>
     </div>
-    <form name="content-form" id="content-form"  method="POST" action="{{path('sav_asistencia')}}">
-      <div class="panel-body" id="content-table">
-
-        Sin resultados
-      </div>
-      <div class="panel-footer">
-        <button type="button" id="guardar" name="guardar" class="btn btn-primary">Guardar</button>
-      </div>
-    </form>
+    <div id="content_persona"><!--Personas--></div>
   </div>
-	
+  
 {% endblock %}
 
 {% block codeScript %}
@@ -45,36 +39,11 @@
   $(document).ready(function(){
 
     var tipo_persona = $('#asistencia_evento_tipo_persona');
-    var evento = $('#evento');
+    var select_evento = $('#asistencia_evento_evento');
+    var evento_id = '{{evento_id}}';
 
-    evento.attr("disabled","disabled");
+    $("#asistencia_evento_evento").val(evento_id);
 
-    tipo_persona.on("change", function(){
-
-        getEvento();
-        listaPersona();
-    });
-
-    getEvento = function(){
-
-      evento.attr("disabled","disabled");
-
-      $.ajax({
-        url:'{{path("get_evento")}}',
-        type:'GET',
-        data:{'tipo':tipo_persona.val()},
-        success: function(data){
-          var option = '<option value="">Seleccionar</option>';
-          for (var i = 0; i < data.length; i++) {
-            option += '<option value="'+data[i].id+'">'+data[i].nombre+'</option>';
-          }
-
-          evento.html(option);
-
-          evento.removeAttr("disabled");
-        }
-      });
-    }
 
     addHtmlPersona = function(data){
 
@@ -100,15 +69,16 @@
     listaPersona = function(){
 
       if (tipo_persona.val()!='') {
-        $('#content-title').html('Listado - '+tipo_persona.val());
+        $('#content-title').html('Listado De Asociados ');
 
         //ajax
         $.ajax({
           type:"GET",
           url: "{{path('listado_persona')}}",
-          data: {tipo:tipo_persona.val()},
+          data: {evento_id:select_evento.val()},
           success: function(data){
-            addHtmlPersona(data);
+            //addHtmlPersona(data);
+            $("#content_persona").html(data);
           }
         });
 
@@ -117,6 +87,15 @@
         $('#content-table').html('Sin resultados');
       }
     }
+
+    //Listar peronas
+    if (evento_id !='') {
+      listaPersona();
+    }
+
+    select_evento.on("change", function(){
+        listaPersona();
+    });
 
     $('#guardar').on("click", function(){
       

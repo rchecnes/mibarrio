@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Checnes\RegistroBundle\Entity\Usuario;
+use Checnes\RegistroBundle\Entity\ControlAcceso;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class LoginController extends Controller
@@ -43,10 +44,12 @@ class LoginController extends Controller
         $password = $request->request->get('password');
         $remenber = $request->request->get('remenber');
 
-        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->findOneBy(array('usuario'=>$usuario),array());
+        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->findOneBy(array('usuario'=>$usuario));
 
         if (is_object($entity)) {
             
+            $obj_acso = $em->getRepository('ChecnesRegistroBundle:ControlAcceso')->findOneBy(array('usuario'=>$entity->getId()));
+
             if (md5($password) == $entity->getSalt()) {
 
                 $session = $request->getSession();
@@ -57,20 +60,33 @@ class LoginController extends Controller
                     $session->start();
                 }              
 
-                // set and get session attributes
+                //set and get session attributes
                 //$session->set('user', $entity);
                 $session->set('nombre_completo', $entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno().' '.$entity->getPersona()->getNombre());
 
                 //$session->set('empresa_id', $entity->getEmpresa()->getId());
                 $session->set('usuario_id', $entity->getId());
-                $session->set('ano_id', $entity->getPersona()->getAno()->getId());
+                $session->set('anio', $entity->getAnio());
 
                 //Set cookie
                 $this->setCookie($usuario,$password,$remenber);
 
-                //$session->get('name');
+                //Registramos acceso;
+                $acceso = new ControlAcceso();
+                $acceso->setUsuario($entity);
+                $acceso->setFechaAcceso(new \DateTime(date('Y-m-d h:i:sa')));
+                $acceso->setIp('200.200.200.200');
+                $acceso->setAnio(date('Y'));
+                $em->persist($acceso);
+                $em->flush();
+                
 
-                return $this->redirectToRoute("evento_index");
+                if (!is_object($obj_acso)) {
+                    return $this->redirectToRoute("acceso_change_password");
+                }else{
+                    return $this->redirectToRoute("evento_index");
+                }
+
             }else{
                 return $this->redirectToRoute("acceso");
             }
@@ -149,5 +165,39 @@ class LoginController extends Controller
         return $this->render('ChecnesRegistroBundle:Login:new.html.twig', array(
             'titulo'=>'Nueva cuenta',
         ));
+    }
+
+    /**
+     * @Route("/changepassword", name="acceso_change_password")
+     */
+    public function changePasswordAction()
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        
+        //$obj_rol = $em->getRepository('ChecnesRegistroBundle:Rol')->find(1);
+
+        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Actualizar Contraseña'));
+    }
+
+    /**
+     * @Route("/updatepassword", name="acceso_update_password")
+     */
+    public function updatePasswordAction(Request $request)
+    {
+        $em      = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $anio    = $session->get("anio");
+        $usuario = $session->get("usuario_id");
+
+        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario);
+
+        $entity->setPassword($request->request->get('password'));
+        $entity->setSalt(md5($request->request->get('password')));
+        $em->persist($entity);
+        $em->flush();
+
+        return $this->redirectToRoute("evento_index");
     }
 }

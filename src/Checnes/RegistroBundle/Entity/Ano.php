@@ -94,4 +94,3 @@ class Ano
         return $this->condicion;
     }
 }
-

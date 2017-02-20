@@ -102,14 +102,13 @@ class EventoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
-        $ano_id = $session->get("ano_id");
+        $anio = $session->get("anio");
         $usuario_id = $session->get("usuario_id");
 
         $entity = new Evento();
 
         $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
         $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
-        $obj_anio = $em->getRepository('ChecnesRegistroBundle:Ano')->find($ano_id);
 
         $entity->setTipoActividad($obj_tipa);
         $entity->setCondicion($request->request->get('condicion'));
@@ -123,7 +122,7 @@ class EventoController extends Controller
         $entity->setTipoPersona($request->request->get('tipo_persona'));
 
         $entity->setUsuario($obj_usu);
-        $entity->setAno($obj_anio);
+        $entity->setAnio($anio);
 
         $entity->setEstado(1);
 
@@ -148,7 +147,7 @@ class EventoController extends Controller
             throw $this->createNotFoundException('Unable to find Evento entity.');
         }
 
-        $ano_id         = $session->get("ano_id");
+        $anio         = $session->get("anio");
         $usuario_id     = $session->get("usuario_id");
         $reg_asistencia = $request->request->get('reg_asistencia');
 
@@ -158,7 +157,6 @@ class EventoController extends Controller
 
                 $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
                 $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
-                $obj_anio = $em->getRepository('ChecnesRegistroBundle:Ano')->find($ano_id);
 
                 $entity->setTipoActividad($obj_tipa);
                 $entity->setCondicion($request->request->get('condicion'));
@@ -171,7 +169,7 @@ class EventoController extends Controller
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
 
                 $entity->setUsuario($obj_usu);
-                $entity->setAno($obj_anio);
+                $entity->setAnio($anio);
 
             }else{
                 $entity->setCondicion($request->request->get('condicion'));

@@ -64,6 +64,13 @@ class Usuario
     private $condicion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="anio", type="string", length=4)
+     */
+    private $anio;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Rol", inversedBy="usuario")
      * @ORM\JoinColumn(name="rol_id", referencedColumnName="id")
      */
@@ -75,6 +82,8 @@ class Usuario
      */
     private $persona;
 
+
+    
 
     /**
      * Get id
@@ -228,6 +237,30 @@ class Usuario
     public function getCondicion()
     {
         return $this->condicion;
+    }
+
+    /**
+     * Set anio
+     *
+     * @param string $anio
+     *
+     * @return Usuario
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return string
+     */
+    public function getAnio()
+    {
+        return $this->anio;
     }
 
     /**

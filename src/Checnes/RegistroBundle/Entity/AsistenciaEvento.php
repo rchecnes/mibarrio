@@ -63,16 +63,19 @@ class AsistenciaEvento
 
     
     /**
-     * @ORM\ManyToOne(targetEntity="Ano", inversedBy="asistencia_evento")
-     * @ORM\JoinColumn(name="ano_id", referencedColumnName="id")
+     * @var string
+     *
+     * @ORM\Column(name="anio", type="string", length=4)
      */
-    private $ano;
+    private $anio;
 
     /**
      * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="asistencia_evento")
      * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      */
     private $usuario;
+
+    
 
     
 
@@ -108,6 +111,30 @@ class AsistenciaEvento
     public function getFechaCreacion()
     {
         return $this->fecha_creacion;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return AsistenciaEvento
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fecha_modificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fecha_modificacion;
     }
 
     /**
@@ -159,6 +186,30 @@ class AsistenciaEvento
     }
 
     /**
+     * Set anio
+     *
+     * @param string $anio
+     *
+     * @return AsistenciaEvento
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return string
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
      * Set evento
      *
      * @param \Checnes\RegistroBundle\Entity\Evento $evento
@@ -207,30 +258,6 @@ class AsistenciaEvento
     }
 
     /**
-     * Set ano
-     *
-     * @param \Checnes\RegistroBundle\Entity\Ano $ano
-     *
-     * @return AsistenciaEvento
-     */
-    public function setAno(\Checnes\RegistroBundle\Entity\Ano $ano = null)
-    {
-        $this->ano = $ano;
-
-        return $this;
-    }
-
-    /**
-     * Get ano
-     *
-     * @return \Checnes\RegistroBundle\Entity\Ano
-     */
-    public function getAno()
-    {
-        return $this->ano;
-    }
-
-    /**
      * Set usuario
      *
      * @param \Checnes\RegistroBundle\Entity\Usuario $usuario
@@ -252,29 +279,5 @@ class AsistenciaEvento
     public function getUsuario()
     {
         return $this->usuario;
-    }
-
-    /**
-     * Set fechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     *
-     * @return AsistenciaEvento
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->fecha_modificacion = $fechaModificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaModificacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaModificacion()
-    {
-        return $this->fecha_modificacion;
     }
 }

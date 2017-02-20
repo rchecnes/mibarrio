@@ -90,10 +90,11 @@ class Evento
     private $asistencia_evento;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ano", inversedBy="evento")
-     * @ORM\JoinColumn(name="ano_id", referencedColumnName="id")
+     * @var string
+     *
+     * @ORM\Column(name="anio", type="string", length=4)
      */
-    private $ano;
+    private $anio;
 
     /**
      * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento")
@@ -121,6 +122,8 @@ class Evento
     
         return ucwords($this->getTipoActividad()->getNombre()).' - '.ucwords($this->getTipoPersona());
     }
+
+    
 
     /**
      * Get id
@@ -349,6 +352,30 @@ class Evento
     }
 
     /**
+     * Set anio
+     *
+     * @param string $anio
+     *
+     * @return Evento
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return string
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
      * Add asistenciaEvento
      *
      * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
@@ -380,30 +407,6 @@ class Evento
     public function getAsistenciaEvento()
     {
         return $this->asistencia_evento;
-    }
-
-    /**
-     * Set ano
-     *
-     * @param \Checnes\RegistroBundle\Entity\Ano $ano
-     *
-     * @return Evento
-     */
-    public function setAno(\Checnes\RegistroBundle\Entity\Ano $ano = null)
-    {
-        $this->ano = $ano;
-
-        return $this;
-    }
-
-    /**
-     * Get ano
-     *
-     * @return \Checnes\RegistroBundle\Entity\Ano
-     */
-    public function getAno()
-    {
-        return $this->ano;
     }
 
     /**

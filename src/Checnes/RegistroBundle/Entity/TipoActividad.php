@@ -125,4 +125,3 @@ class TipoActividad
         return $this->estado;
     }
 }
-

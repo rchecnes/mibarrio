@@ -83,10 +83,11 @@ class Persona
     private $cargo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ano", inversedBy="persona")
-     * @ORM\JoinColumn(name="ano_id", referencedColumnName="id")
+     * @var string
+     *
+     * @ORM\Column(name="anio", type="string", length=4)
      */
-    private $ano;
+    private $anio;
     
     /**
      * @ORM\OneToMany(targetEntity="AsistenciaEvento", mappedBy="persona")
@@ -108,6 +109,8 @@ class Persona
     }
 
    
+
+    
 
     /**
      * Get id
@@ -264,6 +267,54 @@ class Persona
     }
 
     /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return Persona
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set anio
+     *
+     * @param string $anio
+     *
+     * @return Persona
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return string
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
      * Set lote
      *
      * @param \Checnes\RegistroBundle\Entity\Lote $lote
@@ -309,30 +360,6 @@ class Persona
     public function getCargo()
     {
         return $this->cargo;
-    }
-
-    /**
-     * Set ano
-     *
-     * @param \Checnes\RegistroBundle\Entity\Ano $ano
-     *
-     * @return Persona
-     */
-    public function setAno(\Checnes\RegistroBundle\Entity\Ano $ano = null)
-    {
-        $this->ano = $ano;
-
-        return $this;
-    }
-
-    /**
-     * Get ano
-     *
-     * @return \Checnes\RegistroBundle\Entity\Ano
-     */
-    public function getAno()
-    {
-        return $this->ano;
     }
 
     /**
@@ -401,29 +428,5 @@ class Persona
     public function getUsuario()
     {
         return $this->usuario;
-    }
-
-    /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return Persona
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return integer
-     */
-    public function getNumero()
-    {
-        return $this->numero;
     }
 }

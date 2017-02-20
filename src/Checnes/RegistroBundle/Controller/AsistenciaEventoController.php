@@ -30,7 +30,7 @@ class AsistenciaEventoController extends Controller
         $session = $request->getSession();
 
         $usuario_id = $session->get("usuario_id");
-        $ano_id     = $session->get("ano_id");
+        $anio       = $session->get("anio");
 
         $evento_id    = '';
         if ($request->query->get('evento') !=null) {
@@ -60,17 +60,17 @@ class AsistenciaEventoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
-        $ano_id = $session->get("ano_id");
+        $anio = $session->get("anio");
         $tipo_persona = $request->query->get('tipo');
         //Listado de eventos
         $evento = "SELECT e FROM ChecnesRegistroBundle:Evento e";
         $evento .= " WHERE e.condicion != 'cancelado'";
         $evento .= " AND e.estado=1";
-        $evento .= " AND e.ano=:ano";
+        $evento .= " AND e.anio=:anio";
         $evento .= " AND e.tipo_persona=:tipo_persona";
 
         $res_evento = $em->createQuery($evento)
-        ->setParameter('ano',$ano_id)
+        ->setParameter('anio',$anio)
         ->setParameter('tipo_persona', $tipo_persona)
         ->getResult();
 
@@ -143,7 +143,7 @@ class AsistenciaEventoController extends Controller
 
         //$request = $this->getRequest();
         $session = $request->getSession();
-        $ano_id  = $session->get("ano_id");
+        $anio  = $session->get("anio");
         $usuario_id = $session->get("usuario_id");
 
         $count_personas = $request->request->get('count_personas');
@@ -151,7 +151,6 @@ class AsistenciaEventoController extends Controller
 
         $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($evento_id);
         
-        $obj_anio = $em->getRepository('ChecnesRegistroBundle:Ano')->find($ano_id);
         $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);                                  
 
         
@@ -184,7 +183,7 @@ class AsistenciaEventoController extends Controller
                 $entityAsEv->setFechaCreacion(new \DateTime(date('Y-m-d h:i:sa')));
                 $entityAsEv->setFechaModificacion(new \DateTime(date('Y-m-d h:i:sa')));
                 $entityAsEv->setAsistio($asistio);
-                $entityAsEv->setAno($obj_anio);
+                $entityAsEv->setAnio($anio);
                 $entityAsEv->setUsuario($obj_usu);
                 $entityAsEv->setEstado(true);
                 $em->persist($entityAsEv);

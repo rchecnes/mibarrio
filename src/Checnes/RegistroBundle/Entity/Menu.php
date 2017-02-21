@@ -36,6 +36,13 @@ class Menu
     private $padre;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="nivel", type="integer")
+     */
+    private $nivel;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="enlace", type="string", length=255)
@@ -45,16 +52,23 @@ class Menu
     /**
      * @var string
      *
-     * @ORM\Column(name="icono", type="string", length=255)
+     * @ORM\Column(name="css_icono", type="string", length=255)
      */
-    private $icono;
+    private $css_icono;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="condicion", type="boolean")
+     * @ORM\Column(name="estado", type="boolean")
      */
-    private $condicion;
+    private $estado;
+
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tiene_hijo", type="boolean")
+     */
+    private $tiene_hijo;
 
     /**
      * @ORM\OneToMany(targetEntity="MenuXRol", mappedBy="menu")
@@ -69,6 +83,10 @@ class Menu
     {
         $this->menu_x_rol = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    
+
+    
 
     /**
      * Get id
@@ -129,6 +147,30 @@ class Menu
     }
 
     /**
+     * Set nivel
+     *
+     * @param integer $nivel
+     *
+     * @return Menu
+     */
+    public function setNivel($nivel)
+    {
+        $this->nivel = $nivel;
+
+        return $this;
+    }
+
+    /**
+     * Get nivel
+     *
+     * @return integer
+     */
+    public function getNivel()
+    {
+        return $this->nivel;
+    }
+
+    /**
      * Set enlace
      *
      * @param string $enlace
@@ -153,51 +195,75 @@ class Menu
     }
 
     /**
-     * Set icono
+     * Set cssIcono
      *
-     * @param string $icono
+     * @param string $cssIcono
      *
      * @return Menu
      */
-    public function setIcono($icono)
+    public function setCssIcono($cssIcono)
     {
-        $this->icono = $icono;
+        $this->css_icono = $cssIcono;
 
         return $this;
     }
 
     /**
-     * Get icono
+     * Get cssIcono
      *
      * @return string
      */
-    public function getIcono()
+    public function getCssIcono()
     {
-        return $this->icono;
+        return $this->css_icono;
     }
 
     /**
-     * Set condicion
+     * Set estado
      *
-     * @param boolean $condicion
+     * @param boolean $estado
      *
      * @return Menu
      */
-    public function setCondicion($condicion)
+    public function setEstado($estado)
     {
-        $this->condicion = $condicion;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get condicion
+     * Get estado
      *
      * @return boolean
      */
-    public function getCondicion()
+    public function getEstado()
     {
-        return $this->condicion;
+        return $this->estado;
+    }
+
+    /**
+     * Set tieneHijo
+     *
+     * @param boolean $tieneHijo
+     *
+     * @return Menu
+     */
+    public function setTieneHijo($tieneHijo)
+    {
+        $this->tiene_hijo = $tieneHijo;
+
+        return $this;
+    }
+
+    /**
+     * Get tieneHijo
+     *
+     * @return boolean
+     */
+    public function getTieneHijo()
+    {
+        return $this->tiene_hijo;
     }
 
     /**

@@ -129,14 +129,12 @@
 
 {% endblock %}
 
-{% block codeScript %}
+{% block javascripts %}
 <script type="text/javascript">
     $(document).ready(function(){
     	
     	
-    	/* initialize the calendar
-    	{#{eventos|raw}#}
-     -----------------------------------------------------------------*/
+    	
 	    //Date for the calendar events (dummy data)
 	    var date = new Date();
 	    var d = date.getDate(),
@@ -147,6 +145,10 @@
 
 
 	    $('#calendar').fullCalendar({
+		    buttonHtml: {
+				prev: '<i class="ace-icon fa fa-chevron-left"></i>',
+				next: '<i class="ace-icon fa fa-chevron-right"></i>'
+			},
 	      header: {
 	        left: 'prev,next today',
 	        center: 'title',
@@ -406,6 +408,7 @@
     		$("#reg_asistencia").val('REG_ASISTENCIA');
 		  	$("#evento" ).submit();
 		});
-	 })
+
+	 });
     </script>
  {% endblock %}

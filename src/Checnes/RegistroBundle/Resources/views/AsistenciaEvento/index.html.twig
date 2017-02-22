@@ -33,7 +33,8 @@
   
 {% endblock %}
 
-{% block codeScript %}
+{% block javascripts %}
+  {{ parent() }}
 <script type="text/javascript">
 
   $(document).ready(function(){

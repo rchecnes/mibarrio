@@ -178,7 +178,7 @@ class LoginController extends Controller
         
         //$obj_rol = $em->getRepository('ChecnesRegistroBundle:Rol')->find(1);
 
-        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Actualizar Contraseña'));
+        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Le Recomendamos Actualizar Su Contraseña'));
     }
 
     /**

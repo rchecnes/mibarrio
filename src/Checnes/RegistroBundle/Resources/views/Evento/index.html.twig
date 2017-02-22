@@ -119,7 +119,7 @@
 		           
 		            <div class="modal-footer">
 		                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-		                <button type="submit" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
+		                <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
 		                <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
 	              </div>
 	            </form>
@@ -130,8 +130,9 @@
 {% endblock %}
 
 {% block javascripts %}
+	{{ parent() }}
 <script type="text/javascript">
-    $(document).ready(function(){
+   $(document).ready(function(){
     	
     	
     	
@@ -411,4 +412,4 @@
 
 	 });
     </script>
- {% endblock %}
+{% endblock %}

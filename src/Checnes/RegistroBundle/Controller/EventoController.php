@@ -87,7 +87,8 @@ class EventoController extends Controller
         }
 
         return $this->render('ChecnesRegistroBundle:Evento:index.html.twig', array(
-            'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario', 'tipo_actividad_html'=>$html_op_tipac
+            'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario', 'tipo_actividad_html'=>$html_op_tipac,
+            'fecha_actual'=>date('d/m/Y')
         ));
     }
 

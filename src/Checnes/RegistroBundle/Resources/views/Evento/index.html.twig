@@ -86,12 +86,12 @@
 			                </div>
 			                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			                	<div class="form-group">
-					                <label>Fecha Hasta:</label>
+					                <label>Fecha Fin:</label>
 					                <div class="input-group date">
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right datepicker" id="fecha_hasta" name="fecha_hasta">
+					                  <input type="text" class="form-control pull-right datepicker" id="fecha_fin" name="fecha_fin">
 					                </div>
 					            </div>
 			                </div>
@@ -143,9 +143,7 @@
 	    var d = date.getDate(),
 	        m = date.getMonth(),
 	        y = date.getFullYear();
-
-	    //console.log(new Date(y, m, 1));
-
+	    var fecha_actual = '{{fecha_actual}}';
 
 	    $('#calendar').fullCalendar({
 		    buttonHtml: {
@@ -269,7 +267,7 @@
 
 		      	$(".modal-title").html("Nuevo evento de calendario - "+date.format());
 		    	$("#myModal .modal-body #fecha").val(date.format());
-		    	$("#myModal .modal-body #fecha_hasta").val(date.format());
+		    	$("#myModal .modal-body #fecha_fin").val(fecha_actual);
 
 			    $("#myModal").modal('show');  
             } 
@@ -291,7 +289,8 @@
 		    	$("#myModal .modal-body #tipo").val(calEvent['tipo']);
 		    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
 		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-		    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
+		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
+		    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']);
 
 		    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
 
@@ -313,6 +312,7 @@
 			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']);
 			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
 			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
+			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']);
 			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
 
 			    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
@@ -331,6 +331,8 @@
 			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']);
 			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
 			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
+			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']);
+
 			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
 
 			    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
@@ -377,15 +379,11 @@
 	    $(".timepicker").timepicker({
 	      showInputs: false
 	    });
-	    //Date picker
-	    var d = new Date();
-	    var date_act = d.getDate()+'/'+d.getMonth()+'/'+d.getFullYear();
-	    
 
+	    //Date picker
 	    $('.datepicker').datepicker({
 	      autoclose: true,
-	      dateFormat: "dd/mm/yyyy",
-    	}).datepicker("setDate", date_act);
+    	});
 
     	$( "#guardar_registrar_asistencia").click(function(e) {
     		e.preventDefault();
@@ -406,6 +404,8 @@
     			$("#myModal #guardar_registrar_asistencia").removeAttr('disabled').show();
 		    	$("#myModal #enviar").removeAttr('disabled').show();
     		}
+
+    		$( "#myModal .close" ).removeAttr('disabled');
     	}
 	 });
     </script>

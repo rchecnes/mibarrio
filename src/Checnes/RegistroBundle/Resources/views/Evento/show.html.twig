@@ -1,0 +1,121 @@
+<form role="form" method="POST" name="evento" id="evento" action="{{ path('evento_update',{'id':id}) }}">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{titulo}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+          <!--<label for="nombre">Nombre</label>-->
+          <input type="hidden" class="form-control" id="nombre" name="nombre">
+          <input type="hidden" class="form-control" id="fecha" name="fecha">
+          <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <label for="tipo">Tipo de actividad:</label>
+                  <select class="form-control" id="tipo_actividad" name="tipo_actividad">
+                    {{tipo_actividad_html|raw}}
+                  </select>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="tipo">Tipo de persona:</label>
+                    <div class="controls">
+                      <label class="radio-inline">
+                        <input type="radio" name="tipo_persona" id="tipo_persona_general" value="general" checked="checked">
+                        General
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="tipo_persona" id="tipo_persona_dirigente" value="dirigente">
+                        Dirigentes
+                      </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                      <label for="hora_inicio">Hora Inicio:</label>
+                      <div class="input-group">
+                          <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
+                          <div class="input-group-addon">
+                             <i class="fa fa-clock-o"></i>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                      <label>Hora Fin:</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
+                        <div class="input-group-addon">
+                          <i class="fa fa-clock-o"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label>Fecha Fin:</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin">
+                    </div>
+                </div>
+            </div>
+
+           
+
+        </div>
+        <div class="form-group">
+          <label for="detalle">Detalles:</label>
+          <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento"></textarea>
+        </div>
+        <div class="form-group">
+        <fieldset>
+            <legend class="form-group"><label for="condicion">Estado</label></legend>
+                <div class="controls">
+                <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>&nbsp;&nbsp;&nbsp;
+                <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>&nbsp;&nbsp;&nbsp;
+                <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>&nbsp;&nbsp;&nbsp;
+                <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>&nbsp;&nbsp;&nbsp;
+                <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
+                </div>
+        </fieldset>
+          
+        </div>
+        
+    </div>
+   
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button>
+        <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
+        <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+  </div>
+</form>
+<script type="text/javascript">
+  $(document).ready(function(){
+    //Timepicker
+      $(".timepicker").timepicker({
+          minuteStep: 1,
+      showSeconds: true,
+      showMeridian: false
+      });
+
+      //Date picker
+      $('.date-picker').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true
+    }).datepicker("update", '{{fecha_day_click}}'); 
+  })
+</script>

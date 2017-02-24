@@ -290,13 +290,17 @@
 		    	}*/
 		    	
             }
+
+            var url = "{{path('evento_edit')}}";
+            if (activo == false) {
+                url = "{{path('evento_show')}}";
+            }
 	    	
-	    	$.post( "{{path('evento_edit')}}",{'evento_id':calEvent['id_event']}, function( data ) {
+	    	$.post(url,{'evento_id':calEvent['id_event']}, function( data ) {
 			  $("#modal_content").html( data );
 			  $("#myModal").modal('show');
 			});
 
-		    //$("#myModal").modal('show');
 	      }
 	    });
 		

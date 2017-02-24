@@ -108,7 +108,7 @@ class EventoController extends Controller
         }
 
         $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_day_click']     = $request->request->get('dayClick');
+        $data['fecha_fin']     = $request->request->get('dayClick');
         $data['titulo']              = "Nuevo evento de calendario - ".$request->request->get('dayClick');
         return $this->render('ChecnesRegistroBundle:Evento:new.html.twig', $data);
     }
@@ -165,7 +165,7 @@ class EventoController extends Controller
 
         $id = $request->request->get('evento_id');
 
-        $entity = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
 
         $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
         $html_op_tipac = '';
@@ -174,8 +174,9 @@ class EventoController extends Controller
         }
 
         $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_day_click']     = date('Y-m-d');
-        $data['titulo']              = "Editar evento de calendario - ".date('Y-m-d');
+        $data['fecha_fin']           = $evento->getFechaFin()->format('Y-m-d');
+        $titulo = "Editar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
+        $data['titulo']              = $titulo;
         $data['id']                  = $id;
         return $this->render('ChecnesRegistroBundle:Evento:edit.html.twig', $data);
     }
@@ -241,14 +242,14 @@ class EventoController extends Controller
      *
      * @Route("/show", name="evento_show")
      * @Method("POST")
-    */
+     */
     public function showAction(Request $request){
 
         $em = $this->getDoctrine()->getManager();
 
         $id = $request->request->get('evento_id');
 
-        $entity = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
 
         $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
         $html_op_tipac = '';
@@ -257,8 +258,9 @@ class EventoController extends Controller
         }
 
         $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_day_click']     = date('Y-m-d');
-        $data['titulo']              = "Editar evento de calendario - ".date('Y-m-d');
+        $data['fecha_fin']           = $evento->getFechaFin()->format('Y-m-d');
+        $titulo = "Visualizar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
+        $data['titulo']              = $titulo;
         $data['id']                  = $id;
         return $this->render('ChecnesRegistroBundle:Evento:show.html.twig', $data);
     }

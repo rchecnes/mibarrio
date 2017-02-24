@@ -88,7 +88,7 @@ class EventoController extends Controller
 
         return $this->render('ChecnesRegistroBundle:Evento:index.html.twig', array(
             'eventos' => json_encode($evento),'titulo'=>'Eventos de calendario', 'tipo_actividad_html'=>$html_op_tipac,
-            'fecha_actual'=>date('d/m/Y')
+            'fecha_actual'=>date('Y-m-d')
         ));
     }
 
@@ -115,7 +115,7 @@ class EventoController extends Controller
         $entity->setCondicion($request->request->get('condicion'));
         $entity->setCondicion($request->request->get('condicion'));
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
-        $entity->setFechaFin(new \DateTime($request->request->get('fecha')));
+        $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaCreacion(new \DateTime(date('Y-m-d')));
         $entity->setDescripcion($request->request->get('detalle'));
         $entity->setHoraInicio($request->request->get('hora_inicio'));
@@ -162,7 +162,7 @@ class EventoController extends Controller
                 $entity->setTipoActividad($obj_tipa);
                 $entity->setCondicion($request->request->get('condicion'));
                 $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
-                $entity->setFechaFin(new \DateTime($request->request->get('fecha')));
+                $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
                 $entity->setFechaCreacion(new \DateTime(date('Y-m-d')));
                 $entity->setDescripcion($request->request->get('detalle'));
                 $entity->setHoraInicio($request->request->get('hora_inicio'));

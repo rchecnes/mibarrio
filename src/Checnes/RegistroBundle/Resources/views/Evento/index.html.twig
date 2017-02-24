@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets%}
+	{{ parent() }}
+	<!--Date picker-->
+    <link rel="stylesheet" href="{{asset('public/assets/css/bootstrap-datepicker3.min.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/css/bootstrap-timepicker.min.css')}}" />
+{% endblock %}
+
 {% block body %}
     
     <div class="row">
@@ -91,7 +98,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-calendar"></i>
 					                  </div>
-					                  <input type="text" class="form-control pull-right datepicker" id="fecha_fin" name="fecha_fin">
+					                  <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin">
 					                </div>
 					            </div>
 			                </div>
@@ -133,6 +140,10 @@
 
 {% block javascripts %}
 	{{ parent() }}
+	<!--Datepicker and timepicker-->
+    <script src="{{asset('public/assets/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('public/assets/js/bootstrap-timepicker.min.js')}}"></script>
+	
 <script type="text/javascript">
    $(document).ready(function(){
     	
@@ -267,7 +278,7 @@
 
 		      	$(".modal-title").html("Nuevo evento de calendario - "+date.format());
 		    	$("#myModal .modal-body #fecha").val(date.format());
-		    	$("#myModal .modal-body #fecha_fin").val(fecha_actual);
+		    	//$("#myModal .modal-body #fecha_fin").val(fecha_actual);
 
 			    $("#myModal").modal('show');  
             } 
@@ -290,7 +301,7 @@
 		    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
 		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
 		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-		    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']);
+		    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']._i);
 
 		    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
 
@@ -312,8 +323,9 @@
 			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']);
 			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
 			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']);
+			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']._i);
 			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
+			    	console.log(calEvent);
 
 			    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
 			    	$("#myModal .modal-body #cond_"+calEvent['condicion']).prop('checked','checked');
@@ -331,7 +343,7 @@
 			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']);
 			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
 			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']);
+			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']._i);
 
 			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
 
@@ -377,13 +389,19 @@
 		
 	    //Timepicker
 	    $(".timepicker").timepicker({
-	      showInputs: false
+	      	minuteStep: 1,
+			showSeconds: true,
+			showMeridian: false
 	    });
 
 	    //Date picker
-	    $('.datepicker').datepicker({
-	      autoclose: true,
-    	});
+	    $('.date-picker').datepicker({
+	      	format: 'yyyy-mm-dd',
+		    autoclose: true
+		}).datepicker("update", fecha_actual); 
+
+
+    
 
     	$( "#guardar_registrar_asistencia").click(function(e) {
     		e.preventDefault();

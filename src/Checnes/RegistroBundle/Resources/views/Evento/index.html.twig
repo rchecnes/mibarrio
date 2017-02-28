@@ -5,6 +5,7 @@
 	<!--Date picker-->
     <link rel="stylesheet" href="{{asset('public/assets/css/bootstrap-datepicker3.min.css')}}" />
     <link rel="stylesheet" href="{{asset('public/assets/css/bootstrap-timepicker.min.css')}}" />
+    <!--<link rel="stylesheet" href="{{asset('public/assets/css/chosen.min.css')}}" />-->
 {% endblock %}
 
 {% block body %}
@@ -39,6 +40,7 @@
 	<!--Datepicker and timepicker-->
     <script src="{{asset('public/assets/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('public/assets/js/bootstrap-timepicker.min.js')}}"></script>
+    <!--<script src="{{asset('public/assets/js/chosen.jquery.min.js')}}"></script>-->
 	
 <script type="text/javascript">
    $(document).ready(function(){
@@ -174,13 +176,15 @@
 
 		      	$(".modal-title").html("Nuevo evento de calendario - "+date.format());
 		    	$("#myModal .modal-body #fecha").val(date.format());
-		    	//$("#myModal .modal-body #fecha_fin").val(fecha_actual);
+		    	$("#myModal .modal-body #fecha_fin").val(fecha_actual);
 
 			    $("#myModal").modal('show');*/
+
 
 			    
 			    $.post( "{{path('evento_new')}}",{'dayClick':date.format()}, function( data ) {
 				  $("#modal_content").html( data );
+				  $("#myModal #fecha").val(date.format());
 				  $("#myModal").modal('show');
 				});  
             } 
@@ -304,27 +308,13 @@
 	      }
 	    });
 		
-	    //Timepicker
-	    $(".timepicker").timepicker({
-	      	minuteStep: 1,
-			showSeconds: true,
-			showMeridian: false
-	    });
+	       
 
-	    //Date picker
-	    $('.date-picker').datepicker({
-	      	format: 'yyyy-mm-dd',
-		    autoclose: true
-		}).datepicker("update", fecha_actual); 
-
-
-    
-
-    	$( "#guardar_registrar_asistencia").click(function(e) {
+    	/*$( "#guardar_registrar_asistencia").click(function(e) {
     		e.preventDefault();
     		$("#reg_asistencia").val('REG_ASISTENCIA');
 		  	$("#evento" ).submit();
-		});
+		});*/
 
     	//Function disabled and enabled
     	tooggle = function(action){

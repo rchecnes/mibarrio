@@ -1,22 +1,14 @@
-<form role="form" method="POST" name="evento" id="evento" action="{{ path('evento_update',{'id':id}) }}">
+<form role="form" method="POST" name="evento" id="evento" action="#">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">{{titulo}}</h4>
     </div>
     <div class="modal-body">
-        <div class="form-group">
-          <!--<label for="nombre">Nombre</label>-->
-          <input type="hidden" class="form-control" id="nombre" name="nombre">
-          <input type="hidden" class="form-control" id="fecha" name="fecha">
-          <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
-        </div>
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <div class="form-group">
                   <label for="tipo">Tipo de actividad:</label>
-                  <select class="form-control" id="tipo_actividad" name="tipo_actividad">
-                    {{tipo_actividad_html|raw}}
-                  </select>
+                  <input type="text" class="form-control" id="tipo_actividad" name="tipo_actividad" value="{{evento.tipoactividad.nombre}}">
                 </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -41,7 +33,7 @@
                     <div class="form-group">
                       <label for="hora_inicio">Hora Inicio:</label>
                       <div class="input-group">
-                          <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
+                          <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio}}">
                           <div class="input-group-addon">
                              <i class="fa fa-clock-o"></i>
                           </div>
@@ -54,7 +46,7 @@
                     <div class="form-group">
                       <label>Hora Fin:</label>
                       <div class="input-group">
-                        <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
+                        <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final" value="{{evento.horafinal}}">
                         <div class="input-group-addon">
                           <i class="fa fa-clock-o"></i>
                         </div>
@@ -69,7 +61,7 @@
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin">
+                      <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
                     </div>
                 </div>
             </div>
@@ -79,7 +71,7 @@
         </div>
         <div class="form-group">
           <label for="detalle">Detalles:</label>
-          <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento"></textarea>
+          <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento">hhhh</textarea>
         </div>
         <div class="form-group">
         <fieldset>
@@ -99,23 +91,20 @@
    
     <div class="modal-footer">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button>
-        <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
-        <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
   </div>
 </form>
 <script type="text/javascript">
   $(document).ready(function(){
-    //Timepicker
-      $(".timepicker").timepicker({
-          minuteStep: 1,
-      showSeconds: true,
-      showMeridian: false
-      });
 
-      //Date picker
-      $('.date-picker').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true
-    }).datepicker("update", '{{fecha_fin}}'); 
+    //Seleccionamos check y radios
+    //$("#tipo_actividad").val("{{evento.tipoactividad.id}}");
+    //$("#tipo_actividad").val("{{evento.tipoactividad.id}}");
+    $("#tipo_persona_{{evento.tipopersona}}").prop("checked",true);
+    $("#cond_{{evento.condicion}}").prop("checked",true);
+    //Bloquemaos todo
+    $("#evento input[type='text']").attr("disabled","disabled");
+    $("#evento select, #evento textarea").attr("disabled","disabled");
+    $("#evento input[type='radio']").attr("disabled","disabled");
+    
   })
 </script>

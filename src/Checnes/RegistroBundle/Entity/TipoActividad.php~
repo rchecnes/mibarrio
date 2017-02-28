@@ -131,28 +131,4 @@ class TipoActividad
     {
         return $this->estado;
     }
-
-    /**
-     * Set nombreSistema
-     *
-     * @param string $nombreSistema
-     *
-     * @return TipoActividad
-     */
-    public function setNombreSistema($nombreSistema)
-    {
-        $this->nombre_sistema = $nombreSistema;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreSistema
-     *
-     * @return string
-     */
-    public function getNombreSistema()
-    {
-        return $this->nombre_sistema;
-    }
 }

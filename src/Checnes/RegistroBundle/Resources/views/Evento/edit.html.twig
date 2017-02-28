@@ -7,7 +7,7 @@
         <div class="form-group">
           <!--<label for="nombre">Nombre</label>-->
           <input type="hidden" class="form-control" id="nombre" name="nombre">
-          <input type="hidden" class="form-control" id="fecha" name="fecha">
+          <input type="hidden" class="form-control" id="fecha" name="fecha" value="{{evento.fechainicio |date('Y-m-d') }}">
           <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
         </div>
         <div class="row">
@@ -41,7 +41,7 @@
                     <div class="form-group">
                       <label for="hora_inicio">Hora Inicio:</label>
                       <div class="input-group">
-                          <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
+                          <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio}}">
                           <div class="input-group-addon">
                              <i class="fa fa-clock-o"></i>
                           </div>
@@ -54,7 +54,7 @@
                     <div class="form-group">
                       <label>Hora Fin:</label>
                       <div class="input-group">
-                        <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
+                        <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final" value="{{evento.horafinal}}">
                         <div class="input-group-addon">
                           <i class="fa fa-clock-o"></i>
                         </div>
@@ -69,7 +69,7 @@
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin">
+                      <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
                     </div>
                 </div>
             </div>
@@ -105,7 +105,38 @@
 </form>
 <script type="text/javascript">
   $(document).ready(function(){
-    //Timepicker
+    
+    $("#tipo_persona_{{evento.tipopersona}}").prop("checked",true);
+    $("#cond_{{evento.condicion}}").prop("checked",true);
+    $("#tipo_actividad").val("{{evento.tipoactividad.id}}");
+
+    var condicion = '{{evento.condicion}}';
+
+    if (condicion != 'porconfirmar'){
+
+      //Bloquemaos todo
+      $("#evento input[type='text']").attr("disabled","disabled");
+      $("#evento select, #evento textarea").attr("disabled","disabled");
+      $("#evento input[name='tipo_persona']").attr("disabled","disabled");
+      //$("#evento input[type='radio']").attr("disabled","disabled");
+
+      switch(condicion) {
+        case 'confirmado':
+            $("#evento #cond_porconfirmar").attr('disabled', 'disabled');
+            break;
+        case 'realizandose':
+            $("#evento #cond_porconfirmar, #evento #cond_confirmado").attr('disabled', 'disabled');
+            break;
+        case 'finalizo':
+            $("#evento input[type='radio']").attr('disabled','disabled');
+            break;
+        case 'cancelado':
+            $("#evento input[type='radio']").attr('disabled','disabled');
+            break;
+      }
+
+    }else{
+      //Timepicker
       $(".timepicker").timepicker({
           minuteStep: 1,
       showSeconds: true,
@@ -116,6 +147,16 @@
       $('.date-picker').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true
-    }).datepicker("update", '{{fecha_fin}}'); 
-  })
+      }).datepicker("update", "{{evento.fechafin |date('Y-m-d') }}");
+    }
+
+    $("input[name='condicion']").on("click", function(){
+      if ($(this).val() == 'cancelado') {
+        $("#guardar_registrar_asistencia").hide();
+      }else{
+        $("#guardar_registrar_asistencia").show();
+      }
+    });
+
+  });
 </script>

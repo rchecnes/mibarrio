@@ -58,7 +58,7 @@ class EventoController extends Controller
             }
 
             $evento[] = array(
-                'title'=>ucwords($entity->getTipoActividad()->getNombre()).':',//title for calendar
+                'title'=>ucwords($entity->getTipoActividad()->getNombre().': '.$entity->getTipoPersona()),//title for calendar
                 'nombre'=>"",//nombre for bd
                 'description'=>$entity->getDescripcion(),
                 'start'=>date_format($entity->getFechaInicio(), 'Y-m-d'),
@@ -151,7 +151,14 @@ class EventoController extends Controller
         $em->persist($entity);
         $em->flush();
 
-        return $this->redirectToRoute("evento_index");
+        $reg_asistencia = $request->request->get('reg_asistencia');
+
+        if ($reg_asistencia == 'REG_ASISTENCIA') {
+            return $this->redirectToRoute("asistenciaevento_index",array('evento'=>$entity->getId()));
+        }else{
+            return $this->redirectToRoute("evento_index");
+        }
+
     }
 
     /**
@@ -171,13 +178,16 @@ class EventoController extends Controller
         $html_op_tipac = '';
         foreach ($tipo_actividad as $key => $entity) {
             $html_op_tipac .= '<option value="'.$entity->getId().'">'.$entity->getNombre().'</option>';
-        }
+        }       
+
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
 
         $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_fin']           = $evento->getFechaFin()->format('Y-m-d');
-        $titulo = "Editar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
+        $data['evento']              = $evento;
+        $titulo                      = "Editar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
         $data['titulo']              = $titulo;
         $data['id']                  = $id;
+
         return $this->render('ChecnesRegistroBundle:Evento:edit.html.twig', $data);
     }
 
@@ -251,17 +261,9 @@ class EventoController extends Controller
 
         $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
 
-        $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
-        $html_op_tipac = '';
-        foreach ($tipo_actividad as $key => $entity) {
-            $html_op_tipac .= '<option value="'.$entity->getId().'">'.$entity->getNombre().'</option>';
-        }
-
-        $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_fin']           = $evento->getFechaFin()->format('Y-m-d');
-        $titulo = "Visualizar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
+        $data['evento']              = $evento;
+        $titulo                      = "Visualizar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
         $data['titulo']              = $titulo;
-        $data['id']                  = $id;
         return $this->render('ChecnesRegistroBundle:Evento:show.html.twig', $data);
     }
 

@@ -110,11 +110,28 @@
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label>Buscar Persona:</label>
-                <div class="form-group">
+                <div class="form-group input-group">
                   <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
+                  <span class="input-group-addon">
+                    <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
+                  </span>
                 </div>
               </div>
-              
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <table class="table table-bordered" id="participantes">
+                  <tr>
+                    <th>Nro</th>
+                    <th>Nombres</th>
+                    <th>Responsable</th>
+                  </tr>
+                  <tr class="sin_persona">
+                    <td colspan="3">Sin participantes</td>
+                  </tr>
+                </table>
+              </div>
             </div>
             
           </div>
@@ -160,35 +177,48 @@
       }
     });
 
-    //autocomplete
-     var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
+    addPersona = function(obj){
+      var html = '<tr class="row_personas">';
+
+      html += '<td>'+obj.numero+'</td>';
+      html += '<td>'+obj.label+'</td>';
+      html += '<td><input type="checkbox" id="persona_'+obj.id+'"></td>';
+      html += '<tr>';
+
+      var exist = $("#participantes tbody #persona_"+obj.id).length;
+      var existp = $("#participantes .row_personas").length;
+
+      if (exist == 0) {
+        $("#participantes tbody").append(html);
+      }
+
+      //if (existp > 0) {
+        $("#participantes tr.sin_persona").remove();
+      //}
+      
+      $("#bus_persona").val('').focus();
+    }
 
     $( "#bus_persona" ).autocomplete({
-      source: availableTags
+      source: function( request, response ) {
+        $("#load_busper").show();
+        $.ajax({
+            type: 'GET',
+            url: "{{path('evento_buscarpersona')}}",
+            data: {term: request.term,tipoP: $("input[name='tipo_persona']:checked").val()},
+            dataType: "json",
+            success: function( data ) {
+                $("#load_busper").hide();
+                response(data);
+            }
+        });
+      },
+      minLength: 2,
+      select: function(event, ui) {
+          addPersona(ui.item);
+      }
     });
+
 
   })
 </script>

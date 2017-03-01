@@ -290,4 +290,33 @@ class EventoController extends Controller
 
         //ld($entity);
     }
+
+    /**
+     * @Route("/buscarpersona", name="evento_buscarpersona")
+     * @Method({"GET"})
+     */
+    public function buscarPersonaAction(Request $request)
+    {   
+        $em = $this->getDoctrine()->getManager();
+
+        $conn = $this->get('database_connection');
+
+        $es_dirigente = ($request->request->get('tipoP') == 'dirigente')?1:0;
+        $term         = $request->request->get('term');
+
+        $sql = "SELECT *,
+                CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS label,
+                CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS value
+                FROM persona WHERE es_dirigente='$es_dirigente' AND (nombre LIKE '%$term%' OR apellido_paterno LIKE '%$term%' OR apellido_materno LIKE '%$term%') LIMIT 5";
+
+        $resp = $conn->executeQuery($sql)->fetchAll();
+
+        $array = array();
+        foreach ($resp as $key => $row) {
+            $array[] = $row;//array('value'=>10,'label'=>'Juan');
+        }
+        //return json_encode($resp);
+
+        return new JsonResponse($array);
+    }
 }

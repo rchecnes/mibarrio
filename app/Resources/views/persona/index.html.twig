@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Personas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Dni</th>
+                <th>Nombre</th>
+                <th>Apellido_paterno</th>
+                <th>Apellido_materno</th>
+                <th>Estado_civil</th>
+                <th>Es_dirigente</th>
+                <th>Numero</th>
+                <th>Anio</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for persona in personas %}
+            <tr>
+                <td><a href="{{ path('persona_show', { 'id': persona.id }) }}">{{ persona.id }}</a></td>
+                <td>{{ persona.dni }}</td>
+                <td>{{ persona.nombre }}</td>
+                <td>{{ persona.apellidopaterno }}</td>
+                <td>{{ persona.apellidomaterno }}</td>
+                <td>{{ persona.estadocivil }}</td>
+                <td>{% if persona.esdirigente %}Yes{% else %}No{% endif %}</td>
+                <td>{{ persona.numero }}</td>
+                <td>{{ persona.anio }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('persona_show', { 'id': persona.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('persona_edit', { 'id': persona.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('persona_new') }}">Create a new persona</a>
+        </li>
+    </ul>
+{% endblock %}

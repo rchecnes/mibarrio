@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Controlacceso</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ controlAcceso.id }}</td>
+            </tr>
+            <tr>
+                <th>Fechaacceso</th>
+                <td>{% if controlAcceso.fechaAcceso %}{{ controlAcceso.fechaAcceso|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Ip</th>
+                <td>{{ controlAcceso.ip }}</td>
+            </tr>
+            <tr>
+                <th>Anio</th>
+                <td>{{ controlAcceso.anio }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('controlacceso_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('controlacceso_edit', { 'id': controlAcceso.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

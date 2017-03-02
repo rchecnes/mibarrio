@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Empresa</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ empresa.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Ruc</th>
+                <td>{{ empresa.ruc }}</td>
+            </tr>
+            <tr>
+                <th>Condicion</th>
+                <td>{% if empresa.condicion %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fecha_registro</th>
+                <td>{{ empresa.fecharegistro }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_inicio</th>
+                <td>{{ empresa.fechainicio }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_fin</th>
+                <td>{{ empresa.fechafin }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('empresa_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('empresa_edit', { 'id': empresa.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Menuxrols list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Condicion</th>
+                <th>Fecha_creacion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for menuXRol in menuXRols %}
+            <tr>
+                <td><a href="{{ path('menuxrol_show', { 'id': menuXRol.id }) }}">{{ menuXRol.id }}</a></td>
+                <td>{% if menuXRol.condicion %}Yes{% else %}No{% endif %}</td>
+                <td>{{ menuXRol.fechacreacion }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('menuxrol_show', { 'id': menuXRol.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('menuxrol_edit', { 'id': menuXRol.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('menuxrol_new') }}">Create a new menuXRol</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Controlaccesos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fechaacceso</th>
+                <th>Ip</th>
+                <th>Anio</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for controlAcceso in controlAccesos %}
+            <tr>
+                <td><a href="{{ path('controlacceso_show', { 'id': controlAcceso.id }) }}">{{ controlAcceso.id }}</a></td>
+                <td>{% if controlAcceso.fechaAcceso %}{{ controlAcceso.fechaAcceso|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ controlAcceso.ip }}</td>
+                <td>{{ controlAcceso.anio }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('controlacceso_show', { 'id': controlAcceso.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('controlacceso_edit', { 'id': controlAcceso.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('controlacceso_new') }}">Create a new controlAcceso</a>
+        </li>
+    </ul>
+{% endblock %}

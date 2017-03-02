@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle(),
             new AppBundle\AppBundle(),
             new Checnes\RegistroBundle\ChecnesRegistroBundle(),
+            
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

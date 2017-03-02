@@ -75,16 +75,6 @@ class Menu
      */
     private $menu_x_rol;
 
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->menu_x_rol = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+      
 
-    
-
-    
 }

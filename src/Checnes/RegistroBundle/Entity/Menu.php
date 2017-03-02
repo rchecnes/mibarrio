@@ -75,7 +75,8 @@ class Menu
      */
     private $menu_x_rol;
 
-    
+      
+
     /**
      * Constructor
      */
@@ -83,10 +84,6 @@ class Menu
     {
         $this->menu_x_rol = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    
-
-    
 
     /**
      * Get id

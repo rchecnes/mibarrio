@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Menu</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ menu.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ menu.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Padre</th>
+                <td>{{ menu.padre }}</td>
+            </tr>
+            <tr>
+                <th>Nivel</th>
+                <td>{{ menu.nivel }}</td>
+            </tr>
+            <tr>
+                <th>Enlace</th>
+                <td>{{ menu.enlace }}</td>
+            </tr>
+            <tr>
+                <th>Css_icono</th>
+                <td>{{ menu.cssicono }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{% if menu.estado %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Tiene_hijo</th>
+                <td>{% if menu.tienehijo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('menu_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('menu_edit', { 'id': menu.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,58 @@
+<?php
+
+namespace Checnes\RegistroBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EventoParticipante
+ *
+ * @ORM\Table(name="evento_participante")
+ * @ORM\Entity(repositoryClass="Checnes\RegistroBundle\Repository\EventoParticipanteRepository")
+ */
+class EventoParticipante
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="responsable", type="boolean", options={"comment":"1 es responsable y 0 no"})
+     */
+    private $responsable;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetimetz", options={"comment":"Fecha creacion"})
+     */
+    private $fecha_creacion;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Evento", inversedBy="evento_participante")
+     * @ORM\JoinColumn(name="evento_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     */
+    private $evento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento_participante")
+     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id", nullable=false)
+     */
+    private $usuario;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Persona", inversedBy="evento_participante")
+     * @ORM\JoinColumn(name="persona_id", referencedColumnName="id", nullable=false)
+     */
+    private $persona;
+
+
+    
+}

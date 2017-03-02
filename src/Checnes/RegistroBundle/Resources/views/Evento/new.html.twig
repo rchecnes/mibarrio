@@ -131,6 +131,7 @@
                     <td colspan="3">Sin participantes</td>
                   </tr>
                 </table>
+                <input type="hidden" id="codigo_participantes" name="codigo_participantes">
               </div>
             </div>
             
@@ -178,18 +179,20 @@
     });
 
     addPersona = function(obj){
-      var html = '<tr class="row_personas">';
 
+      var exist   = $("#participantes tbody #perresp_"+obj.id).length;
+      var cantpar = parseInt($("#participantes .row_personas").length)+1;
+
+      var html = '<tr>';
       html += '<td>'+obj.numero+'</td>';
       html += '<td>'+obj.label+'</td>';
-      html += '<td><input type="checkbox" id="persona_'+obj.id+'"></td>';
+      html += '<td><input type="checkbox" id="perresp_'+obj.id+'" name="perresp_'+obj.id+'"></td>';
       html += '<tr>';
-
-      var exist = $("#participantes tbody #persona_"+obj.id).length;
-      var existp = $("#participantes .row_personas").length;
 
       if (exist == 0) {
         $("#participantes tbody").append(html);
+        var participantes = ($("#codigo_participantes").val() !='')?$("#codigo_participantes").val()+'-'+obj.id:obj.id;
+        $("#codigo_participantes").val(participantes);
       }
 
       //if (existp > 0) {

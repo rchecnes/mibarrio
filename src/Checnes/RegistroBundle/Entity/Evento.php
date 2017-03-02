@@ -108,7 +108,11 @@ class Evento
      */
     private $tipo_actividad;
 
-    
+    /**
+     * @ORM\OneToMany(targetEntity="EventoParticipante", mappedBy="evento")
+     */
+    private $evento_participante;
+
     /**
      * Constructor
      */
@@ -122,6 +126,8 @@ class Evento
     
         return ucwords($this->getTipoActividad()->getNombre()).' - '.ucwords($this->getTipoPersona());
     }
+
+    
 
     
 
@@ -455,5 +461,39 @@ class Evento
     public function getTipoActividad()
     {
         return $this->tipo_actividad;
+    }
+
+    /**
+     * Add eventoParticipante
+     *
+     * @param \Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante
+     *
+     * @return Evento
+     */
+    public function addEventoParticipante(\Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante)
+    {
+        $this->evento_participante[] = $eventoParticipante;
+
+        return $this;
+    }
+
+    /**
+     * Remove eventoParticipante
+     *
+     * @param \Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante
+     */
+    public function removeEventoParticipante(\Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante)
+    {
+        $this->evento_participante->removeElement($eventoParticipante);
+    }
+
+    /**
+     * Get eventoParticipante
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEventoParticipante()
+    {
+        return $this->evento_participante;
     }
 }

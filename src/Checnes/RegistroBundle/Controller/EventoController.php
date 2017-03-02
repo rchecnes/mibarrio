@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Checnes\RegistroBundle\Entity\Evento;
+use Checnes\RegistroBundle\Entity\EventoParticipante;
 //use Checnes\RegistroBundle\Form\LoteType;
 
 /**
@@ -120,7 +121,6 @@ class EventoController extends Controller
      */
     public function createAction(Request $request)
     {
-        //ld($request->request->get('tipo'));
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
@@ -142,14 +142,36 @@ class EventoController extends Controller
         $entity->setHoraInicio($request->request->get('hora_inicio'));
         $entity->setHoraFinal($request->request->get('hora_final'));
         $entity->setTipoPersona($request->request->get('tipo_persona'));
-
         $entity->setUsuario($obj_usu);
         $entity->setAnio($anio);
-
         $entity->setEstado(1);
-
         $em->persist($entity);
         $em->flush();
+
+        //Resgistramos participantes
+        $participantes = $request->request->get('codigo_participantes');
+        $participantes = explode('-', $participantes);
+
+        if ($participantes !='') {
+
+            $obj_evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($entity->getId());
+
+            for ($i=0; $i < count($participantes); $i++) {
+
+                $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+
+                $participante = new EventoParticipante();
+                $participante->setPersona($obj_per);
+                $participante->setUsuario($obj_usu);
+                $participante->setEvento($obj_evento);
+                $participante->setFechaCreacion(new \DateTime(date('Y-m-d')));
+                $participante->setResponsable($entity->getId());
+                $em->persist($participante);
+            }
+        }
+        
+        $em->flush();
+        
 
         $reg_asistencia = $request->request->get('reg_asistencia');
 
@@ -301,13 +323,13 @@ class EventoController extends Controller
 
         $conn = $this->get('database_connection');
 
-        $es_dirigente = ($request->request->get('tipoP') == 'dirigente')?1:0;
+        $es_dirigente = ($request->request->get('tipoP') == 'dirigente')?'1':'1,0';
         $term         = $request->request->get('term');
 
         $sql = "SELECT *,
                 CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS label,
                 CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS value
-                FROM persona WHERE es_dirigente='$es_dirigente' AND (nombre LIKE '%$term%' OR apellido_paterno LIKE '%$term%' OR apellido_materno LIKE '%$term%') LIMIT 5";
+                FROM persona WHERE es_dirigente IN($es_dirigente) AND (nombre LIKE '%$term%' OR apellido_paterno LIKE '%$term%' OR apellido_materno LIKE '%$term%') LIMIT 5";
 
         $resp = $conn->executeQuery($sql)->fetchAll();
 

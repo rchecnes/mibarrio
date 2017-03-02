@@ -1,0 +1,93 @@
+<?php
+
+namespace Checnes\RegistroBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Persona
+ *
+ * @ORM\Table(name="persona")
+ * @ORM\Entity(repositoryClass="Checnes\RegistroBundle\Repository\PersonaRepository")
+ */
+class Persona
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dni", type="string", length=255, unique=true)
+     */
+    private $dni;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellido_paterno", type="string", length=255)
+     */
+    private $apellido_paterno;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellido_materno", type="string", length=255)
+     */
+    private $apellido_materno;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado_civil", type="string", length=20, nullable=true)
+     */
+    private $estado_civil;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="es_dirigente", type="boolean")
+     */
+    private $es_dirigente;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="numero", type="integer")
+     */
+    private $numero;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Lote", inversedBy="persona")
+     * @ORM\JoinColumn(name="lote_id", referencedColumnName="id")
+     */
+    private $lote;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Cargo", inversedBy="persona")
+     * @ORM\JoinColumn(name="cargo_id", referencedColumnName="id")
+     */
+    private $cargo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="anio", type="string", length=4)
+     */
+    private $anio;
+    
+
+}

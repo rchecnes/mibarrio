@@ -89,28 +89,7 @@ class Persona
      */
     private $anio;
     
-    /**
-     * @ORM\OneToMany(targetEntity="AsistenciaEvento", mappedBy="persona")
-     */
-    private $asistencia_evento;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Usuario", mappedBy="persona")
-     */
-    private $usuario;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->asistencia_evento = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->usuario = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-   
-
-    
 
     /**
      * Get id
@@ -360,73 +339,5 @@ class Persona
     public function getCargo()
     {
         return $this->cargo;
-    }
-
-    /**
-     * Add asistenciaEvento
-     *
-     * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
-     *
-     * @return Persona
-     */
-    public function addAsistenciaEvento(\Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento)
-    {
-        $this->asistencia_evento[] = $asistenciaEvento;
-
-        return $this;
-    }
-
-    /**
-     * Remove asistenciaEvento
-     *
-     * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
-     */
-    public function removeAsistenciaEvento(\Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento)
-    {
-        $this->asistencia_evento->removeElement($asistenciaEvento);
-    }
-
-    /**
-     * Get asistenciaEvento
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAsistenciaEvento()
-    {
-        return $this->asistencia_evento;
-    }
-
-    /**
-     * Add usuario
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuario
-     *
-     * @return Persona
-     */
-    public function addUsuario(\Checnes\RegistroBundle\Entity\Usuario $usuario)
-    {
-        $this->usuario[] = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Remove usuario
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuario
-     */
-    public function removeUsuario(\Checnes\RegistroBundle\Entity\Usuario $usuario)
-    {
-        $this->usuario->removeElement($usuario);
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
     }
 }

@@ -1,144 +1,143 @@
 <form role="form" method="POST" name="evento" id="evento" action="{{ path('evento_create') }} ">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">{{titulo}}</h4>
-    </div>
-    <div class="modal-body">
-       <div class="tabbable">
-        <ul class="nav nav-tabs" id="myTab">
-          <li class="active"><a data-toggle="tab" href="#inicio">Inicio</a></li>
-          <li><a data-toggle="tab" href="#participante">Participante(s)</a></li>
-        </ul>
+  <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">{{titulo}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="tabbable">
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a data-toggle="tab" href="#inicio">Inicio</a></li>
+        <li><a data-toggle="tab" href="#participante">Participante(s)</a></li>
+      </ul>
 
-        <div class="tab-content">
-          <div id="inicio" class="tab-pane fade in active">
-            <div class="form-group">
-              <!--<label for="nombre">Nombre</label>-->
-              <input type="hidden" class="form-control" id="nombre" name="nombre">
-              <input type="hidden" class="form-control" id="fecha" name="fecha">
-              <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
+      <div class="tab-content">
+        <div id="inicio" class="tab-pane fade in active">
+          <div class="form-group">
+            <!--<label for="nombre">Nombre</label>-->
+            <input type="hidden" class="form-control" id="nombre" name="nombre">
+            <input type="hidden" class="form-control" id="fecha" name="fecha">
+            <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <label for="tipo">Tipo de actividad:</label>
+                  <select class="form-control" id="tipo_actividad" name="tipo_actividad">
+                    {{tipo_actividad_html|raw}}
+                  </select>
+                </div>
             </div>
-            <div class="row">
-              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <div class="form-group">
-                    <label for="tipo">Tipo de actividad:</label>
-                    <select class="form-control" id="tipo_actividad" name="tipo_actividad">
-                      {{tipo_actividad_html|raw}}
-                    </select>
-                  </div>
-              </div>
-              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <div class="form-group">
-                      <label for="tipo">Tipo de persona:</label>
-                      <div class="controls">
-                        <label class="radio-inline">
-                          <input type="radio" name="tipo_persona" id="tipo_persona_general" value="general" checked="checked">
-                          General
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="tipo_persona" id="tipo_persona_dirigente" value="dirigente">
-                          Dirigentes
-                        </label>
-                      </div>
-                  </div>
-              </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="tipo">Tipo de persona:</label>
+                    <div class="controls">
+                      <label class="radio-inline">
+                        <input type="radio" name="tipo_persona" id="tipo_persona_general" value="general" checked="checked">
+                        General
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="tipo_persona" id="tipo_persona_dirigente" value="dirigente">
+                        Dirigentes
+                      </label>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                  <div class="bootstrap-timepicker">
-                      <div class="form-group">
-                        <label for="hora_inicio">Hora Inicio:</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
-                            <div class="input-group-addon">
-                               <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                  <div class="bootstrap-timepicker">
-                      <div class="form-group">
-                        <label>Hora Fin:</label>
-                        <div class="input-group">
-                          <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                      <label for="hora_inicio">Hora Inicio:</label>
+                      <div class="input-group">
+                          <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio">
                           <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
+                             <i class="fa fa-clock-o"></i>
                           </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                      <label>Hora Fin:</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final">
+                        <div class="input-group-addon">
+                          <i class="fa fa-clock-o"></i>
                         </div>
                       </div>
                     </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                  <div class="form-group">
-                      <label>Fecha Fin:</label>
-                      <div class="input-group date">
-                        <div class="input-group-addon">
-                          <i class="fa fa-calendar"></i>
-                        </div>
-                        <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin">
-                      </div>
                   </div>
-              </div>
             </div>
-            <div class="form-group">
-              <label for="detalle">Detalles:</label>
-              <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento"></textarea>
-            </div>
-
-            <div class="form-group">
-              <fieldset>
-                  <legend class="form-group"><label for="condicion">Estado</label></legend>
-                      <div class="controls">
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label>Fecha Fin:</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
                       </div>
-              </fieldset>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button>
-              <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
-              <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+                      <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin">
+                    </div>
+                </div>
             </div>
           </div>
+          <div class="form-group">
+            <label for="detalle">Detalles:</label>
+            <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento"></textarea>
+          </div>
 
-          <div id="participante" class="tab-pane fade">
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label>Buscar Persona:</label>
-                <div class="form-group input-group">
-                  <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
-                  <span class="input-group-addon">
-                    <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <table class="table table-bordered" id="participantes">
-                  <tr>
-                    <th>Nro</th>
-                    <th>Nombres</th>
-                    <th>Responsable</th>
-                  </tr>
-                  <tr class="sin_persona">
-                    <td colspan="3">Sin participantes</td>
-                  </tr>
-                </table>
-                <input type="hidden" id="codigo_participantes" name="codigo_participantes">
-              </div>
-            </div>
-            
+          <div class="form-group">
+            <fieldset>
+                <legend class="form-group"><label for="condicion">Estado</label></legend>
+                    <div class="controls">
+                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>
+                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>
+                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>
+                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>
+                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
+                    </div>
+            </fieldset>
           </div>
         </div>
+
+        <div id="participante" class="tab-pane fade">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>Buscar Persona:</label>
+              <div class="form-group input-group">
+                <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
+                <span class="input-group-addon">
+                  <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <table class="table table-bordered" id="participantes">
+                <tr>
+                  <th>Nro</th>
+                  <th>Nombres</th>
+                  <th>Responsable</th>
+                  <th>Acciones</th>
+                </tr>
+              </table>
+              <input type="hidden" id="codigo_participantes" name="codigo_participantes">
+            </div>
+          </div>
+          
+        </div>
+
       </div>
     </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button>
+    <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
+    <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+  </div>
 </form>
 
 <script type="text/javascript">
@@ -164,12 +163,6 @@
     }).datepicker("update", '{{fecha_fin}}');
 
 
-    /*$("input[name='tipo_persona']").on("click", function(){
-      if ($(this).val() == 'nombrado') {
-        $("#grupo_bus_persona").show();
-      }
-    });*/
-
     $("input[name='condicion']").on("click", function(){
       if ($(this).val() == 'cancelado') {
         $("#guardar_registrar_asistencia").hide();
@@ -178,15 +171,30 @@
       }
     });
 
+    deleteParticipante = function(id){
+      $("#filapersona_"+id).remove();
+      var participantes = $("#codigo_participantes").val();
+      participantes = participantes.split('-');
+      var new_participantes = '';
+      if (participantes.length > 0) {
+        for (var i =0; i<participantes.length; i++) {
+          if (participantes[i] !=id) { new_participantes += participantes[i]+'-';}
+        }
+      }
+      new_participantes = new_participantes.substring(0,new_participantes.length-1);
+      $("#codigo_participantes").val(new_participantes);
+    }
+
     addPersona = function(obj){
 
       var exist   = $("#participantes tbody #perresp_"+obj.id).length;
       var cantpar = parseInt($("#participantes .row_personas").length)+1;
 
-      var html = '<tr>';
+      var html = '<tr id="filapersona_'+obj.id+'">';
       html += '<td>'+obj.numero+'</td>';
       html += '<td>'+obj.label+'</td>';
       html += '<td><input type="checkbox" id="perresp_'+obj.id+'" name="perresp_'+obj.id+'"></td>';
+      html += '<td><button type="button" class="btn btn-sm btn-danger" data-toggle="button" onclick="deleteParticipante('+obj.id+')">Eliminar</button></td>';
       html += '<tr>';
 
       if (exist == 0) {
@@ -194,13 +202,7 @@
         var participantes = ($("#codigo_participantes").val() !='')?$("#codigo_participantes").val()+'-'+obj.id:obj.id;
         $("#codigo_participantes").val(participantes);
       }
-
-      //if (existp > 0) {
-      $("#participantes tr.sin_persona").remove();
-      //}
-      
-      $("#bus_persona").val('').focus();
-    }
+   }
 
     $( "#bus_persona" ).autocomplete({
       source: function( request, response ) {
@@ -219,6 +221,8 @@
       minLength: 2,
       select: function(event, ui) {
           addPersona(ui.item);
+          $(this).val('').focus();
+          return false;
       }
     });
 

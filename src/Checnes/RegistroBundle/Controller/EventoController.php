@@ -158,19 +158,24 @@ class EventoController extends Controller
 
             for ($i=0; $i < count($participantes); $i++) {
 
-                $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+                if ($participantes[$i] !='') {
 
-                $participante = new EventoParticipante();
-                $participante->setPersona($obj_per);
-                $participante->setUsuario($obj_usu);
-                $participante->setEvento($obj_evento);
-                $participante->setFechaCreacion(new \DateTime(date('Y-m-d')));
-                $participante->setResponsable($entity->getId());
-                $em->persist($participante);
+                     $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+
+                    $participante = new EventoParticipante();
+                    $participante->setPersona($obj_per);
+                    $participante->setUsuario($obj_usu);
+                    $participante->setEvento($obj_evento);
+                    $participante->setFechaCreacion(new \DateTime(date('Y-m-d')));
+                    $participante->setResponsable($entity->getId());
+                    $em->persist($participante);
+                }
+               
             }
         }
         
         $em->flush();
+        //Fin registro participante
         
 
         $reg_asistencia = $request->request->get('reg_asistencia');
@@ -206,6 +211,7 @@ class EventoController extends Controller
 
         $data['tipo_actividad_html'] = $html_op_tipac;
         $data['evento']              = $evento;
+        $data['participantes']       = $evento->getEventoParticipante();
         $titulo                      = "Editar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d')." - ".$evento->getFechaFin()->format('Y-m-d');
         $data['titulo']              = $titulo;
         $data['id']                  = $id;
@@ -251,6 +257,35 @@ class EventoController extends Controller
 
                 $entity->setUsuario($obj_usu);
                 $entity->setAnio($anio);
+
+                //Resgistramos participantes
+                $participantes = $request->request->get('codigo_participantes');
+                $participantes = explode('-', $participantes);
+
+                $entity->removeEventoParticipante();
+
+                if ($participantes !='') {
+
+                    $obj_evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($entity->getId());
+
+                    for ($i=0; $i < count($participantes); $i++) {
+
+                        if ($participantes[$i] !='') {
+
+                             $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+
+                            $participante = new EventoParticipante();
+                            $participante->setPersona($obj_per);
+                            $participante->setUsuario($obj_usu);
+                            $participante->setEvento($obj_evento);
+                            $participante->setFechaCreacion(new \DateTime(date('Y-m-d')));
+                            $participante->setResponsable($entity->getId());
+                            $em->persist($participante);
+                        }
+                       
+                    }
+                }
+                //Fin registro participante
 
             }else{
                 $entity->setCondicion($request->request->get('condicion'));

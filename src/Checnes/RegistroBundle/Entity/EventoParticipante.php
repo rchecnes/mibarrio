@@ -31,9 +31,16 @@ class EventoParticipante
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_creacion", type="datetimetz", options={"comment":"Fecha creacion"})
+     * @ORM\Column(name="fecha_creacion", type="datetimetz", nullable=true, options={"comment":"Fecha creacion"})
      */
     private $fecha_creacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_actualizacion", type="datetimetz", nullable=true, options={"comment":"Fecha creacion"})
+     */
+    private $fecha_actualizacion;
 
     /**
      * @ORM\ManyToOne(targetEntity="Evento", inversedBy="evento_participante")
@@ -184,5 +191,29 @@ class EventoParticipante
     public function getPersona()
     {
         return $this->persona;
+    }
+
+    /**
+     * Set fechaActualizacion
+     *
+     * @param \DateTime $fechaActualizacion
+     *
+     * @return EventoParticipante
+     */
+    public function setFechaActualizacion($fechaActualizacion)
+    {
+        $this->fecha_actualizacion = $fechaActualizacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaActualizacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaActualizacion()
+    {
+        return $this->fecha_actualizacion;
     }
 }

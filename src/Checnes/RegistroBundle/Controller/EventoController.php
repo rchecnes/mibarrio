@@ -160,14 +160,17 @@ class EventoController extends Controller
 
                 if ($participantes[$i] !='') {
 
-                     $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+                    $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+
+                    $responsable = ($request->request->get('perresp_'.$participantes[$i]))?true:false;
 
                     $participante = new EventoParticipante();
                     $participante->setPersona($obj_per);
                     $participante->setUsuario($obj_usu);
                     $participante->setEvento($obj_evento);
-                    $participante->setFechaCreacion(new \DateTime(date('Y-m-d')));
-                    $participante->setResponsable($entity->getId());
+                    $participante->setFechaCreacion(new \DateTime(date('Y-m-d H:i:s')));
+                    $participante->setFechaActualizacion(new \DateTime(date('Y-m-d H:i:s')));
+                    $participante->setResponsable($responsable);
                     $em->persist($participante);
                 }
                
@@ -228,6 +231,8 @@ class EventoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
+        //ld($request);exit();
+
         $entity = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
 
         if (!$entity) {
@@ -238,7 +243,7 @@ class EventoController extends Controller
         $usuario_id     = $session->get("usuario_id");
         $reg_asistencia = $request->request->get('reg_asistencia');
 
-        if (strtolower($entity->getCondicion()) != 'finalizo') {
+        if (strtolower($entity->getCondicion()) != 'finalizo' && strtolower($entity->getCondicion()) != 'cancelado') {
 
             if (strtolower($entity->getCondicion()) == 'porconfirmar') {
 
@@ -254,15 +259,25 @@ class EventoController extends Controller
                 $entity->setHoraInicio($request->request->get('hora_inicio'));
                 $entity->setHoraFinal($request->request->get('hora_final'));
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
-
                 $entity->setUsuario($obj_usu);
                 $entity->setAnio($anio);
+                $entity->setCondicion($request->request->get('condicion'));
+                $em->persist($entity);
+                $em->flush();
 
-                //Resgistramos participantes
+                //Eliminamos y Resgistramos participantes
                 $participantes = $request->request->get('codigo_participantes');
                 $participantes = explode('-', $participantes);
 
-                $entity->removeEventoParticipante();
+                $obj_participantes = $entity->getEventoParticipante();
+                if (is_object($obj_participantes)) {
+                    foreach ($obj_participantes as $key => $parti) {
+                        $em->remove($parti);
+                    }
+                    $em->flush();
+                }
+                //Fin eliminar y registrar
+                         
 
                 if ($participantes !='') {
 
@@ -272,29 +287,32 @@ class EventoController extends Controller
 
                         if ($participantes[$i] !='') {
 
-                             $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+                            $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+
+                            $responsable = ($request->request->get('perresp_'.$participantes[$i]))?true:false;
 
                             $participante = new EventoParticipante();
                             $participante->setPersona($obj_per);
                             $participante->setUsuario($obj_usu);
                             $participante->setEvento($obj_evento);
-                            $participante->setFechaCreacion(new \DateTime(date('Y-m-d')));
-                            $participante->setResponsable($entity->getId());
+                            $participante->setFechaCreacion(new \DateTime(date('Y-m-d H:i:s')));
+                            $participante->setFechaActualizacion(new \DateTime(date('Y-m-d H:i:s')));
+                            $participante->setResponsable($responsable);
                             $em->persist($participante);
                         }
                        
                     }
+
+                    $em->flush();
                 }
                 //Fin registro participante
 
             }else{
+
                 $entity->setCondicion($request->request->get('condicion'));
+                $em->persist($entity);
+                $em->flush(); 
             }
-
-            
-
-            $em->persist($entity);
-            $em->flush();
         }
         
         if ($reg_asistencia == 'REG_ASISTENCIA') {
@@ -362,7 +380,7 @@ class EventoController extends Controller
         $term         = $request->request->get('term');
 
         $sql = "SELECT *,
-                CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS label,
+                CONCAT(apellido_paterno,' ',apellido_materno,', ',nombre)AS label,
                 CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS value
                 FROM persona WHERE es_dirigente IN($es_dirigente) AND (nombre LIKE '%$term%' OR apellido_paterno LIKE '%$term%' OR apellido_materno LIKE '%$term%') LIMIT 5";
 

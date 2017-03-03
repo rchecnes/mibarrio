@@ -166,6 +166,12 @@
     $("#cond_{{evento.condicion}}").prop("checked",true);
     $("#tipo_actividad").val("{{evento.tipoactividad.id}}");
 
+    $( "#guardar_registrar_asistencia").click(function(e) {
+      e.preventDefault();
+      $("#reg_asistencia").val('REG_ASISTENCIA');
+      $("#evento" ).submit();
+    });
+
     var condicion = '{{evento.condicion}}';
 
     if (condicion != 'porconfirmar'){

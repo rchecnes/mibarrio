@@ -6,7 +6,7 @@
       <div class="box-body">
         <div class="form-group">
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="form-group">
                 {{ form_row(form.evento) }}
               </div>
@@ -26,7 +26,7 @@
 
   <div class="panel panel-info">
     <div class="panel-heading">
-      <h3 class="panel-title" id="content-title">Listado De Asociados(Moradores)</h3>
+      <h3 class="panel-title" id="content-title">Listado De Asociados(Moradores)&nbsp;&nbsp;<img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none"></h3>
     </div>
     <div id="content_persona">Sin registro por el momento</div>
   </div>
@@ -70,8 +70,9 @@
     listaPersona = function(){
 
       if (tipo_persona.val()!='') {
-        $('#content-title').html('Listado De Asociados ');
-
+        //$('#content-title').html('Listado De Asociados ');
+        $("#content_persona").html('Buscando ...');
+        $("#load_busper").show();
         //ajax
         $.ajax({
           type:"GET",
@@ -80,11 +81,12 @@
           success: function(data){
             //addHtmlPersona(data);
             $("#content_persona").html(data);
+            $("#load_busper").hide();
           }
         });
 
       }else{
-        $('#content-title').html('--');
+        //$('#content-title').html('--');
         $('#content-table').html('Sin resultados');
       }
     }

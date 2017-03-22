@@ -125,9 +125,16 @@
                                         </li>
 
                                         <li>
-                                            <a href="{#{ path('user_edit', {'id': 1}) }#}">
+                                            <a href="{#{ path('persona_edit',{'id'1}) }#}">
                                                 <i class="ace-icon fa fa-user"></i>
-                                                Profile
+                                                Perfil
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ path('acceso_change_password')}}">
+                                                <i class="ace-icon fa fa-key"></i>
+                                                Actualizar Contraseña
                                             </a>
                                         </li>
 
@@ -136,7 +143,7 @@
                                         <li>
                                             <a href="{{path('cerrar_sesion')}}">
                                                 <i class="ace-icon fa fa-power-off"></i>
-                                                Logout
+                                                Salir
                                             </a>
                                         </li>
                                     </ul>

@@ -45,6 +45,29 @@
 <script type="text/javascript">
    $(document).ready(function(){
     	
+    	strPad = function(input, length, string) {
+		    string = string || '0'; input = input + '';
+		    return input.length >= length ? input : new Array(length - input.length + 1).join(string) + input;
+		}
+
+    	getDateActual = function(){
+	    	var today = new Date();
+	    	var dd = strPad(today.getDate(),2,0);
+	    	var mm = strPad(today.getMonth(),2,0);
+	    	var yy = today.getFullYear();
+
+	    	return yy+'-'+mm+'-'+dd;
+	    }
+
+	    getFormatDate = function(date){
+	    	var date = new Date(date);
+	    
+	    	var dd = strPad(date.getDate(),2,0);
+	    	var mm = strPad(date.getMonth(),2,0);
+	    	var yy = date.getFullYear();
+
+	    	return yy+'-'+mm+'-'+dd;
+	    }
     	
     	
 	    //Date for the calendar events (dummy data)
@@ -53,6 +76,8 @@
 	        m = date.getMonth(),
 	        y = date.getFullYear();
 	    var fecha_actual = '{{fecha_actual}}';
+
+	    
 
 	    $('#calendar').fullCalendar({
 		    buttonHtml: {
@@ -121,7 +146,7 @@
 		  	if (event.condicion == 'porconfirmar' || event.condicion == 'cancelado') {
 
 		  		var html_close = '<div class="box-tools pull-right closeon">';
-			  	html_close += '<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>';
+			  	html_close += '<button type="button" class="btn btn-box-tool" data-widget="remove" style="border: 4px solid #abbabc;"><i class="fa fa-times"></i></button>';
 			  	html_close += '</div>';
 
 			  	element.find('.fc-content .fc-title').append(html_close);
@@ -143,27 +168,26 @@
             });
 		  },
           dayRender: function(date, cell){
-		    var myDate = new Date();
+		    //var myDate = new Date('Y-m-d');
+		    var dateActual   = getDateActual();
             //dia agregados
-            var daysToRest = 1;
-			myDate.setDate(myDate.getDate() - daysToRest);
+            var dateCalendar = getFormatDate(date);
+			//myDate.setDate(myDate.getDate() - daysToRest);
 
-            if (date < myDate){
+            if (dateCalendar < dateActual){
                 $(cell).addClass('disabled');
             }
             else
             {
-                //console.log("hoy o futuro");  
+                $(cell).removeClass('disabled'); 
             } 
 		  },
 	      dayClick: function(date, jsEvent, view){
 
-	      	var myDate = new Date();
-            //dia agregados
-            var daysToRest = 1;
-			myDate.setDate(myDate.getDate() - daysToRest);
+	      	var dateActual   = getDateActual();
+			var dateCalendar = getFormatDate(date);
 
-            if (date < myDate) {
+            if (dateCalendar < dateActual) {
                 //console.log("pasado");
             }
             else

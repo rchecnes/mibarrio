@@ -99,32 +99,61 @@ class AsistenciaEventoController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento_id'));
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento_id'));
 
         $dql = "SELECT p FROM ChecnesRegistroBundle:Persona p";
-        if ($obj_evnt->getTipoPersona() == 'dirigente') {
+        if ($evento->getTipoPersona() == 'dirigente') {
             $dql .= " WHERE p.es_dirigente=1";
         }
         $dql .= " ORDER BY p.numero ASC";
         
-        $respuesta = $em->createQuery($dql)->getResult();
+        $respuesta     = $em->createQuery($dql)->getResult();
+
+        $participantes = $evento->getEventoParticipante();
 
         $personas = array();
 
-       foreach ($respuesta as $key => $entity) {
+        if (count($participantes) == 0 ) {
 
-          $obj_asist  = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$obj_evnt->getId(),'persona'=>$entity->getId()));
+            foreach ($respuesta as $key => $entity) {
 
-          $asistio = (is_object($obj_asist))?$obj_asist->getAsistio():0;
+                $obj_asist  = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$evento->getId(),'persona'=>$entity->getId()));
 
-          $personas[] = array(
-                            'id'=>$entity->getId(),
-                            'dni'=>$entity->getDni(),
-                            'numero'=>$entity->getNumero(),
-                            'nombres'=>$entity->getApellidoPaterno().' '.$entity->getApellidoMaterno().', '.$entity->getNombre(),
-                            'asistio' => $asistio
-                            );
-       }
+                $asistio    = (is_object($obj_asist))?$obj_asist->getAsistio():0;
+
+                $tardanza   =  (is_object($obj_asist) && $obj_asist->getTardanza() == true)?$obj_asist->getTardanza():0;
+
+                $personas[] = array(
+                                'id'=>$entity->getId(),
+                                'dni'=>$entity->getDni(),
+                                'numero'=>$entity->getNumero(),
+                                'nombres'=>$entity->getApellidoPaterno().' '.$entity->getApellidoMaterno().', '.$entity->getNombre(),
+                                'asistio' => $asistio,
+                                'tardanza' => $tardanza
+                                );
+            }
+
+        }else{
+
+            foreach ($participantes as $key => $entity) {  
+
+                $obj_asist  = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$entity->getEvento()->getId(),'persona'=>$entity->getPersona()->getId()));
+
+                $asistio    = (is_object($obj_asist))?$obj_asist->getAsistio():0;
+
+                $tardanza   =  (is_object($obj_asist) && $obj_asist->getTardanza() == true)?$obj_asist->getTardanza():0;
+
+                $personas[] = array(
+                                'id'=>$entity->getPersona()->getId(),
+                                'dni'=>$entity->getPersona()->getDni(),
+                                'numero'=>$entity->getPersona()->getNumero(),
+                                'nombres'=>$entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno().', '.$entity->getPersona()->getNombre(),
+                                'asistio' => $asistio,
+                                'tardanza' => $tardanza
+                                );
+            }
+        }
+        
 
         return $this->render('ChecnesRegistroBundle:AsistenciaEvento:listaPersona.html.twig', array(
             'personas' => $personas,
@@ -153,7 +182,6 @@ class AsistenciaEventoController extends Controller
         
         $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);                                  
 
-        
 
         for ($i=1; $i <= $count_personas; $i++) { 
             
@@ -163,14 +191,21 @@ class AsistenciaEventoController extends Controller
 
             $asistio    = $request->request->get('asistio_'.$i);
             $asistio    = ($asistio == true)?true:false;
+
+            $tardanza    = $request->request->get('tardanza_'.$i);
+            $tardanza    = ($tardanza == true)?true:false;
             
             if (is_object($obj_asist)) {
 
                 if ($obj_asist->getAsistio() != $asistio) {
                     $obj_asist->setAsistio($asistio);
-                    $obj_asist->setFechaModificacion(new \DateTime(date('Y-m-d h:i:sa')));
-                    $em->persist($obj_asist);
                 }
+                if ($obj_asist->getTardanza() != $tardanza) {
+                    $obj_asist->setTardanza($tardanza);
+                }
+
+                $obj_asist->setFechaModificacion(new \DateTime(date('Y-m-d h:i:sa')));
+                $em->persist($obj_asist);
                 
             }else{
 
@@ -183,6 +218,7 @@ class AsistenciaEventoController extends Controller
                 $entityAsEv->setFechaCreacion(new \DateTime(date('Y-m-d h:i:sa')));
                 $entityAsEv->setFechaModificacion(new \DateTime(date('Y-m-d h:i:sa')));
                 $entityAsEv->setAsistio($asistio);
+                $entityAsEv->setTardanza($tardanza);
                 $entityAsEv->setAnio($anio);
                 $entityAsEv->setUsuario($obj_usu);
                 $entityAsEv->setEstado(true);

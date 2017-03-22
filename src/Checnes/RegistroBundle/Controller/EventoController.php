@@ -134,7 +134,6 @@ class EventoController extends Controller
 
         $entity->setTipoActividad($obj_tipa);
         $entity->setCondicion($request->request->get('condicion'));
-        $entity->setCondicion($request->request->get('condicion'));
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaCreacion(new \DateTime(date('Y-m-d')));
@@ -243,9 +242,9 @@ class EventoController extends Controller
         $usuario_id     = $session->get("usuario_id");
         $reg_asistencia = $request->request->get('reg_asistencia');
 
-        if (strtolower($entity->getCondicion()) != 'finalizo' && strtolower($entity->getCondicion()) != 'cancelado') {
+        //if (strtolower($entity->getCondicion()) != 'finalizo' && strtolower($entity->getCondicion()) != 'cancelado') {
 
-            if (strtolower($entity->getCondicion()) == 'porconfirmar') {
+            //if (strtolower($entity->getCondicion()) != 'cancelado') {
 
                 $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
                 $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
@@ -261,7 +260,6 @@ class EventoController extends Controller
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
                 $entity->setUsuario($obj_usu);
                 $entity->setAnio($anio);
-                $entity->setCondicion($request->request->get('condicion'));
                 $em->persist($entity);
                 $em->flush();
 
@@ -272,7 +270,9 @@ class EventoController extends Controller
                 $obj_participantes = $entity->getEventoParticipante();
                 if (is_object($obj_participantes)) {
                     foreach ($obj_participantes as $key => $parti) {
+
                         $em->remove($parti);
+
                     }
                     $em->flush();
                 }
@@ -307,13 +307,13 @@ class EventoController extends Controller
                 }
                 //Fin registro participante
 
-            }else{
+            //}else{
 
-                $entity->setCondicion($request->request->get('condicion'));
-                $em->persist($entity);
-                $em->flush(); 
-            }
-        }
+            //    $entity->setCondicion($request->request->get('condicion'));
+            //    $em->persist($entity);
+            //    $em->flush(); 
+            //}
+        //}
         
         if ($reg_asistencia == 'REG_ASISTENCIA') {
             return $this->redirectToRoute("asistenciaevento_index",array('evento'=>$id));
@@ -359,6 +359,14 @@ class EventoController extends Controller
         if ($entity->getCondicion() == 'porconfirmar' || $entity->getCondicion() == 'cancelado') {
             $em->remove($entity);
             $em->flush();
+
+            $obj_participantes = $entity->getEventoParticipante();
+            if (is_object($obj_participantes)) {
+                foreach ($obj_participantes as $key => $parti) {
+                    $em->remove($parti);
+                }
+                $em->flush();
+            }
         }
         
         return new JsonResponse(array('exito' => 'exito'));

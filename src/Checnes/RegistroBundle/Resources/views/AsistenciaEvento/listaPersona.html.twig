@@ -2,23 +2,35 @@
   <div class="panel-body" id="content-table">
 	  <table class="table table-bordered dataTable" role="grid">
 	  	<tr role="row">
-	  		<th>Número</th>
-		  	<th>DNI</th>
-		  	<th>Nombre Completo</th>
+	  		<th>Nro</th>
+		  	<th>Nombres</th>
 		  	<th>¿Asistio?</th>
+		  	<th>¿Tardanza?</th>
 		</tr>
 		  {%set contador = 1%}
 		  {%for entity in personas %}
 		  	<tr>
 		  		<td>{{entity.numero}}</td>
-		  		<td>{{entity.dni}}</td>
 		  		<td>{{entity.nombres}}</td>
 		  		<td>
 		  			{%if entity.asistio == true %}
-		  				<input type="checkbox" checked="checked" name="asistio_{{contador}}" id="asistio_{{contador}}">
+		  				<input type="checkbox" checked="checked" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
 		  			{%else%}
-		  				<input type="checkbox" name="asistio_{{contador}}" id="asistio_{{contador}}">
+		  				<input type="checkbox" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
 		  			{%endif%}
+		  		</td>
+		  		<td>
+		  		{%if entity.asistio == true %}
+		  			{%if entity.tardanza == true %}
+		  				<input type="checkbox" checked="checked" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
+		  			{%else%}
+		  				<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
+		  			{%endif%}
+		  		{%else%}
+		  			
+		  			<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" style="display: none">
+		  			
+		  		{%endif%}
 		  			
 		  			<input type="hidden" name="persona_{{contador}}" id="persona_{{contador}}" value="{{entity.id}}">
 		  		</td>
@@ -34,3 +46,18 @@
     <button type="submit" id="guardar" name="guardar" class="btn btn-primary">Grabar Asistencia</button>
   </div>
 </form>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$(".asistio").on("click", function(){
+			var id = $(this).attr('id');
+			split = id.split('_');
+			if ($(this).is(':checked') ==true) {
+				$("#tardanza_"+split[1]).show();
+			}else{
+				$("#tardanza_"+split[1]).hide();
+			}
+		});
+
+	})
+</script>

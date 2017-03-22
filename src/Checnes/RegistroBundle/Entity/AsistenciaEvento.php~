@@ -287,28 +287,4 @@ class AsistenciaEvento
     {
         return $this->usuario;
     }
-
-    /**
-     * Set tardanza
-     *
-     * @param boolean $tardanza
-     *
-     * @return AsistenciaEvento
-     */
-    public function setTardanza($tardanza)
-    {
-        $this->tardanza = $tardanza;
-
-        return $this;
-    }
-
-    /**
-     * Get tardanza
-     *
-     * @return boolean
-     */
-    public function getTardanza()
-    {
-        return $this->tardanza;
-    }
 }

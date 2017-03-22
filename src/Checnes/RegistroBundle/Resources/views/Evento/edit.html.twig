@@ -154,9 +154,21 @@
   </div>
  
   <div class="modal-footer">
-      <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button>
-      <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
-      <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+    <table width="100%">
+      <tr>
+        <td><button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button></td>
+        <td>
+          {%set button = 'display:none'%}
+          {%if evento.condicion  =='realizandose' or evento.condicion  =='finalizo'%}
+            {%set button = 'display:block'%}
+          {%endif%}
+          <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar" style="{{button}}">Guardar y Registrar Asistencia</button>
+        </td>
+        <td>
+          <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+        </td>
+      </tr>
+    </table>
   </div>
 </form>
 <script type="text/javascript">
@@ -172,14 +184,15 @@
       $("#evento" ).submit();
     });
 
+
     var condicion = '{{evento.condicion}}';
 
-    if (condicion != 'porconfirmar'){
+    //if (condicion != 'porconfirmar'){
 
       //Bloquemaos todo
-      $("#evento input[type='text']").attr("disabled","disabled");
-      $("#evento select, #evento textarea").attr("disabled","disabled");
-      $("#evento input[name='tipo_persona']").attr("disabled","disabled");
+      //$("#evento input[type='text']").attr("disabled","disabled");
+      //$("#evento select, #evento textarea").attr("disabled","disabled");
+      //$("#evento input[name='tipo_persona']").attr("disabled","disabled");
       //$("#evento input[type='radio']").attr("disabled","disabled");
 
       switch(condicion) {
@@ -197,7 +210,7 @@
             break;
       }
 
-    }else{
+    //}else{
       //Timepicker
       $(".timepicker").timepicker({
           minuteStep: 1,
@@ -210,13 +223,13 @@
         format: 'yyyy-mm-dd',
         autoclose: true
       }).datepicker("update", "{{evento.fechafin |date('Y-m-d') }}");
-    }
+    //}
 
     $("input[name='condicion']").on("click", function(){
-      if ($(this).val() == 'cancelado') {
-        $("#guardar_registrar_asistencia").hide();
-      }else{
+      if ($(this).val() == 'realizandose' || $(this).val() == 'finalizo') {
         $("#guardar_registrar_asistencia").show();
+      }else{
+        $("#guardar_registrar_asistencia").hide();
       }
     });
 

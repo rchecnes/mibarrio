@@ -15,6 +15,8 @@ class AsistenciaEventoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $date = date('Y-m-d');
+
         $builder
             ->add('tipo_persona', 'choice', array(
                 'attr'          => array('class' => 'form-control'),
@@ -34,9 +36,14 @@ class AsistenciaEventoType extends AbstractType
                 'query_builder' => function(EntityRepository $er) use ($options)
                 {
                     $qb = $er->createQueryBuilder('e');
-                    $qb->where("e.estado <> 'finalizo'");
+                    $qb->where("e.estado <> 'porconfirmar'");
                     $qb->andWhere("e.estado <> 'cancelado'");
-                    $qb->andWhere("e.estado <> 'porconfirmar'");                   
+                    $qb->andWhere("e.estado <> 'confirmado'");
+
+                    $qb->andWhere(":date >= e.fecha_inicio");
+                    $qb->andWhere(":date <= e.fecha_fin");
+                    $qb->setParameter('date', date('Y-m-d'));
+
                     return $qb;
                 }                
             ))  

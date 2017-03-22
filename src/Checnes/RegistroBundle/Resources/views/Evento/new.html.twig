@@ -134,9 +134,17 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button>
-    <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar">Guardar y Registrar Asistencia</button>
-    <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+    <table width="100%">
+      <tr>
+        <td><button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="cerrar">Cerrar</button></td>
+        <td>
+          <button type="button" class="btn btn-danger pull-center" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar"  style="display: none">Guardar y Registrar Asistencia</button>
+        </td>
+        <td>
+          <button type="submit" class="btn btn-primary pull-right" id="enviar" name="enviar">Guardar</button>
+        </td>
+      </tr>
+    </table>
   </div>
 </form>
 
@@ -164,10 +172,10 @@
 
 
     $("input[name='condicion']").on("click", function(){
-      if ($(this).val() == 'cancelado') {
-        $("#guardar_registrar_asistencia").hide();
-      }else{
+      if ($(this).val() == 'realizandose' || $(this).val() == 'finalizo') {
         $("#guardar_registrar_asistencia").show();
+      }else{
+        $("#guardar_registrar_asistencia").hide();
       }
     });
 

@@ -32,21 +32,36 @@ class AsistenciaEventoController extends Controller
         $usuario_id = $session->get("usuario_id");
         $anio       = $session->get("anio");
 
-        $evento_id    = '';
+        /*$evento_id    = '';
         if ($request->query->get('evento') !=null) {
             
             $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento'));
             $evento_id = $obj_evnt->getId();
         }
 
-		$form = $this->createForm(new AsistenciaEventoType(), null, array());
+		$form = $this->createForm(new AsistenciaEventoType(), null, array());*/
+
+        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
+                INNER JOIN e.tipo_actividad";
+        $resp = $em->createQuery($dql)->getResult();
+
 
     	return $this->render('ChecnesRegistroBundle:AsistenciaEvento:index.html.twig', array(
             'personas' => '',
             'titulo'=>'Asistencia a evento',
-            'evento_id' => $evento_id,
-            'form'=>$form->createView()
+            'evento_id' => 1,//$evento_id,
+            //'form'=>$form->createView()
+            'evento'=> $resp
         ));
+    }
+
+     /**
+     * @Route("/listpersona", name="asistenciaevento_listapersona")
+     * @Method({"GET", "POST"})
+     */
+    public function listaPersonaAction(Request $request)
+    { 
+        echo "Hola";
     }
 
     /**

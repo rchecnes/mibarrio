@@ -2,13 +2,35 @@
 
 {% block body %}
   
+  <table class="table table-bordered">
+    <tr>
+      <th>Evento</th>
+      <th>Fecha</th>
+      <th>Hora</th>
+      <th>Acciones</th>
+    </tr>
+    {% for entity in evento %}
+      <tr>
+        <td>{{entity.tipoactividad.nombre}}</td>
+        <td>{{entity.fechainicio |date('Y-m-d') }}</td>
+        <td>{{entity.horainicio}}</td>
+        <td>
+          <a href="{{path('asistenciaevento_listapersona')}}" class="btn btn-app btn-xs btn-default">
+            <i class="ace-icon fa fa-pencil-square-o bigger-150"></i>
+          </a>
+        </td>
+      </tr>
+    {%endfor%}
+  </table>
+
+
   <div class="box box-info">  
       <div class="box-body">
         <div class="form-group">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="form-group">
-                {{ form_row(form.evento) }}
+                {#{ form_row(form.evento) }#}
               </div>
             </div>
             <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -39,7 +61,7 @@
 
   $(document).ready(function(){
 
-    var tipo_persona = $('#asistencia_evento_tipo_persona');
+    /*var tipo_persona = $('#asistencia_evento_tipo_persona');
     var select_evento = $('#asistencia_evento_evento');
     var evento_id = '{{evento_id}}';
 
@@ -98,7 +120,7 @@
 
     select_evento.on("change", function(){
         listaPersona();
-    });
+    });*/
 
     $('#guardar').on("click", function(){
       

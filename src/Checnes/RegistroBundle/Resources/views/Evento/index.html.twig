@@ -2,10 +2,11 @@
 
 {% block stylesheets%}
 	{{ parent() }}
+    <link rel="stylesheet" href="{{asset('public/assets/fullcalendar/fullcalendar.min.css')}}" />
+    <!--<link rel="stylesheet" href="{{asset('public/assets/fullcalendar/fullcalendar.print.min.css')}}" />-->
 	<!--Date picker-->
     <link rel="stylesheet" href="{{asset('public/assets/css/bootstrap-datepicker3.min.css')}}" />
     <link rel="stylesheet" href="{{asset('public/assets/css/bootstrap-timepicker.min.css')}}" />
-    <!--<link rel="stylesheet" href="{{asset('public/assets/css/chosen.min.css')}}" />-->
 {% endblock %}
 
 {% block body %}
@@ -37,10 +38,12 @@
 
 {% block javascripts %}
 	{{ parent() }}
+    <script src="{{asset('public/assets/fullcalendar/moment.min.js')}}"></script>
+    <script src="{{asset('public/assets/fullcalendar/fullcalendar.min.js')}}"></script>
+    <script src="{{asset('public/assets/fullcalendar/locale/es.js')}}"></script>
 	<!--Datepicker and timepicker-->
     <script src="{{asset('public/assets/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('public/assets/js/bootstrap-timepicker.min.js')}}"></script>
-    <!--<script src="{{asset('public/assets/js/chosen.jquery.min.js')}}"></script>-->
 	
 <script type="text/javascript">
    $(document).ready(function(){
@@ -137,7 +140,6 @@
 
 		  	var html_cont = '<div class="group-resumen">';
 		  	html_cont +='<p class="resumen"><b>Hora: </b>'+event.hora_inicio+' - '+event.hora_final+'</p>';
-		  	//html_cont += '<p class="resumen"><b>Det.: </b>'+description +'</p>';
 		  	html_cont += '</div>';
 
 		  	//agremaos resumen
@@ -168,44 +170,25 @@
             });
 		  },
           dayRender: function(date, cell){
-		    //var myDate = new Date('Y-m-d');
-		    var dateActual   = getDateActual();
-            //dia agregados
-            var dateCalendar = getFormatDate(date);
-			//myDate.setDate(myDate.getDate() - daysToRest);
-
-            if (dateCalendar < dateActual){
+		    
+            var myDate = new Date();
+            myDate.setDate(myDate.getDate()-1);
+			
+            if (date < myDate){
                 $(cell).addClass('disabled');
             }
-            else
-            {
-                $(cell).removeClass('disabled'); 
-            } 
+            
 		  },
 	      dayClick: function(date, jsEvent, view){
 
-	      	var dateActual   = getDateActual();
-			var dateCalendar = getFormatDate(date);
+	      	var myDate = new Date();
+            myDate.setDate(myDate.getDate()-1);
 
-            if (dateCalendar < dateActual) {
+            if (date < myDate){
                 //console.log("pasado");
             }
             else
             {	
-            	/*tooggle('enabled');
-                //hoy o futuro
-                var action = "{{ path('evento_create') }}";
-	      	
-		      	$("#myModal #evento").attr('action',action);
-
-		      	$(".modal-title").html("Nuevo evento de calendario - "+date.format());
-		    	$("#myModal .modal-body #fecha").val(date.format());
-		    	$("#myModal .modal-body #fecha_fin").val(fecha_actual);
-
-			    $("#myModal").modal('show');*/
-
-
-			    
 			    $.post( "{{path('evento_new')}}",{'dayClick':date.format()}, function( data ) {
 				  $("#modal_content").html( data );
 				  $("#myModal #fecha").val(date.format());
@@ -216,107 +199,17 @@
 	      	
 	      },
 	      eventClick: function(calEvent, jsEvent, view){
-	      	//console.log(calEvent);
 	      	var myDate = new Date();
-            //dia agregados
-            var daysToRest = 1;
 
             var activo = false;
-			myDate.setDate(myDate.getDate() - daysToRest);
+			myDate.setDate(myDate.getDate() - 1);
 
             if (calEvent['start']._d < myDate) {
-                //fechas pasadas
-                /*$("#myModal .modal-title").html("<h3>Editar evento de calendario - "+calEvent['_start']._i+"</h3>");
-                $("#myModal .modal-body #fecha").val(calEvent['_start']._i);
-                $("#myModal .modal-body #nombre").val(calEvent['nombre']);
-		    	$("#myModal .modal-body #tipo").val(calEvent['tipo']);
-		    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
-		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-		    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-		    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']._i);
-
-		    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
-
-		    	$("#myModal .modal-body #cond_"+calEvent['condicion']).prop('checked','checked');
-
-		    	tooggle('disabled');*/
-
+                
 		    	activo = false;
             }else{
 
             	activo = true;
-            	/*var action = "{{ path('evento_index') }}";
-	      	
-		      	$("#myModal #evento").attr('action',action+calEvent['id_event']+'/update');
-
-		      	$("#myModal .modal-title").html("<h3>Editar evento de calendario - "+calEvent['_start']._i+"</h3>");
-		    	
-		    	if (calEvent['condicion'] == 'porconfirmar') {
-
-		    		tooggle('enabled');
-
-		    		$("#myModal .modal-body #fecha").val(calEvent['_start']._i);
-			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']);
-			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
-			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']._i);
-			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
-			    	console.log(calEvent);
-
-			    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
-			    	$("#myModal .modal-body #cond_"+calEvent['condicion']).prop('checked','checked');
-
-			    	$("#myModal #enviar, #myModal #enviar").removeAttr('disabled').show();
-			    	$("#myModal #enviar, #myModal #guardar_registrar_asistencia").removeAttr('disabled').show();
-		    	}else{
-
-		    		tooggle('disabled');
-
-		    		//$("#myModal .modal-body input[type='radio']").removeAttr('disabled');
-
-		    		$("#myModal .modal-body #fecha").val(calEvent['_start']._i);
-			    	$("#myModal .modal-body #nombre").val(calEvent['nombre']);
-			    	$("#myModal .modal-body #tipo_actividad").val(calEvent['tipo_actividad']);
-			    	$("#myModal .modal-body #hora_inicio").val(calEvent['hora_inicio']);
-			    	$("#myModal .modal-body #hora_final").val(calEvent['hora_final']);
-			    	$("#myModal .modal-body #fecha_fin").val(calEvent['_end']._i);
-
-			    	$("#myModal .modal-body #detalle").val(calEvent['detalle']);
-
-			    	$("#myModal .modal-body #tipo_persona_"+calEvent['tipo_persona']).prop('checked','checked');
-
-			    	$("#myModal .modal-body #cond_"+calEvent['condicion']).prop('checked','checked');
-
-			    	$("#myModal .modal-body fieldset input[type='radio']").removeAttr('disabled');
-
-			    	switch(calEvent['condicion']) {
-					    case 'confirmado':
-					        $("#myModal .modal-body #cond_porconfirmar").attr('disabled', 'disabled');
-					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").show();
-					        break;
-					    case 'realizandose':
-					        $("#myModal .modal-body #cond_porconfirmar").attr('disabled', 'disabled');
-					        $("#myModal .modal-body #cond_confirmado").attr('disabled', 'disabled');
-					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").show();
-					        break;
-					    case 'finalizo':
-					        $("#myModal .modal-body input[type='radio']").attr('disabled','disabled');
-					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").hide();
-					        break;
-					    case 'cancelado':
-					        $("#myModal .modal-body input[type='radio']").attr('disabled','disabled');
-					        $("#myModal #enviar, #myModal #guardar_registrar_asistencia").hide();
-					        break;
-					}
-
-					if (calEvent['condicion'] == 'confirmado' || calEvent['condicion'] == 'realizandose') {
-						$("#myModal #enviar, #myModal #enviar").removeAttr('disabled').show();
-			    		$("#myModal #enviar, #myModal #guardar_registrar_asistencia").removeAttr('disabled').show();
-					}
-					
-
-		    	}*/
-		    	
             }
 
             var url = "{{path('evento_edit')}}";
@@ -332,30 +225,6 @@
 	      }
 	    });
 		
-	       
-
-    	/*$( "#guardar_registrar_asistencia").click(function(e) {
-    		e.preventDefault();
-    		$("#reg_asistencia").val('REG_ASISTENCIA');
-		  	$("#evento" ).submit();
-		});*/
-
-    	//Function disabled and enabled
-    	tooggle = function(action){
-
-    		if (action == 'disabled') {
-    			$( "#myModal :input" ).attr('disabled','disabled');
-    			$("#myModal #cerrar").removeAttr('disabled');
-		    	$("#myModal #guardar_registrar_asistencia").hide();
-		    	$("#myModal #enviar").hide();
-    		}else{
-    			$( "#myModal :input" ).removeAttr('disabled');
-    			$("#myModal #guardar_registrar_asistencia").removeAttr('disabled').show();
-		    	$("#myModal #enviar").removeAttr('disabled').show();
-    		}
-
-    		$( "#myModal .close" ).removeAttr('disabled');
-    	}
 	 });
     </script>
 {% endblock %}

@@ -387,7 +387,7 @@ class EventoController extends Controller
         $es_dirigente = ($request->request->get('tipoP') == 'dirigente')?'1':'1,0';
         $term         = $request->request->get('term');
 
-        $sql = "SELECT *,
+        $sql = "SELECT id,numero,
                 CONCAT(apellido_paterno,' ',apellido_materno,', ',nombre)AS label,
                 CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS value
                 FROM persona WHERE es_dirigente IN($es_dirigente) AND (nombre LIKE '%$term%' OR apellido_paterno LIKE '%$term%' OR apellido_materno LIKE '%$term%') LIMIT 5";
@@ -399,7 +399,6 @@ class EventoController extends Controller
             $array[] = $row;//array('value'=>10,'label'=>'Juan');
         }
         //return json_encode($resp);
-
         return new JsonResponse($array);
     }
 }

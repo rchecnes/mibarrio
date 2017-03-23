@@ -24,22 +24,30 @@ class TwigExtension extends \Twig_Extension
         );
     }
 
-    /*public function priceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
-    {
-        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '$'.$price;
-
-        return $price;
-    }*/
-
-
-    public function getFunctions()
+   public function getFunctions()
     {
         return array(
             'getMenu'  => new \Twig_Function_Method($this, 'getMenu'),
-            'getMenuXRol'  => new \Twig_Function_Method($this, 'getMenuXRol')
+            'getMenuXRol'  => new \Twig_Function_Method($this, 'getMenuXRol'),
+            'existeRegistroAsistencia'  => new \Twig_Function_Method($this, 'existeRegistroAsistencia')
             );
      }
+
+    public function existeRegistroAsistencia($evento_id){
+
+        $sql = "SELECT COUNT(*)AS cant FROM asistencia_evento WHERE evento_id='$evento_id' LIMIT 1";
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $cantasist = 0;
+
+        foreach ($resp as $key => $v) {
+            $cantasist = $v['cant'];
+        }
+        
+        return $cantasist;
+    }
+
+    
 
 
     /*public function getMenu($rol_id){

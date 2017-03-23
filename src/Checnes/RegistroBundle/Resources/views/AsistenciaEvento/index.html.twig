@@ -5,6 +5,7 @@
   <table class="table table-bordered">
     <tr>
       <th>Evento</th>
+      <th>Tipo</th>
       <th>Fecha</th>
       <th>Hora</th>
       <th>Acciones</th>
@@ -12,47 +13,25 @@
     {% for entity in evento %}
       <tr>
         <td>{{entity.tipoactividad.nombre}}</td>
+        <td>{{entity.tipopersona}}</td>
         <td>{{entity.fechainicio |date('Y-m-d') }}</td>
         <td>{{entity.horainicio}}</td>
         <td>
-          <a href="{{path('asistenciaevento_listapersona')}}" class="btn btn-app btn-xs btn-default">
-            <i class="ace-icon fa fa-pencil-square-o bigger-150"></i>
-          </a>
+          {%set cantasist = existeRegistroAsistencia(entity.id)%}
+          {%if cantasist > 0%}
+            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" title="Editar Asistencia">
+              <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
+            </a>
+          {%else%}
+            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" title="Registrar Asistencia">
+              <i class="ace-icon fa fa-check-square-o bigger-200"></i>
+            </a>
+          {%endif%}
+          
         </td>
       </tr>
     {%endfor%}
   </table>
-
-
-  <div class="box box-info">  
-      <div class="box-body">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="form-group">
-                {#{ form_row(form.evento) }#}
-              </div>
-            </div>
-            <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              <label for="select" class="control-label">Evento</label>
-              <select class="form-control" id="evento" name="evento">
-                <option value="">Seleccionar</option>
-              </select>
-            </div>-->
-          </div>
-        </div>
-      </div>
-  </div>
-
-
-
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <h3 class="panel-title" id="content-title">Listado De Asociados(Moradores)&nbsp;&nbsp;<img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none"></h3>
-    </div>
-    <div id="content_persona">Sin registro por el momento</div>
-  </div>
-  
 {% endblock %}
 
 {% block javascripts %}
@@ -60,71 +39,6 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-
-    /*var tipo_persona = $('#asistencia_evento_tipo_persona');
-    var select_evento = $('#asistencia_evento_evento');
-    var evento_id = '{{evento_id}}';
-
-    $("#asistencia_evento_evento").val(evento_id);
-
-
-    addHtmlPersona = function(data){
-
-      var html = '<table class="table table-bordered table-condensed">';
-
-      html+='<tr>';
-          html+='<th>Nombre</th>';
-          html+='<th>Asistio</th>';
-      html+='<tr>';
-
-      for(var i=0;i<data.length;i++){
-        html+='<tr>';
-          html+='<td>'+data[i].nombre+'</td>';
-          html+='<td><input type="checkbox" name="persona_'+data[i].id+'" id="persona_'+data[i].id+'"></td>';
-        html+='<tr>';
-      }
-
-      html+= '</table>';
-
-      $('#content-table').html(html);
-    }
-
-    listaPersona = function(){
-
-      if (select_evento.val()!='') {
-        //$('#content-title').html('Listado De Asociados ');
-        $("#content_persona").html('Buscando ...');
-        $("#load_busper").show();
-        //ajax
-        $.ajax({
-          type:"GET",
-          url: "{{path('listado_persona')}}",
-          data: {evento_id:select_evento.val()},
-          success: function(data){
-            //addHtmlPersona(data);
-            $("#content_persona").html(data);
-            $("#load_busper").hide();
-          }
-        });
-
-      }else{
-        //$('#content-title').html('--');
-        $('#content-table').html('Sin resultados');
-      }
-    }
-
-    //Listar peronas
-    if (evento_id !='') {
-      listaPersona();
-    }
-
-    select_evento.on("change", function(){
-        listaPersona();
-    });*/
-
-    $('#guardar').on("click", function(){
-      
-    });
 
   });
 

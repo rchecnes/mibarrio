@@ -32,26 +32,17 @@ class AsistenciaEventoController extends Controller
         $usuario_id = $session->get("usuario_id");
         $anio       = $session->get("anio");
 
-        /*$evento_id    = '';
-        if ($request->query->get('evento') !=null) {
-            
-            $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento'));
-            $evento_id = $obj_evnt->getId();
-        }
-
-		$form = $this->createForm(new AsistenciaEventoType(), null, array());*/
-
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
-                INNER JOIN e.tipo_actividad";
+                INNER JOIN e.tipo_actividad a
+                WHERE e.anio='$anio'
+                ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql)->getResult();
 
 
     	return $this->render('ChecnesRegistroBundle:AsistenciaEvento:index.html.twig', array(
             'personas' => '',
-            'titulo'=>'Asistencia a evento',
-            'evento_id' => 1,//$evento_id,
-            //'form'=>$form->createView()
-            'evento'=> $resp
+            'titulo'   =>'Listado De Eventos',
+            'evento'   => $resp
         ));
     }
 
@@ -61,60 +52,12 @@ class AsistenciaEventoController extends Controller
      */
     public function listaPersonaAction(Request $request)
     { 
-        echo "Hola";
-    }
-
-    /**
-     * Lists all Lote entities.
-     *
-     * @Route("/getevento", name="get_evento")
-     * @Method("GET")
-     */
-    public function getEventoAction(Request $request)
-    {   
-        $em = $this->getDoctrine()->getManager();
-        $session = $request->getSession();
-
-        $anio = $session->get("anio");
-        $tipo_persona = $request->query->get('tipo');
-        //Listado de eventos
-        $evento = "SELECT e FROM ChecnesRegistroBundle:Evento e";
-        $evento .= " WHERE e.condicion != 'cancelado'";
-        $evento .= " AND e.estado=1";
-        $evento .= " AND e.anio=:anio";
-        $evento .= " AND e.tipo_persona=:tipo_persona";
-
-        $res_evento = $em->createQuery($evento)
-        ->setParameter('anio',$anio)
-        ->setParameter('tipo_persona', $tipo_persona)
-        ->getResult();
-
-        $response = new JsonResponse();
-
-        $eventos = array();
-
-        foreach ($res_evento as $entity) {
-            $eventos[] = array('id'=>$entity->getId(), 'nombre'=>$entity->getNombre());
-        }
-        
-        $response->setData($eventos);
-
-        return $response;
-    }
-
-    /**
-     *
-     * @Route("/listadopersona", name="listado_persona")
-     * @Method("GET")
-     */
-    public function listaPersonasAction(Request $request)
-    {
         $em = $this->getDoctrine()->getManager();
 
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento_id'));
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento'));
 
         $dql = "SELECT p FROM ChecnesRegistroBundle:Persona p";
         if ($evento->getTipoPersona() == 'dirigente') {
@@ -129,7 +72,7 @@ class AsistenciaEventoController extends Controller
         $personas = array();
 
         if (count($participantes) == 0 ) {
-
+            //echo "llega arriba";
             foreach ($respuesta as $key => $entity) {
 
                 $obj_asist  = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$evento->getId(),'persona'=>$entity->getId()));
@@ -149,7 +92,7 @@ class AsistenciaEventoController extends Controller
             }
 
         }else{
-
+            //echo "llega abajo";
             foreach ($participantes as $key => $entity) {  
 
                 $obj_asist  = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$entity->getEvento()->getId(),'persona'=>$entity->getPersona()->getId()));
@@ -172,13 +115,14 @@ class AsistenciaEventoController extends Controller
 
         return $this->render('ChecnesRegistroBundle:AsistenciaEvento:listaPersona.html.twig', array(
             'personas' => $personas,
-            'evento'=>$request->query->get('evento_id')
+            'titulo'   => 'Registrar Asistencia',
+            'evento'   => $evento
         ));
     }
 
     /**
      *
-     * @Route("/savasistencia", name="sav_asistencia")
+     * @Route("/guardarasistencia", name="asistenciaevento_guadar")
      * @Method("POST")
      */
     public function savAsistenciaAction(Request $request)
@@ -244,7 +188,7 @@ class AsistenciaEventoController extends Controller
         
         $em->flush();
 
-        return $this->redirectToRoute("asistenciaevento_index",array('evento'=>$evento_id));
+        return $this->redirectToRoute("asistenciaevento_index");
     }
 
     

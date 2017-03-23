@@ -1,51 +1,88 @@
-<form name="content-form" id="asistencia" name="asistencia"  method="POST" action="{{path('sav_asistencia')}}">
-  <div class="panel-body" id="content-table">
-	  <table class="table table-bordered dataTable" role="grid">
-	  	<tr role="row">
-	  		<th>Nro</th>
-		  	<th>Nombres</th>
-		  	<th>¿Asistio?</th>
-		  	<th>¿Tardanza?</th>
-		</tr>
-		  {%set contador = 1%}
-		  {%for entity in personas %}
-		  	<tr>
-		  		<td>{{entity.numero}}</td>
-		  		<td>{{entity.nombres}}</td>
-		  		<td>
-		  			{%if entity.asistio == true %}
-		  				<input type="checkbox" checked="checked" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
-		  			{%else%}
-		  				<input type="checkbox" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
-		  			{%endif%}
-		  		</td>
-		  		<td>
-		  		{%if entity.asistio == true %}
-		  			{%if entity.tardanza == true %}
-		  				<input type="checkbox" checked="checked" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
-		  			{%else%}
-		  				<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
-		  			{%endif%}
-		  		{%else%}
-		  			
-		  			<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" style="display: none">
-		  			
-		  		{%endif%}
-		  			
-		  			<input type="hidden" name="persona_{{contador}}" id="persona_{{contador}}" value="{{entity.id}}">
-		  		</td>
-		  	</tr>
-		  	{%set contador=contador+1%}
-		  {%endfor%}
-		  <input type="hidden" name="count_personas" id="count_personas" value="{{contador-1}}">
-		  <input type="hidden" name="evento" id="evento" value="{{evento}}">
-		  
-	  </table>
-  </div>
-  <div class="panel-footer">
-    <button type="submit" id="guardar" name="guardar" class="btn btn-primary">Grabar Asistencia</button>
-  </div>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div>
+	<div class="widget-box">
+		<div class="widget-header">
+			<h4 class="widget-title">Más detalles del evento</h4>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+
+		<div class="widget-body" style="display: block;">
+			<div class="widget-main">
+				<div>
+					<label for="form-field-8"><b>Tipo Evento:</b> {{evento.tipoactividad.nombre}}</label>
+				</div>
+				<div>
+					<label for="form-field-9"><b>Fecha Inicio y Fin:</b> {{evento.fechainicio |date('d/m/Y') }} - {{evento.fechafin |date('d/m/Y') }}</label>
+				</div>
+				<div>
+					<label for="form-field-11"><b>Hora Inicio y Fin:</b> {{evento.horainicio}} - {{evento.horafinal}}</label>
+				</div>
+				<div>
+					<label for="form-field-12"><b>Estado:</b> {{evento.condicion}}</label>
+				</div>
+				<div>
+					<label for="form-field-12"><b>Usuario Creación:</b> {{evento.usuario.persona.nombre}}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div><br>
+<form name="content-form" id="asistencia" name="asistencia"  method="POST" action="{{path('asistenciaevento_guadar')}}">
+  <table class="table table-bordered dataTable" role="grid">
+  	<tr role="row">
+  		<th>Nro</th>
+	  	<th>Nombres</th>
+	  	<th>¿Asistio?</th>
+	  	<th>¿Tardanza?</th>
+	</tr>
+	  {%set contador = 1%}
+	  {%for entity in personas %}
+	  	<tr>
+	  		<td>{{entity.numero}}</td>
+	  		<td>{{entity.nombres}}</td>
+	  		<td>
+	  			{%if entity.asistio == true %}
+	  				<input type="checkbox" checked="checked" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
+	  			{%else%}
+	  				<input type="checkbox" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
+	  			{%endif%}
+	  		</td>
+	  		<td>
+	  		{%if entity.asistio == true %}
+	  			{%if entity.tardanza == true %}
+	  				<input type="checkbox" checked="checked" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
+	  			{%else%}
+	  				<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
+	  			{%endif%}
+	  		{%else%}
+	  			
+	  			<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" style="display: none">
+	  			
+	  		{%endif%}
+	  			
+	  			<input type="hidden" name="persona_{{contador}}" id="persona_{{contador}}" value="{{entity.id}}">
+	  		</td>
+	  	</tr>
+	  	{%set contador=contador+1%}
+	  {%endfor%}
+	  <input type="hidden" name="count_personas" id="count_personas" value="{{contador-1}}">
+	  <input type="hidden" name="evento" id="evento" value="{{evento.id}}">
+  </table><br>
+  <p class="aling-left">
+  	<button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar Asistencia</button>
+  	<a href="{{path('asistenciaevento_index')}}" class="btn btn-default">Cancelar</a>
+  </p>
 </form>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
 <script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -61,3 +98,4 @@
 
 	})
 </script>
+{% endblock %}

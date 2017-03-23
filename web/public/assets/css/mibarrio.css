@@ -80,3 +80,15 @@
     z-index: 1100;
 }
 /*Fin autocomplete*/
+
+.aling-left{
+    text-align: left !important;
+}
+
+.aling-center{
+    text-align: center !important;
+}
+
+.aling-right{
+    text-align: right !important;
+}

@@ -183,7 +183,7 @@ class EventoController extends Controller
         $reg_asistencia = $request->request->get('reg_asistencia');
 
         if ($reg_asistencia == 'REG_ASISTENCIA') {
-            return $this->redirectToRoute("asistenciaevento_index",array('evento'=>$entity->getId()));
+            return $this->redirectToRoute("asistenciaevento_listapersona",array('evento'=>$entity->getId()));
         }else{
             return $this->redirectToRoute("evento_index");
         }
@@ -316,7 +316,7 @@ class EventoController extends Controller
         //}
         
         if ($reg_asistencia == 'REG_ASISTENCIA') {
-            return $this->redirectToRoute("asistenciaevento_index",array('evento'=>$id));
+            return $this->redirectToRoute("asistenciaevento_listapersona",array('evento'=>$id));
         }else{
             return $this->redirectToRoute("evento_index");
         }

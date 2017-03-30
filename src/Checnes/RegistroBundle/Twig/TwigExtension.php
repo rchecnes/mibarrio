@@ -11,7 +11,7 @@ class TwigExtension extends \Twig_Extension
     {
         $this->conn = $GLOBALS['kernel']->getContainer()->get('database_connection');
         $this->em   = $GLOBALS['kernel']->getContainer()->get('doctrine')->getManager();
-        $this->url_base='';
+        $this->url_base = $GLOBALS['kernel']->getContainer()->getParameter('base_url');
     }
 
     public function getFilters()
@@ -68,11 +68,16 @@ class TwigExtension extends \Twig_Extension
 
         if(empty($resp)){return "";}
         $menu = "";
+        $c = 1;
         foreach ($resp as $key => $row) {
+            $active = "";
+            if ($c==1) {
+                $active = "active";
+            }
 
             if ($row['tiene_hijo'] == 0) {
                 $enlace = ($row['enlace'] !='')?$row['enlace']:'#';
-                $menu .= "<li>";
+                $menu .= "<li class='".$active."'>";
                 $menu .= "<a href='".$this->url_base."/".$enlace."'>";
                 $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                 $menu .= "</a>";
@@ -87,6 +92,7 @@ class TwigExtension extends \Twig_Extension
                 $menu .= $this->getMenuXRol($row['id']);
                 $menu .= "</li>";
             }
+            $c++;
         }
 
         if ($padre ==0) {

@@ -3,14 +3,17 @@
 {% block body %}
   
   <table class="table table-bordered">
-    <tr>
-      <th>Evento</th>
-      <th>Tipo</th>
-      <th>Fecha</th>
-      <th>Hora</th>
-      <th>Acciones</th>
-    </tr>
-    {% for entity in evento %}
+    <thead>
+      <tr>
+        <th>Evento</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entity in evento %}
       <tr>
         <td>{{entity.tipoactividad.nombre}}</td>
         <td>{{entity.tipopersona}}</td>
@@ -31,6 +34,8 @@
         </td>
       </tr>
     {%endfor%}
+    </tbody>
+    
   </table>
 {% endblock %}
 

@@ -30,6 +30,7 @@ class LoteController extends Controller
 
         return $this->render('ChecnesRegistroBundle:Lote:index.html.twig', array(
             'lotes' => $lotes,
+            'titulo' => 'Lote'
         ));
     }
 

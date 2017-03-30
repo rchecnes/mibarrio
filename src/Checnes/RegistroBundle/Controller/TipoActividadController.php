@@ -28,6 +28,7 @@ class TipoActividadController extends Controller
 
         return $this->render('tipoactividad/index.html.twig', array(
             'tipoActividads' => $tipoActividads,
+            'titulo' => 'Tipo De Actividad'
         ));
     }
 

@@ -28,6 +28,7 @@ class PersonaController extends Controller
 
         return $this->render('persona/index.html.twig', array(
             'personas' => $personas,
+            'titulo' => 'Personas'
         ));
     }
 

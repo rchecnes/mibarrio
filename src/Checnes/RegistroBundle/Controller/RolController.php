@@ -28,6 +28,7 @@ class RolController extends Controller
 
         return $this->render('rol/index.html.twig', array(
             'rols' => $rols,
+            'titulo' => 'Rol'
         ));
     }
 

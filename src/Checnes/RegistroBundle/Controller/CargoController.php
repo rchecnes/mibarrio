@@ -28,6 +28,7 @@ class CargoController extends Controller
 
         return $this->render('cargo/index.html.twig', array(
             'cargos' => $cargos,
+            'titulo'   =>'Cargo'
         ));
     }
 

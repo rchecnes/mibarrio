@@ -28,6 +28,7 @@ class MenuXRolController extends Controller
 
         return $this->render('menuxrol/index.html.twig', array(
             'menuXRols' => $menuXRols,
+            'titulo' => 'Menú Por Rol'
         ));
     }
 

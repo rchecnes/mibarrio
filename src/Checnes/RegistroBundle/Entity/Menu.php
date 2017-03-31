@@ -24,49 +24,49 @@ class Menu
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="padre", type="integer")
+     * @ORM\Column(name="padre", type="integer", nullable=true, options={"default":0})
      */
     private $padre;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="nivel", type="integer")
+     * @ORM\Column(name="nivel", type="integer", nullable=true, options={"default":0})
      */
     private $nivel;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="enlace", type="string", length=255)
+     * @ORM\Column(name="enlace", type="string", length=255, nullable=true, options={"default":"#"})
      */
     private $enlace;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="css_icono", type="string", length=255)
+     * @ORM\Column(name="css_icono", type="string", length=255, nullable=true, options={"default":"fa-pencil-square-o"})
      */
     private $css_icono;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="estado", type="boolean")
+     * @ORM\Column(name="estado", type="boolean", nullable=true, options={"default":0})
      */
     private $estado;
 
      /**
      * @var boolean
      *
-     * @ORM\Column(name="tiene_hijo", type="boolean")
+     * @ORM\Column(name="tiene_hijo", type="boolean", nullable=true, options={"default":0})
      */
     private $tiene_hijo;
 
@@ -83,6 +83,12 @@ class Menu
     public function __construct()
     {
         $this->menu_x_rol = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString()
+    {
+    
+        return $this->getNombre();
     }
 
     /**

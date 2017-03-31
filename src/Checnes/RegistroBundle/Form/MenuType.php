@@ -5,6 +5,7 @@ namespace Checnes\RegistroBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
 class MenuType extends AbstractType
 {
@@ -13,7 +14,52 @@ class MenuType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nombre')->add('padre')->add('nivel')->add('enlace')->add('css_icono')->add('estado')->add('tiene_hijo')        ;
+        $builder->add('nombre', 'text',array(
+            'attr'=>array('class'=>'form-control'),
+            'label' => 'Nombre:'
+        ))
+        /*->add('padre', 'text',array(
+            'attr'=>array('class'=>'form-control'),
+            'label' => 'Padre:'
+        ))*/
+        ->add('padre', 'entity', array(
+            'attr'          => array('class' => 'form-control'),
+            'class'         => 'ChecnesRegistroBundle:Menu',
+            'label'         => 'Padre',
+            'empty_value'   => 'Ninguno',
+            'required'      => false,
+            'query_builder' => function(EntityRepository $er) use ($options)
+            {
+                $qb = $er->createQueryBuilder('m');
+                $qb->where("m.estado = '1'");
+                $qb->andWhere("m.padre = '1'");
+
+                return $qb;
+            }                
+        ))  
+        ->add('nivel', 'hidden',array(
+            'attr'     =>array('class'=>'form-control'),
+            'label'    => 'Nivel:',
+            'required' => false
+        ))
+        ->add('enlace', 'text',array(
+            'attr'     =>array('class'=>'form-control'),
+            'label'    => 'Enlace:',
+            'required' => false
+        ))
+        ->add('css_icono', 'text',array(
+            'attr'     =>array('class'=>'form-control'),
+            'label'    => 'Clase Ícono:',
+            'required' => false
+        ))
+        ->add('estado', 'checkbox',array(
+            'label'    => '¿Activo?:',
+            'required' => false
+        ))
+        ->add('tiene_hijo', 'checkbox',array(
+            'label'     => '¿Tiene Hijo?:',
+            'required'  => false
+        ));
     }
     
     /**

@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Menus list</h1>
-
-    <table>
+    <p class="group-new-botton">
+        <a href="{{ path('menu_new') }}" class="btn btn-primary pull-left">Nuevo Menú</a>
+    </p>
+    
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombre</th>
                 <th>Padre</th>
                 <th>Nivel</th>
@@ -20,7 +21,6 @@
         <tbody>
         {% for menu in menus %}
             <tr>
-                <td><a href="{{ path('menu_show', { 'id': menu.id }) }}">{{ menu.id }}</a></td>
                 <td>{{ menu.nombre }}</td>
                 <td>{{ menu.padre }}</td>
                 <td>{{ menu.nivel }}</td>
@@ -29,23 +29,18 @@
                 <td>{% if menu.estado %}Yes{% else %}No{% endif %}</td>
                 <td>{% if menu.tienehijo %}Yes{% else %}No{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('menu_show', { 'id': menu.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('menu_edit', { 'id': menu.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    
+                            <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+                        
+                            <a href="{{ path('menu_show', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
+                       
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('menu_new') }}">Create a new menu</a>
-        </li>
-    </ul>
+    
+    
+
 {% endblock %}

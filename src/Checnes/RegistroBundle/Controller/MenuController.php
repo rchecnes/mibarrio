@@ -28,6 +28,7 @@ class MenuController extends Controller
 
         return $this->render('menu/index.html.twig', array(
             'menus' => $menus,
+            'titulo' => 'Menú'
         ));
     }
 
@@ -53,6 +54,7 @@ class MenuController extends Controller
 
         return $this->render('menu/new.html.twig', array(
             'menu' => $menu,
+            'titulo' => 'Nuevo Menú',
             'form' => $form->createView(),
         ));
     }
@@ -69,6 +71,7 @@ class MenuController extends Controller
 
         return $this->render('menu/show.html.twig', array(
             'menu' => $menu,
+            'titulo' => 'Ver Menú',
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -93,6 +96,7 @@ class MenuController extends Controller
 
         return $this->render('menu/edit.html.twig', array(
             'menu' => $menu,
+            'titulo' => 'Editar Menú',
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));

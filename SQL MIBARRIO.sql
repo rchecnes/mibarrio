@@ -16,3 +16,7 @@ INSERT  INTO `menu`(`nombre`,`padre`,`nivel`,`enlace`,`css_icono`,`estado`,`tien
 ('Asistencia Evento',0,0,'asistenciaevento','fa-pencil-square-o',1,0),
 ('Menú',0,0,'menu','fa-pencil-square-o',1,0),
 ('Menú Por Rol',0,0,'menuxrol','fa-pencil-square-o',1,0);
+
+
+#DATOS POR DEFECTO
+INSERT  INTO menu('nombre','padre','nivel','enlace','css_icono','estado','tiene_hijo','orden') VALUES ('Ninguno',0,0,'','',1,1,101);

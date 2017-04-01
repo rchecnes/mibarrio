@@ -63,7 +63,7 @@ class TwigExtension extends \Twig_Extension
     }*/
     public function getMenuXRol($padre=0)
     {
-        $sql = "SELECT * FROM menu WHERE padre=$padre";
+        $sql = "SELECT * FROM menu WHERE padre=$padre ORDER BY orden DESC";
         $resp = $this->conn->executeQuery($sql)->fetchAll();
 
         if(empty($resp)){return "";}
@@ -71,9 +71,9 @@ class TwigExtension extends \Twig_Extension
         $c = 1;
         foreach ($resp as $key => $row) {
             $active = "";
-            if ($c==1) {
+            /*if ($c==1) {
                 $active = "active";
-            }
+            }*/
 
             if ($row['tiene_hijo'] == 0) {
                 $enlace = ($row['enlace'] !='')?$row['enlace']:'#';

@@ -14,6 +14,14 @@ class MenuType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $orden = array();
+
+        for ($i=100; $i >= 1 ; $i--) { 
+            $orden[$i]=$i;
+        }
+
+
         $builder->add('nombre', 'text',array(
             'attr'=>array('class'=>'form-control'),
             'label' => 'Nombre:'
@@ -26,18 +34,19 @@ class MenuType extends AbstractType
             'attr'          => array('class' => 'form-control'),
             'class'         => 'ChecnesRegistroBundle:Menu',
             'label'         => 'Padre',
-            'empty_value'   => 'Ninguno',
+            'empty_value'   => false,
             'required'      => false,
             'query_builder' => function(EntityRepository $er) use ($options)
             {
                 $qb = $er->createQueryBuilder('m');
                 $qb->where("m.estado = '1'");
-                $qb->andWhere("m.padre = '1'");
+                $qb->andWhere("m.tiene_hijo = '1'");
+                $qb->orderBy("m.orden","DESC");
 
                 return $qb;
             }                
         ))  
-        ->add('nivel', 'hidden',array(
+        ->add('nivel', 'text',array(
             'attr'     =>array('class'=>'form-control'),
             'label'    => 'Nivel:',
             'required' => false
@@ -47,9 +56,36 @@ class MenuType extends AbstractType
             'label'    => 'Enlace:',
             'required' => false
         ))
-        ->add('css_icono', 'text',array(
+        ->add('css_icono', 'choice',array(
             'attr'     =>array('class'=>'form-control'),
             'label'    => 'Clase Ícono:',
+            'empty_value'   => 'Ninguno',
+            'choices'  => array(
+                    'fa-envelope-o'    => 'fa-envelope-o',
+                    'fa-folder-o'      => 'fa-folder-o',
+                    'fa-folder-open-o' => 'fa-folder-open-o',
+                    'fa-users'         => 'fa-users',
+                    'fa-home'          => 'fa-home',
+                    'fa-laptop'        => 'fa-laptop',
+                    'fa-cog'           => 'fa-cog',
+                    'fa-cogs'          => 'fa-cogs',
+                    'fa-calendar'      => 'fa-calendar',
+                    'fa-book'          => 'fa-book',
+                    'fa-eye'           => 'fa-eye',
+                    'fa-bar-chart-o'   => 'fa-bar-chart-o',
+                    'fa-barcode'       => 'fa-barcode',
+                    'fa-flask'         => 'fa-flask',
+                    'fa-beer'          => 'fa-beer',
+                    'fa-bell-o'        => 'fa-bell-o',
+                    'fa-bell'          => 'fa-bell'
+                ),
+            'required' => false
+        ))
+        ->add('orden', 'choice',array(
+            'attr'     =>array('class'=>'form-control'),
+            'label'    => 'Nivel:',
+            'empty_value'   => false,
+            'choices' => $orden,
             'required' => false
         ))
         ->add('estado', 'checkbox',array(

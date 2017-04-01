@@ -71,6 +71,13 @@ class Menu
     private $tiene_hijo;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true, options={"default":1})
+     */
+    private $orden;
+
+    /**
      * @ORM\OneToMany(targetEntity="MenuXRol", mappedBy="menu")
      */
     private $menu_x_rol;
@@ -301,5 +308,29 @@ class Menu
     public function getMenuXRol()
     {
         return $this->menu_x_rol;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Menu
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 }

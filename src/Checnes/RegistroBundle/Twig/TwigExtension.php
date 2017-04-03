@@ -29,7 +29,11 @@ class TwigExtension extends \Twig_Extension
         return array(
             'getMenu'  => new \Twig_Function_Method($this, 'getMenu'),
             'getMenuXRol'  => new \Twig_Function_Method($this, 'getMenuXRol'),
-            'existeRegistroAsistencia'  => new \Twig_Function_Method($this, 'existeRegistroAsistencia')
+            'existeRegistroAsistencia'  => new \Twig_Function_Method($this, 'existeRegistroAsistencia'),
+            'getNombrePadre'  => new \Twig_Function_Method($this, 'getNombrePadre'),
+            'getCantidadHijo'  => new \Twig_Function_Method($this, 'getCantidadHijo')
+            
+            
             );
      }
 
@@ -45,6 +49,34 @@ class TwigExtension extends \Twig_Extension
         }
         
         return $cantasist;
+    }
+
+    public function getNombrePadre($id){
+
+        $sql = "SELECT nombre FROM menu WHERE id='$id' LIMIT 1";
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $nombre = 0;
+
+        foreach ($resp as $key => $v) {
+            $nombre = $v['nombre'];
+        }
+        
+        return ($nombre !='')?$nombre:'Ninguno';
+    }
+
+    public function getCantidadHijo($id){
+
+        $sql = "SELECT COUNT(id)cant FROM menu WHERE padre='$id'";
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $cantidad = 0;
+
+        foreach ($resp as $key => $v) {
+            $cantidad = $v['cant'];
+        }
+        
+        return $cantidad;
     }
 
     

@@ -10,9 +10,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Padre</th>
-                <th>Nivel</th>
                 <th>Enlace</th>
-                <th>Css_icono</th>
                 <th>Estado</th>
                 <th>Tiene_hijo</th>
                 <th>Actions</th>
@@ -22,17 +20,16 @@
         {% for menu in menus %}
             <tr>
                 <td>{{ menu.nombre }}</td>
-                <td>{{ menu.padre }}</td>
-                <td>{{ menu.nivel }}</td>
+                <td>{{ getNombrePadre(menu.padre) }}</td>
                 <td>{{ menu.enlace }}</td>
-                <td>{{ menu.cssicono }}</td>
-                <td>{% if menu.estado %}Yes{% else %}No{% endif %}</td>
-                <td>{% if menu.tienehijo %}Yes{% else %}No{% endif %}</td>
+                <td>{% if menu.estado %}Activo{% else %}Desactivo{% endif %}</td>
+                <td>{% if menu.tienehijo %}Si{% else %}No{% endif %}</td>
                 <td>
                     
-                            <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
-                        
-                            <a href="{{ path('menu_show', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
+                    <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+                    {%if getCantidadHijo(menu.id) == 0%}
+                        <a href="{{ path('menu_delete', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
+                    {%endif%}
                        
                 </td>
             </tr>

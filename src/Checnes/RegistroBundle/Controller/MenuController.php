@@ -25,11 +25,25 @@ class MenuController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $menus = $em->getRepository('ChecnesRegistroBundle:Menu')->findAll();
-
+        
         return $this->render('menu/index.html.twig', array(
             'menus' => $menus,
             'titulo' => 'Menú'
         ));
+    }
+
+    private function getMenuPadre(){
+         //Menu
+        $em  = $this->getDoctrine()->getManager();
+        $dql = "SELECT m FROM ChecnesRegistroBundle:Menu m WHERE m.estado=1 AND m.tiene_hijo=1 ORDER BY m.orden DESC";
+        $resp = $em->createQuery($dql)->getResult();
+
+        $padre = array('0'=>'Ninguno');
+        foreach ($resp as $key => $f) {
+            $padre[$f->getId()] = $f->getNombre();
+        }
+
+        return $padre;
     }
 
     /**
@@ -39,9 +53,10 @@ class MenuController extends Controller
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
-    {
+    {   
+        $padreM = $this->getMenuPadre();
         $menu = new Menu();
-        $form = $this->createForm('Checnes\RegistroBundle\Form\MenuType', $menu);
+        $form = $this->createForm('Checnes\RegistroBundle\Form\MenuType', $menu, array('padreM'=>$padreM));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,9 +99,10 @@ class MenuController extends Controller
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Menu $menu)
-    {
+    {   
+        $padreM = $this->getMenuPadre();
         $deleteForm = $this->createDeleteForm($menu);
-        $editForm = $this->createForm('Checnes\RegistroBundle\Form\MenuType', $menu);
+        $editForm = $this->createForm('Checnes\RegistroBundle\Form\MenuType', $menu, array('padreM'=>$padreM));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -106,8 +122,8 @@ class MenuController extends Controller
     /**
      * Deletes a menu entity.
      *
-     * @Route("/{id}", name="menu_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="menu_delete")
+     * @Method({"DELETE","GET", "POST"})
      */
     public function deleteAction(Request $request, Menu $menu)
     {

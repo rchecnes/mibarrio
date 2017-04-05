@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    {% if app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {% for msg in app.session.flashbag.get('success') %}
+                {{ msg}}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <p class="group-new-botton">
         <a href="{{ path('menu_new') }}" class="btn btn-primary pull-left">Nuevo Menú</a>
     </p>
@@ -10,9 +19,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Padre</th>
-                <th>Nivel</th>
                 <th>Enlace</th>
-                <th>Css_icono</th>
                 <th>Estado</th>
                 <th>Tiene_hijo</th>
                 <th>Actions</th>
@@ -20,24 +27,21 @@
         </thead>
         <tbody>
         {% for menu in menus %}
-            {%if menu.orden !=101%}
-                <tr>
-                    <td>{{ menu.nombre }}</td>
-                    <td>{{ menu.padre }}</td>
-                    <td>{{ menu.nivel }}</td>
-                    <td>{{ menu.enlace }}</td>
-                    <td>{{ menu.cssicono }}</td>
-                    <td>{% if menu.estado %}Yes{% else %}No{% endif %}</td>
-                    <td>{% if menu.tienehijo %}Yes{% else %}No{% endif %}</td>
-                    <td>
-                        
-                                <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
-                            
-                                <a href="{{ path('menu_show', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
-                           
-                    </td>
-                </tr>
-            {%endif%}
+            <tr>
+                <td>{{ menu.nombre }}</td>
+                <td>{{ getNombrePadre(menu.padre) }}</td>
+                <td>{{ menu.enlace }}</td>
+                <td>{% if menu.estado %}Activo{% else %}Desactivo{% endif %}</td>
+                <td>{% if menu.tienehijo %}Si{% else %}No{% endif %}</td>
+                <td>
+                    
+                    <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+                    {%if getCantidadHijo(menu.id) == 0%}
+                        <a href="{{ path('menu_delete', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
+                    {%endif%}
+                       
+                </td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

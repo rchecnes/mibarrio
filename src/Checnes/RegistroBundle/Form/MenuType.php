@@ -21,31 +21,15 @@ class MenuType extends AbstractType
             $orden[$i]=$i;
         }
 
-
         $builder->add('nombre', 'text',array(
             'attr'=>array('class'=>'form-control'),
             'label' => 'Nombre:'
         ))
         ->add('padre', 'choice',array(
             'attr'=>array('class'=>'form-control'),
-            'label' => 'Padre:',
-            'choices'=>array('12'=>'Hola')
+            'choices' => $options['padreM'],
+            'label' => 'Padre:'
         ))
-        /*->add('padre', 'entity', array(
-            'attr'          => array('class' => 'form-control'),
-            'class'         => 'ChecnesRegistroBundle:Menu',
-            'label'         => 'Padre',
-            //'mapped' => true,
-            'query_builder' => function(EntityRepository $er) use ($options)
-            {
-                $qb = $er->createQueryBuilder('m');
-                $qb->where("m.estado = '1'");
-                $qb->andWhere("m.tiene_hijo = '1'");
-                $qb->orderBy("m.orden","DESC");
-
-                return $qb;
-            }                
-        )) */
         ->add('nivel', 'text',array(
             'attr'     =>array('class'=>'form-control'),
             'label'    => 'Nivel:',
@@ -104,7 +88,8 @@ class MenuType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Checnes\RegistroBundle\Entity\Menu'
+            'data_class' => 'Checnes\RegistroBundle\Entity\Menu',
+            'padreM' => ''
         ));
     }
 

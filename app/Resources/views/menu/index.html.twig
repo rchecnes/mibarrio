@@ -20,22 +20,24 @@
         </thead>
         <tbody>
         {% for menu in menus %}
-            <tr>
-                <td>{{ menu.nombre }}</td>
-                <td>{{ menu.padre }}</td>
-                <td>{{ menu.nivel }}</td>
-                <td>{{ menu.enlace }}</td>
-                <td>{{ menu.cssicono }}</td>
-                <td>{% if menu.estado %}Yes{% else %}No{% endif %}</td>
-                <td>{% if menu.tienehijo %}Yes{% else %}No{% endif %}</td>
-                <td>
-                    
-                            <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+            {%if menu.orden !=101%}
+                <tr>
+                    <td>{{ menu.nombre }}</td>
+                    <td>{{ menu.padre }}</td>
+                    <td>{{ menu.nivel }}</td>
+                    <td>{{ menu.enlace }}</td>
+                    <td>{{ menu.cssicono }}</td>
+                    <td>{% if menu.estado %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if menu.tienehijo %}Yes{% else %}No{% endif %}</td>
+                    <td>
                         
-                            <a href="{{ path('menu_show', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
-                       
-                </td>
-            </tr>
+                                <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+                            
+                                <a href="{{ path('menu_show', { 'id': menu.id }) }}"><i class="ace-icon fa fa-trash-o bigger-200"></i></a>
+                           
+                    </td>
+                </tr>
+            {%endif%}
         {% endfor %}
         </tbody>
     </table>

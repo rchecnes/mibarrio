@@ -31,7 +31,7 @@ class Menu
     /**
      * @var int
      *
-     * @ORM\Column(name="padre", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="padre", type="integer", nullable=false)
      */
     private $padre;
 

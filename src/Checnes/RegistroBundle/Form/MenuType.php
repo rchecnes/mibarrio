@@ -26,16 +26,16 @@ class MenuType extends AbstractType
             'attr'=>array('class'=>'form-control'),
             'label' => 'Nombre:'
         ))
-        /*->add('padre', 'text',array(
+        ->add('padre', 'choice',array(
             'attr'=>array('class'=>'form-control'),
-            'label' => 'Padre:'
-        ))*/
-        ->add('padre', 'entity', array(
+            'label' => 'Padre:',
+            'choices'=>array('12'=>'Hola')
+        ))
+        /*->add('padre', 'entity', array(
             'attr'          => array('class' => 'form-control'),
             'class'         => 'ChecnesRegistroBundle:Menu',
             'label'         => 'Padre',
-            'empty_value'   => false,
-            'required'      => false,
+            //'mapped' => true,
             'query_builder' => function(EntityRepository $er) use ($options)
             {
                 $qb = $er->createQueryBuilder('m');
@@ -45,7 +45,7 @@ class MenuType extends AbstractType
 
                 return $qb;
             }                
-        ))  
+        )) */
         ->add('nivel', 'text',array(
             'attr'     =>array('class'=>'form-control'),
             'label'    => 'Nivel:',

@@ -58,15 +58,18 @@ class LoginController extends Controller
                 {
                     $session = new Session();
                     $session->start();
-                }              
+                } 
 
+                $session->set('user',$entity);
+                
                 //set and get session attributes
                 //$session->set('user', $entity);
-                $session->set('nombre_completo', $entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno().' '.$entity->getPersona()->getNombre());
+                //$session->set('nombre_completo', $entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno().' '.$entity->getPersona()->getNombre());
 
                 //$session->set('empresa_id', $entity->getEmpresa()->getId());
-                $session->set('usuario_id', $entity->getId());
-                $session->set('anio', $entity->getAnio());
+                //$session->set('usuario_id', $entity->getId());
+                //$session->set('anio', $entity->getAnio());
+                
 
                 //Set cookie
                 $this->setCookie($usuario,$password,$remenber);

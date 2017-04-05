@@ -95,35 +95,27 @@
                                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                                         <img class="nav-user-photo" src="{{asset('public/img/foto-richard.png')}}" alt="Jason's Photo" />
                                         <span class="user-info">
-                                            <small>{#{ app.user.firstname }#}Checnes,</small>
-                                            Jason
+                                            <small>{#{ app.user.firstname }#}</small>
+                                            
                                         </span>
-
+                                        {%set user= app.session.get('user')%}
+                                        
                                         <i class="ace-icon fa fa-caret-down"></i>
                                     </a>
 
                                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="#">
-                                                <i class="ace-icon fa fa-cog"></i>
-                                                Settings
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{#{ path('persona_edit',{'id'1}) }#}">
+                                            <a href="{{ path('persona_editperfil', { 'id': user.persona.id }) }}">
                                                 <i class="ace-icon fa fa-user"></i>
                                                 Perfil
                                             </a>
                                         </li>
-
                                         <li>
                                             <a href="{{ path('acceso_change_password')}}">
                                                 <i class="ace-icon fa fa-key"></i>
                                                 Actualizar Contraseña
                                             </a>
                                         </li>
-
                                         <li class="divider"></li>
 
                                         <li>

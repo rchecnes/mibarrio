@@ -100,6 +100,43 @@ class PersonaController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing persona entity.
+     *
+     * @Route("/{id}/editperfil", name="persona_editperfil")
+     * @Method({"GET", "POST"})
+     */
+    public function editPerfilAction(Request $request, Persona $persona)
+    {
+       
+        $editForm = $this->createForm('Checnes\RegistroBundle\Form\PersonaPerfilType', $persona);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted()) {
+            ld("llega");
+            $em = $this->getDoctrine()->getManager();
+
+            $info = $request->request->get('checnes_registrobundle_persona');
+
+            $persona->setNombre($info['nombre']);
+            $persona->setApellidoPaterno($info['apellido_paterno']);
+            $persona->setApellidoMaterno($info['apellido_materno']);
+            $persona->setDni($info['dni']);
+            $persona->setEstadoCivil($info['estado_civil']);
+
+            $em->persist($persona);
+            $em->flush();
+
+            //return $this->redirectToRoute('persona_editperfil', array('id' => $persona->getId()));
+        }
+
+        return $this->render('persona/editPerfil.html.twig', array(
+            'persona' => $persona,
+            'edit_form' => $editForm->createView(),
+            'titulo' => 'Editar Mi Perfil'
+        ));
+    }
+
+    /**
      * Deletes a persona entity.
      *
      * @Route("/{id}", name="persona_delete")

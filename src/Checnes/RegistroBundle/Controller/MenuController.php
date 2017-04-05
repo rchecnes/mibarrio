@@ -67,7 +67,7 @@ class MenuController extends Controller
             $em->persist($menu);
             $em->flush($menu);
 
-            $session->getFlashBag()->add("success",'La operación se relizo con éxito.');
+            $session->getFlashBag()->add("success",'El nuevo registro se creo con éxito.');
 
             return $this->redirectToRoute('menu_index', array('id' => $menu->getId()));
 
@@ -105,6 +105,8 @@ class MenuController extends Controller
      */
     public function editAction(Request $request, Menu $menu)
     {   
+        $session = $request->getSession();
+
         $padreM = $this->getMenuPadre();
         $deleteForm = $this->createDeleteForm($menu);
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\MenuType', $menu, array('padreM'=>$padreM));
@@ -112,6 +114,8 @@ class MenuController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $session->getFlashBag()->add("success",'El registro se editó con éxito.');
 
             return $this->redirectToRoute('menu_index', array('id' => $menu->getId()));
         }
@@ -132,11 +136,14 @@ class MenuController extends Controller
      */
     public function deleteAction(Request $request, Menu $menu)
     {
+        $session = $request->getSession();
         
         if (is_object($menu)) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($menu);
             $em->flush($menu);
+
+            $session->getFlashBag()->add("success",'El registro se elimino con éxito.');
         }
 
         return $this->redirectToRoute('menu_index');

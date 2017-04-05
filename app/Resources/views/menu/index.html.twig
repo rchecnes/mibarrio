@@ -1,17 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    {% if app.session.flashbag.get('success') %}
+    
+    {%set message_success = app.session.flashbag.get('success')%}
+    {% if message_success %}
         <div class="alert alert-success">
-            {% for msg in app.session.flashbag.get('success') %}
+            <button class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            {% for msg  in  message_success%}
                 {{ msg}}
             {% endfor %}
         </div>
     {% endif %}
 
     <p class="group-new-botton">
-        <a href="{{ path('menu_new') }}" class="btn btn-primary pull-left">Nuevo Menú</a>
+        <a href="{{ path('menu_new') }}" class="btn btn-primary">Nuevo Menú</a>
     </p>
     
     <table class="table table-bordered">
@@ -33,7 +37,7 @@
                 <td>{{ menu.enlace }}</td>
                 <td>{% if menu.estado %}Activo{% else %}Desactivo{% endif %}</td>
                 <td>{% if menu.tienehijo %}Si{% else %}No{% endif %}</td>
-                <td>
+                <td class="align-center">
                     
                     <a href="{{ path('menu_edit', { 'id': menu.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
                     {%if getCantidadHijo(menu.id) == 0%}

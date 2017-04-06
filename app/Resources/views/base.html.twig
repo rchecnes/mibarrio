@@ -105,9 +105,15 @@
 
                                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                                         <li>
+                                            <a href="javascript:location.reload()">
+                                                <i class="ace-icon fa fa-refresh"></i>
+                                                Refrescar
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="{{ path('persona_editperfil', { 'id': user.persona.id }) }}">
                                                 <i class="ace-icon fa fa-user"></i>
-                                                Perfil
+                                                Actualizar Perfil
                                             </a>
                                         </li>
                                         <li>

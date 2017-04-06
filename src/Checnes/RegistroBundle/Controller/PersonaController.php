@@ -82,6 +82,7 @@ class PersonaController extends Controller
      */
     public function editAction(Request $request, Persona $persona)
     {
+
         $deleteForm = $this->createDeleteForm($persona);
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\PersonaType', $persona);
         $editForm->handleRequest($request);
@@ -100,7 +101,7 @@ class PersonaController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing persona entity.
+     * Displays a form to edit perfil an existing persona entity.
      *
      * @Route("/{id}/editperfil", name="persona_editperfil")
      * @Method({"GET", "POST"})
@@ -109,13 +110,31 @@ class PersonaController extends Controller
     {
        
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\PersonaPerfilType', $persona);
-        $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted()) {
-            ld("llega");
-            $em = $this->getDoctrine()->getManager();
+        return $this->render('persona/editPerfil.html.twig', array(
+            'persona'   => $persona,
+            'edit_form' => $editForm->createView(),
+            'titulo'    => 'Editar Mi Perfil',
+            'id' => $persona->getId()
+        ));
+    }
 
-            $info = $request->request->get('checnes_registrobundle_persona');
+    /**
+     * Displays a form to sav perfil an existing persona entity.
+     *
+     * @Route("/{id}/savperfil", name="persona_savperfil")
+     * @Method({"GET", "POST"})
+     */
+    public function savPerfilAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+
+        $persona = $em->getRepository('ChecnesRegistroBundle:Persona')->find($id);
+        
+        if (is_object($persona)) {
+
+            $info = $request->request->get('checnes_registrobundle_persona_perfil');
 
             $persona->setNombre($info['nombre']);
             $persona->setApellidoPaterno($info['apellido_paterno']);
@@ -126,14 +145,12 @@ class PersonaController extends Controller
             $em->persist($persona);
             $em->flush();
 
-            //return $this->redirectToRoute('persona_editperfil', array('id' => $persona->getId()));
+            $session->getFlashBag()->add("success",'Perfil actualizado de manera correcta.');
+        }else{
+            $session->getFlashBag()->add("error",'Ocurrió un error al actualizar perfil.');
         }
 
-        return $this->render('persona/editPerfil.html.twig', array(
-            'persona' => $persona,
-            'edit_form' => $editForm->createView(),
-            'titulo' => 'Editar Mi Perfil'
-        ));
+        return $this->redirectToRoute('persona_editperfil', array('id' => $persona->getId()));
     }
 
     /**

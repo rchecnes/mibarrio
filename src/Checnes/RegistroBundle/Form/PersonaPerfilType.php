@@ -50,8 +50,7 @@ class PersonaPerfilType extends AbstractType
         ->add('es_dirigente', 'checkbox',array(
             'attr'=>array('class'=>'','disabled'=>'disabled'),
             'label' => '¿Es Diregente?:'
-        ))
-        /*->add('es_dirigente')->add('numero')->add('anio')->add('lote')->add('cargo')*/;
+        ));
     }
     
     /**
@@ -69,7 +68,7 @@ class PersonaPerfilType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'checnes_registrobundle_persona';
+        return 'checnes_registrobundle_persona_perfil';
     }
 
 

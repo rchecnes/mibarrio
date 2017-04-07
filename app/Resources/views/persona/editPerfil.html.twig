@@ -29,6 +29,7 @@
 	<form method="post" action="{{ path('persona_savperfil', { 'id': id }) }}">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				{#{form_row(edit_form.dni)}#}
 				{{form_label(edit_form.dni)}}
 				{{form_widget(edit_form.dni) }}
 			</div>

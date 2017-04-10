@@ -39,7 +39,8 @@ class LoginController extends Controller
     public function validarUsuarioAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-    
+        $session = $request->getSession();
+
         $usuario = $request->request->get('usuario');
         $password = $request->request->get('password');
         $remenber = $request->request->get('remenber');
@@ -91,9 +92,12 @@ class LoginController extends Controller
                 }
 
             }else{
+                $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
                 return $this->redirectToRoute("acceso");
+
             }
         }else{
+            $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
             return $this->redirectToRoute("acceso");
         }
         
@@ -171,30 +175,25 @@ class LoginController extends Controller
     }
 
     /**
-     * @Route("/changepassword", name="acceso_change_password")
+     * @Route("/{id}/changepassword", name="acceso_change_password")
      */
-    public function changePasswordAction()
+    public function changePasswordAction(Request $request,$id)
     {
 
         $em = $this->getDoctrine()->getManager();
 
-        
-        //$obj_rol = $em->getRepository('ChecnesRegistroBundle:Rol')->find(1);
-
-        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Le Recomendamos Actualizar Su Contraseña'));
+        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Le Recomendamos Actualizar Su Contraseña','id'=>$id));
     }
 
     /**
-     * @Route("/updatepassword", name="acceso_update_password")
+     * @Route("/{id}/updatepassword", name="acceso_update_password")
      */
-    public function updatePasswordAction(Request $request)
+    public function updatePasswordAction(Request $request, $id)
     {
         $em      = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-        $anio    = $session->get("anio");
-        $usuario = $session->get("usuario_id");
 
-        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario);
+        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($id);
 
         $entity->setPassword($request->request->get('password'));
         $entity->setSalt(md5($request->request->get('password')));

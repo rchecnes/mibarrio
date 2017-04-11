@@ -98,7 +98,7 @@
                                             <small>{#{ app.user.firstname }#}</small>
                                             
                                         </span>
-                                        {%set user= app.session.get('user')%}
+                                        {#{%set user= app.session.get('user')%}#}
                                         
                                         <i class="ace-icon fa fa-caret-down"></i>
                                     </a>
@@ -107,27 +107,27 @@
                                         <li>
                                             <a href="javascript:location.reload()">
                                                 <i class="ace-icon fa fa-refresh"></i>
-                                                Refrescar
+                                                Actualizar
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ path('persona_editperfil', { 'id': user.persona.id }) }}">
+                                            <a href="{#{ path('persona_editperfil', { 'id': user.persona.id }) }#}">
                                                 <i class="ace-icon fa fa-user"></i>
-                                                Actualizar Perfil
+                                                Editar Información
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ path('acceso_change_password',{ 'id': user.id }) }}">
+                                            <a href="{#{ path('acceso_change_password',{ 'id': user.id }) }#}">
                                                 <i class="ace-icon fa fa-key"></i>
-                                                Actualizar Contraseña
+                                                Cambiar Contraseña
                                             </a>
                                         </li>
                                         <li class="divider"></li>
 
                                         <li>
-                                            <a href="{{path('cerrar_sesion')}}">
+                                            <a href="{#{path('cerrar_sesion')}#}">
                                                 <i class="ace-icon fa fa-power-off"></i>
-                                                Salir
+                                                Cerra Sesión
                                             </a>
                                         </li>
                                     </ul>

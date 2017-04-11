@@ -41,7 +41,7 @@ class LoginController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
-        $usuario = $request->request->get('usuario');
+        $usuario  = $request->request->get('usuario');
         $password = $request->request->get('password');
         $remenber = $request->request->get('remenber');
 
@@ -62,18 +62,10 @@ class LoginController extends Controller
                 } 
 
                 $session->set('user',$entity);
-                
-                //set and get session attributes
-                //$session->set('user', $entity);
-                //$session->set('nombre_completo', $entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno().' '.$entity->getPersona()->getNombre());
-
-                //$session->set('empresa_id', $entity->getEmpresa()->getId());
-                //$session->set('usuario_id', $entity->getId());
-                //$session->set('anio', $entity->getAnio());
-                
 
                 //Set cookie
                 $this->setCookie($usuario,$password,$remenber);
+                
 
                 //Registramos acceso;
                 $acceso = new ControlAcceso();
@@ -112,7 +104,6 @@ class LoginController extends Controller
             setcookie("remenber", "checked='checked'", time()+3600*24);
         }else {
 
-            //ld("llega");
             setcookie('usuario', null, -1);
             setcookie('password', null, -1);
             setcookie('remenber', null, -1);

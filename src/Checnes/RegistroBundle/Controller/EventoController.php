@@ -125,7 +125,8 @@ class EventoController extends Controller
         $session = $request->getSession();
 
         $anio = $session->get("anio");
-        $usuario_id = $session->get("usuario_id");
+        $user = $session->get("user");
+        ld($user);exit();
 
         $entity = new Evento();
 

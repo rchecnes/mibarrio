@@ -114,7 +114,7 @@ class PersonaController extends Controller
         return $this->render('persona/editPerfil.html.twig', array(
             'persona'   => $persona,
             'edit_form' => $editForm->createView(),
-            'titulo'    => 'Editar Mi Perfil',
+            'titulo'    => 'Editar Información',
             'id' => $persona->getId()
         ));
     }
@@ -145,9 +145,9 @@ class PersonaController extends Controller
             $em->persist($persona);
             $em->flush();
 
-            $session->getFlashBag()->add("success",'Perfil actualizado de manera correcta.');
+            $session->getFlashBag()->add("success",'Su información se actualizó.');
         }else{
-            $session->getFlashBag()->add("error",'Ocurrió un error al actualizar perfil.');
+            $session->getFlashBag()->add("error",'Ocurrió un error');
         }
 
         return $this->redirectToRoute('persona_editperfil', array('id' => $persona->getId()));

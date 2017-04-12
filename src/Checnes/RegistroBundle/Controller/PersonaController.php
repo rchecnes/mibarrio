@@ -20,15 +20,26 @@ class PersonaController extends Controller
      * @Route("/", name="persona_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        
         $em = $this->getDoctrine()->getManager();
+        $dql   = "SELECT p FROM ChecnesRegistroBundle:Persona p";
+        $query = $em->createQuery($dql);
 
-        $personas = $em->getRepository('ChecnesRegistroBundle:Persona')->findAll();
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            2/*limit per page*/
+        );
+
+        //$personas = $em->getRepository('ChecnesRegistroBundle:Persona')->findAll();
 
         return $this->render('persona/index.html.twig', array(
-            'personas' => $personas,
-            'titulo' => 'Personas'
+            //'personas' => $personas,
+            'titulo' => 'Personas',
+            'pagination' => $pagination
         ));
     }
 

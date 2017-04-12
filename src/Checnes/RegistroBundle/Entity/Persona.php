@@ -3,7 +3,7 @@
 namespace Checnes\RegistroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Persona
  *
@@ -23,28 +23,34 @@ class Persona
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 8,
+     *      minMessage = "DNI debe se de 8 dígitos",
+     *      maxMessage = "DNI debe se de 8 dígitos"
+     * )
      * @ORM\Column(name="dni", type="string", length=255, unique=true)
      */
     private $dni;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="nombre", type="string", length=255)
      */
     private $nombre;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="apellido_paterno", type="string", length=255)
      */
     private $apellido_paterno;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="apellido_materno", type="string", length=255)
      */
     private $apellido_materno;
@@ -71,12 +77,14 @@ class Persona
     private $numero;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Lote", inversedBy="persona")
      * @ORM\JoinColumn(name="lote_id", referencedColumnName="id")
      */
     private $lote;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Cargo", inversedBy="persona")
      * @ORM\JoinColumn(name="cargo_id", referencedColumnName="id")
      */
@@ -88,8 +96,54 @@ class Persona
      * @ORM\Column(name="anio", type="string", length=4)
      */
     private $anio;
-    
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_crea", type="datetimetz", nullable=true)
+     */
+    private $fecha_crea;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_mod", type="datetimetz", nullable=true)
+     */
+    private $fecha_mod;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_elim", type="datetimetz", nullable=true)
+     */
+    private $fecha_elim;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
+     * @ORM\JoinColumn(name="user_crea_id", referencedColumnName="id",nullable=true)
+     */
+    private $usuario_crea;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
+     * @ORM\JoinColumn(name="user_mod_id", referencedColumnName="id",nullable=true)
+     */
+    private $usuario_mod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
+     * @ORM\JoinColumn(name="user_elim_id", referencedColumnName="id",nullable=true)
+     */
+    private $usuario_elim;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="estado", type="boolean",nullable=true, options={"default":"1"})
+     */
+    private $estado;
+
+    
 
     /**
      * Get id
@@ -294,6 +348,102 @@ class Persona
     }
 
     /**
+     * Set fechaCrea
+     *
+     * @param \DateTime $fechaCrea
+     *
+     * @return Persona
+     */
+    public function setFechaCrea($fechaCrea)
+    {
+        $this->fecha_crea = $fechaCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCrea
+     *
+     * @return \DateTime
+     */
+    public function getFechaCrea()
+    {
+        return $this->fecha_crea;
+    }
+
+    /**
+     * Set fechaMod
+     *
+     * @param \DateTime $fechaMod
+     *
+     * @return Persona
+     */
+    public function setFechaMod($fechaMod)
+    {
+        $this->fecha_mod = $fechaMod;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaMod
+     *
+     * @return \DateTime
+     */
+    public function getFechaMod()
+    {
+        return $this->fecha_mod;
+    }
+
+    /**
+     * Set fechaElim
+     *
+     * @param \DateTime $fechaElim
+     *
+     * @return Persona
+     */
+    public function setFechaElim($fechaElim)
+    {
+        $this->fecha_elim = $fechaElim;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaElim
+     *
+     * @return \DateTime
+     */
+    public function getFechaElim()
+    {
+        return $this->fecha_elim;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     *
+     * @return Persona
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
      * Set lote
      *
      * @param \Checnes\RegistroBundle\Entity\Lote $lote
@@ -339,5 +489,77 @@ class Persona
     public function getCargo()
     {
         return $this->cargo;
+    }
+
+    /**
+     * Set usuarioCrea
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
+     *
+     * @return Persona
+     */
+    public function setUsuarioCrea(\Checnes\RegistroBundle\Entity\Usuario $usuarioCrea = null)
+    {
+        $this->usuario_crea = $usuarioCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioCrea
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioCrea()
+    {
+        return $this->usuario_crea;
+    }
+
+    /**
+     * Set usuarioMod
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioMod
+     *
+     * @return Persona
+     */
+    public function setUsuarioMod(\Checnes\RegistroBundle\Entity\Usuario $usuarioMod = null)
+    {
+        $this->usuario_mod = $usuarioMod;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioMod
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioMod()
+    {
+        return $this->usuario_mod;
+    }
+
+    /**
+     * Set usuarioElim
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioElim
+     *
+     * @return Persona
+     */
+    public function setUsuarioElim(\Checnes\RegistroBundle\Entity\Usuario $usuarioElim = null)
+    {
+        $this->usuario_elim = $usuarioElim;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioElim
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioElim()
+    {
+        return $this->usuario_elim;
     }
 }

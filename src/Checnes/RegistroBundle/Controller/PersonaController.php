@@ -50,8 +50,28 @@ class PersonaController extends Controller
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
-    {
+    {   
         $persona = new Persona();
+        $form    = $this->createForm('Checnes\RegistroBundle\Form\PersonaType', $persona);
+
+        return $this->render('persona/new.html.twig', array(
+            'persona' => $persona,
+            'titulo'  => 'Nueva Persona',
+            'form'    => $form->createView(),
+        ));
+    }
+
+
+    /**
+     * Creates a new persona entity.
+     *
+     * @Route("/sav", name="persona_sav")
+     * @Method({"GET", "POST"})
+     */
+    public function savAction(Request $request)
+    {   
+
+        /*$persona = new Persona();
         $form = $this->createForm('Checnes\RegistroBundle\Form\PersonaType', $persona);
         $form->handleRequest($request);
 
@@ -65,8 +85,10 @@ class PersonaController extends Controller
 
         return $this->render('persona/new.html.twig', array(
             'persona' => $persona,
+            'titulo' => 'Nueva Persona',
             'form' => $form->createView(),
-        ));
+        ));*/
+        echo "aqui se implementara el grabar de la persona";
     }
 
     /**

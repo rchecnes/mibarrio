@@ -3,7 +3,7 @@
 namespace Checnes\RegistroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Persona
  *
@@ -23,28 +23,34 @@ class Persona
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 8,
+     *      minMessage = "DNI debe se de 8 dígitos",
+     *      maxMessage = "DNI debe se de 8 dígitos"
+     * )
      * @ORM\Column(name="dni", type="string", length=255, unique=true)
      */
     private $dni;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="nombre", type="string", length=255)
      */
     private $nombre;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="apellido_paterno", type="string", length=255)
      */
     private $apellido_paterno;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="apellido_materno", type="string", length=255)
      */
     private $apellido_materno;
@@ -71,12 +77,14 @@ class Persona
     private $numero;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Lote", inversedBy="persona")
      * @ORM\JoinColumn(name="lote_id", referencedColumnName="id")
      */
     private $lote;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Cargo", inversedBy="persona")
      * @ORM\JoinColumn(name="cargo_id", referencedColumnName="id")
      */
@@ -88,6 +96,52 @@ class Persona
      * @ORM\Column(name="anio", type="string", length=4)
      */
     private $anio;
-    
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_crea", type="datetimetz", nullable=true)
+     */
+    private $fecha_crea;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_mod", type="datetimetz", nullable=true)
+     */
+    private $fecha_mod;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_elim", type="datetimetz", nullable=true)
+     */
+    private $fecha_elim;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
+     * @ORM\JoinColumn(name="user_crea_id", referencedColumnName="id")
+     */
+    private $usuario_crea;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
+     * @ORM\JoinColumn(name="user_mod_id", referencedColumnName="id")
+     */
+    private $usuario_mod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
+     * @ORM\JoinColumn(name="user_elim_id", referencedColumnName="id")
+     */
+    private $usuario_elim;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="estado", type="boolean",nullable=true, options={"default":"1"})
+     */
+    private $estado;
+
+    
 }

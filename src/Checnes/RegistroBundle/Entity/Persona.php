@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Persona
 {
+    //CONSULTA DE DNI: http://dataservice.insite.pe/documentacion
     /**
      * @var int
      *

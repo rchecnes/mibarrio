@@ -31,10 +31,8 @@ class PersonaController extends Controller
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            2/*limit per page*/
+            10/*limit per page*/
         );
-
-        //$personas = $em->getRepository('ChecnesRegistroBundle:Persona')->findAll();
 
         return $this->render('persona/index.html.twig', array(
             //'personas' => $personas,
@@ -70,25 +68,42 @@ class PersonaController extends Controller
      */
     public function savAction(Request $request)
     {   
+        $form    = $request->request->get('checnes_registrobundle_persona');
+        $session = $request->getSession();
 
-        /*$persona = new Persona();
-        $form = $this->createForm('Checnes\RegistroBundle\Form\PersonaType', $persona);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form) {
+            
             $em = $this->getDoctrine()->getManager();
+            $persona = new Persona();
+            $persona->setDni($form['dni']);
+            $persona->setNombre($form['nombre']);
+            $persona->setApellidoPaterno($form['apellido_paterno']);
+            $persona->setApellidoMaterno($form['apellido_materno']);
+            $persona->setNumero($form['numero']);
+            $persona->setEsDirigente($form['es_dirigente']);
+            $persona->setEstado($form['estado']);
+            $persona->setAnio($session->get('anio'));
+            $persona->setEstadoCivil($form['estado_civil']);
+
+            $obj_lote  = $em->getRepository('ChecnesRegistroBundle:Lote')->find($form['lote']);
+            $obj_cargo = $em->getRepository('ChecnesRegistroBundle:Cargo')->find($form['cargo']);
+            $obj_user  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
+
+            $persona->setLote($obj_lote);
+            $persona->setCargo($obj_cargo);
+            $persona->setUsuarioCrea($obj_user);
+            $persona->setFechaCrea(new \DateTime(date('Y-m-d h:i:s')));
+            
             $em->persist($persona);
             $em->flush($persona);
 
-            return $this->redirectToRoute('persona_show', array('id' => $persona->getId()));
+            $session->getFlashBag()->add("success",'La persona se creo de manera correcta!.');
+
+        }else{
+            $session->getFlashBag()->add("error",'Ocurrio un error!');
         }
 
-        return $this->render('persona/new.html.twig', array(
-            'persona' => $persona,
-            'titulo' => 'Nueva Persona',
-            'form' => $form->createView(),
-        ));*/
-        echo "aqui se implementara el grabar de la persona";
+        return $this->redirectToRoute('persona_index');
     }
 
     /**

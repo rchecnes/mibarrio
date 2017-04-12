@@ -62,6 +62,11 @@ class LoginController extends Controller
                 } 
 
                 $session->set('user',$entity);
+                $session->set('usuario_id',$entity->getId());
+                $session->set('anio',date('Y'));
+                $session->set('persona_id',$entity->getPersona()->getId());
+                $session->set('nombre',$entity->getPersona()->getNombre());
+                $session->set('nombre_completo',$entity->getPersona()->getNombre().' '.$entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno());
 
                 //Set cookie
                 $this->setCookie($usuario,$password,$remenber);

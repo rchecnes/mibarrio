@@ -22,7 +22,7 @@
         <td>
           {%set cantasist = existeRegistroAsistencia(entity.id)%}
           {%if cantasist > 0%}
-            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" title="Editar Asistencia">
+            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" class="color-purple" title="Editar Asistencia">
               <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
             </a>
           {%else%}

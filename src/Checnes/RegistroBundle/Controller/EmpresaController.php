@@ -46,7 +46,7 @@ class EmpresaController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($empresa);
-            $em->flush($empresa);
+            $em->flush();
 
             return $this->redirectToRoute('empresa_show', array('id' => $empresa->getId()));
         }
@@ -80,7 +80,8 @@ class EmpresaController extends Controller
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Empresa $empresa)
-    {
+    {   
+        $session = $request->getSession();
         $deleteForm = $this->createDeleteForm($empresa);
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\EmpresaType', $empresa);
         $editForm->handleRequest($request);
@@ -88,13 +89,15 @@ class EmpresaController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $session->getFlashBag()->add("success",'La información se actualio de manera correcta!.');
             return $this->redirectToRoute('empresa_edit', array('id' => $empresa->getId()));
         }
 
         return $this->render('empresa/edit.html.twig', array(
-            'empresa' => $empresa,
+            'empresa'   => $empresa,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'id' => $empresa->getId(),
+            'titulo'    => 'Informació De La Empresa'
         ));
     }
 
@@ -112,7 +115,7 @@ class EmpresaController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($empresa);
-            $em->flush($empresa);
+            $em->flush();
         }
 
         return $this->redirectToRoute('empresa_index');

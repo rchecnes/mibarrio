@@ -59,9 +59,16 @@ class Usuario
     /**
      * @var bool
      *
-     * @ORM\Column(name="condicion", type="boolean")
+     * @ORM\Column(name="activo", type="boolean", nullable=true, options={"default":"1"})
      */
-    private $condicion;
+    private $activo;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="estado", type="boolean", nullable=true, options={"default":"1"})
+     */
+    private $estado;
 
     /**
      * @var string
@@ -215,29 +222,6 @@ class Usuario
         return $this->ultimo_acceso;
     }
 
-    /**
-     * Set condicion
-     *
-     * @param boolean $condicion
-     *
-     * @return Usuario
-     */
-    public function setCondicion($condicion)
-    {
-        $this->condicion = $condicion;
-
-        return $this;
-    }
-
-    /**
-     * Get condicion
-     *
-     * @return boolean
-     */
-    public function getCondicion()
-    {
-        return $this->condicion;
-    }
 
     /**
      * Set anio
@@ -309,5 +293,53 @@ class Usuario
     public function getPersona()
     {
         return $this->persona;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     *
+     * @return Usuario
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     *
+     * @return Usuario
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

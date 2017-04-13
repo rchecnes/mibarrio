@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    
+    <p>
+        <a href="{{ path('rol_new') }}" class="btn btn-primary">Nuevo Rol</a>
+    </p>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>Condicion</th>
-                <th>Actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -16,25 +18,18 @@
             <tr>
                 <td><a href="{{ path('rol_show', { 'id': rol.id }) }}">{{ rol.id }}</a></td>
                 <td>{{ rol.nombre }}</td>
-                <td>{% if rol.condicion %}Yes{% else %}No{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('rol_show', { 'id': rol.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('rol_edit', { 'id': rol.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('rol_edit', { 'id': rol.id }) }}" title="Editar Rol">
+                      <i class="fa fa-pencil-square-o bigger-200"></i>
+                    </a>&nbsp;&nbsp;
+                    <a href="#" title="Asignar Permiso">
+                        <i class="fa fa-cog bigger-230"></i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('rol_new') }}">Create a new rol</a>
-        </li>
-    </ul>
+    
 {% endblock %}

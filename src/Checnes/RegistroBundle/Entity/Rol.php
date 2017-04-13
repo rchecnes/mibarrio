@@ -29,11 +29,18 @@ class Rol
     private $nombre;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre_sis", type="string", length=255)
+     */
+    private $nombre_sis;
+
+    /**
      * @var bool
      *
-     * @ORM\Column(name="condicion", type="boolean")
+     * @ORM\Column(name="estado", type="boolean", nullable=true, options={"default":"1"})
      */
-    private $condicion;
+    private $estado;
 
     /**
      * @ORM\OneToMany(targetEntity="Usuario", mappedBy="rol")
@@ -45,6 +52,7 @@ class Rol
      * @ORM\OneToMany(targetEntity="MenuXRol", mappedBy="rol")
      */
     private $menu_x_rol;
+    
     
     
     /**
@@ -91,27 +99,51 @@ class Rol
     }
 
     /**
-     * Set condicion
+     * Set nombreSis
      *
-     * @param boolean $condicion
+     * @param string $nombreSis
      *
      * @return Rol
      */
-    public function setCondicion($condicion)
+    public function setNombreSis($nombreSis)
     {
-        $this->condicion = $condicion;
+        $this->nombre_sis = $nombreSis;
 
         return $this;
     }
 
     /**
-     * Get condicion
+     * Get nombreSis
+     *
+     * @return string
+     */
+    public function getNombreSis()
+    {
+        return $this->nombre_sis;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     *
+     * @return Rol
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
      *
      * @return boolean
      */
-    public function getCondicion()
+    public function getEstado()
     {
-        return $this->condicion;
+        return $this->estado;
     }
 
     /**

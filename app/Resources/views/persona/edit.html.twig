@@ -1,21 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Persona edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('persona_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <form method="post" action="{{ path('persona_update', { 'id': id }) }}">
+        <div class="row">
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.dni)}}
+                {{form_widget(edit_form.dni) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.nombre)}}
+                {{form_widget(edit_form.nombre) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.apellido_paterno)}}
+                {{form_widget(edit_form.apellido_paterno) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.apellido_materno)}}
+                {{form_widget(edit_form.apellido_materno) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.estado_civil)}}
+                {{form_widget(edit_form.estado_civil) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.lote)}}
+                {{form_widget(edit_form.lote) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.cargo)}}
+                {{form_widget(edit_form.cargo) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.numero)}}
+                {{form_widget(edit_form.numero) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.es_dirigente)}}
+                {{form_widget(edit_form.es_dirigente) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.activo)}}
+                {{form_widget(edit_form.activo) }}
+            </div>
+        </div>
+        {{ form_widget(edit_form._token) }}
+        <input type="submit" value="Guardar" class="btn btn-success"/>
+        <a href="{{ path('persona_index') }}" title="Editar Asistencia" class="btn btn-default">Cancelar</a>
+    </form>
 {% endblock %}

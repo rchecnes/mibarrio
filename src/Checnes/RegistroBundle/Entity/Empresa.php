@@ -35,38 +35,12 @@ class Empresa
      */
     private $ruc;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="condicion", type="boolean")
-     */
-    private $condicion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_registro", type="datetimetz")
-     */
-    private $fecha_registro;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_inicio", type="datetimetz")
-     */
-    private $fecha_inicio;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_fin", type="datetimetz")
-     */
-    private $fecha_fin;
+    
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -119,101 +93,5 @@ class Empresa
     public function getRuc()
     {
         return $this->ruc;
-    }
-
-    /**
-     * Set condicion
-     *
-     * @param boolean $condicion
-     *
-     * @return Empresa
-     */
-    public function setCondicion($condicion)
-    {
-        $this->condicion = $condicion;
-
-        return $this;
-    }
-
-    /**
-     * Get condicion
-     *
-     * @return bool
-     */
-    public function getCondicion()
-    {
-        return $this->condicion;
-    }
-
-    /**
-     * Set fechaRegistro
-     *
-     * @param \DateTime $fechaRegistro
-     *
-     * @return Empresa
-     */
-    public function setFechaRegistro($fechaRegistro)
-    {
-        $this->fecha_registro = $fechaRegistro;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaRegistro
-     *
-     * @return \DateTime
-     */
-    public function getFechaRegistro()
-    {
-        return $this->fecha_registro;
-    }
-
-    /**
-     * Set fechaInicio
-     *
-     * @param \DateTime $fechaInicio
-     *
-     * @return Empresa
-     */
-    public function setFechaInicio($fechaInicio)
-    {
-        $this->fecha_inicio = $fechaInicio;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaInicio
-     *
-     * @return \DateTime
-     */
-    public function getFechaInicio()
-    {
-        return $this->fecha_inicio;
-    }
-
-    /**
-     * Set fechaFin
-     *
-     * @param \DateTime $fechaFin
-     *
-     * @return Empresa
-     */
-    public function setFechaFin($fechaFin)
-    {
-        $this->fecha_fin = $fechaFin;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaFin
-     *
-     * @return \DateTime
-     */
-    public function getFechaFin()
-    {
-        return $this->fecha_fin;
     }
 }

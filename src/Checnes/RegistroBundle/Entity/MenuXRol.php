@@ -24,16 +24,9 @@ class MenuXRol
     /**
      * @var bool
      *
-     * @ORM\Column(name="condicion", type="boolean")
+     * @ORM\Column(name="estado", type="boolean", nullable=true, options={"default":"1"})
      */
-    private $condicion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetimetz")
-     */
-    private $fecha_creacion;
+    private $estado;
 
 
     /**
@@ -50,6 +43,8 @@ class MenuXRol
 
     
 
+    
+
     /**
      * Get id
      *
@@ -61,51 +56,27 @@ class MenuXRol
     }
 
     /**
-     * Set condicion
+     * Set estado
      *
-     * @param boolean $condicion
+     * @param boolean $estado
      *
      * @return MenuXRol
      */
-    public function setCondicion($condicion)
+    public function setEstado($estado)
     {
-        $this->condicion = $condicion;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get condicion
+     * Get estado
      *
      * @return boolean
      */
-    public function getCondicion()
+    public function getEstado()
     {
-        return $this->condicion;
-    }
-
-    /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return MenuXRol
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fecha_creacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fecha_creacion;
+        return $this->estado;
     }
 
     /**

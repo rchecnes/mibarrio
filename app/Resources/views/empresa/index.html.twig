@@ -9,10 +9,6 @@
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Ruc</th>
-                <th>Condicion</th>
-                <th>Fecha_registro</th>
-                <th>Fecha_inicio</th>
-                <th>Fecha_fin</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,10 +18,6 @@
                 <td><a href="{{ path('empresa_show', { 'id': empresa.id }) }}">{{ empresa.id }}</a></td>
                 <td>{{ empresa.nombre }}</td>
                 <td>{{ empresa.ruc }}</td>
-                <td>{% if empresa.condicion %}Yes{% else %}No{% endif %}</td>
-                <td>{{ empresa.fecharegistro }}</td>
-                <td>{{ empresa.fechainicio }}</td>
-                <td>{{ empresa.fechafin }}</td>
                 <td>
                     <ul>
                         <li>

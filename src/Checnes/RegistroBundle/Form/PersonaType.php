@@ -44,7 +44,7 @@ class PersonaType extends AbstractType
         ->add('lote', 'entity', array(
                 'attr'          => array('class' => 'form-control'),
                 'class'         => 'ChecnesRegistroBundle:Lote',
-                'label'         => 'Lote',
+                'label'         => 'Lote:',
                 'empty_value'   => '[Seleccionar]',
                 'required'      => true,
                 'query_builder' => function(EntityRepository $er) use ($options)
@@ -57,7 +57,7 @@ class PersonaType extends AbstractType
         ->add('cargo', 'entity', array(
                 'attr'          => array('class' => 'form-control'),
                 'class'         => 'ChecnesRegistroBundle:Cargo',
-                'label'         => 'Cargo',
+                'label'         => 'Cargo:',
                 'empty_value'   => '[Seleccionar]',
                 'required'      => true,
                 'query_builder' => function(EntityRepository $er) use ($options)
@@ -70,11 +70,13 @@ class PersonaType extends AbstractType
         
         ->add('es_dirigente', 'checkbox',array(
             'attr'=>array('class'=>''),
-            'label' => '¿Es Diregente?:'
+            'label' => '¿Es Diregente?:',
+            'required' => false
         ))
-        ->add('estado', 'checkbox',array(
+        ->add('activo', 'checkbox',array(
             'attr'=>array('class'=>''),
-            'label' => '¿Activo?:'
+            'label' => '¿Activo?:',
+            'required' => false
         ));
     }
     

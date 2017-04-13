@@ -40,58 +40,67 @@ class LoginController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-
         $usuario  = $request->request->get('usuario');
         $password = $request->request->get('password');
         $remenber = $request->request->get('remenber');
 
-        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->findOneBy(array('usuario'=>$usuario));
+        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->findOneBy(array('usuario'=>$usuario,'estado'=>1));
 
         if (is_object($entity)) {
-            
-            $obj_acso = $em->getRepository('ChecnesRegistroBundle:ControlAcceso')->findOneBy(array('usuario'=>$entity->getId()));
 
-            if (md5($password) == $entity->getSalt()) {
-
-                $session = $request->getSession();
-
-                if(!$this->container->get('session')->isStarted())
-                {
-                    $session = new Session();
-                    $session->start();
-                } 
-
-                $session->set('user',$entity);
-                $session->set('usuario_id',$entity->getId());
-                $session->set('anio',date('Y'));
-                $session->set('persona_id',$entity->getPersona()->getId());
-                $session->set('nombre',$entity->getPersona()->getNombre());
-                $session->set('nombre_completo',$entity->getPersona()->getNombre().' '.$entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno());
-
-                //Set cookie
-                $this->setCookie($usuario,$password,$remenber);
+            if ($entity->getActivo() == 1) {
                 
+                $obj_acso = $em->getRepository('ChecnesRegistroBundle:ControlAcceso')->findOneBy(array('usuario'=>$entity->getId()));
 
-                //Registramos acceso;
-                $acceso = new ControlAcceso();
-                $acceso->setUsuario($entity);
-                $acceso->setFechaAcceso(new \DateTime(date('Y-m-d h:i:sa')));
-                $acceso->setIp('200.200.200.200');
-                $acceso->setAnio(date('Y'));
-                $em->persist($acceso);
-                $em->flush();
-                
+                if (md5($password) == $entity->getSalt()) {
 
-                if (!is_object($obj_acso)) {
-                    return $this->redirectToRoute("acceso_change_password");
+                    $session = $request->getSession();
+
+                    if(!$this->container->get('session')->isStarted())
+                    {
+                        $session = new Session();
+                        $session->start();
+                    }
+
+                    //Actualizar el ultimo acceso
+                    $entity->setUltimoAcceso(new \DateTime(date('Y-m-d h:i:sa')));
+
+                    //Sesion
+                    $session->set('user',$entity);
+                    $session->set('usuario_id',$entity->getId());
+                    $session->set('anio',date('Y'));
+                    $session->set('persona_id',$entity->getPersona()->getId());
+                    $session->set('nombre',$entity->getPersona()->getNombre());
+                    $session->set('nombre_completo',$entity->getPersona()->getNombre().' '.$entity->getPersona()->getApellidoPaterno().' '.$entity->getPersona()->getApellidoMaterno());
+
+                    //Set cookie
+                    $this->setCookie($usuario,$password,$remenber);
+                    
+
+                    //Registramos acceso;
+                    $acceso = new ControlAcceso();
+                    $acceso->setUsuario($entity);
+                    $acceso->setFechaAcceso(new \DateTime(date('Y-m-d h:i:sa')));
+                    $acceso->setIp($this->ObtenerIP());
+                    $acceso->setAnio(date('Y'));
+                    $em->persist($acceso);
+                    $em->flush();
+                    
+
+                    if (!is_object($obj_acso)) {
+                        return $this->redirectToRoute("acceso_change_password");
+                    }else{
+                        return $this->redirectToRoute("evento_index");
+                    }
+
                 }else{
-                    return $this->redirectToRoute("evento_index");
+                    $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
+                    return $this->redirectToRoute("acceso");
+
                 }
-
             }else{
-                $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
+                $session->getFlashBag()->add("error",'El usuario está deshabilitado');
                 return $this->redirectToRoute("acceso");
-
             }
         }else{
             $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
@@ -171,25 +180,25 @@ class LoginController extends Controller
     }
 
     /**
-     * @Route("/{id}/changepassword", name="acceso_change_password")
+     * @Route("/changepassword", name="acceso_change_password")
      */
-    public function changePasswordAction(Request $request,$id)
+    public function changePasswordAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
 
-        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Le Recomendamos Actualizar Su Contraseña','id'=>$id));
+        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Actualizar Contraseña'));
     }
 
     /**
-     * @Route("/{id}/updatepassword", name="acceso_update_password")
+     * @Route("/updatepassword", name="acceso_update_password")
      */
-    public function updatePasswordAction(Request $request, $id)
+    public function updatePasswordAction(Request $request)
     {
         $em      = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
-        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($id);
+        $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
 
         $entity->setPassword($request->request->get('password'));
         $entity->setSalt(md5($request->request->get('password')));
@@ -197,5 +206,16 @@ class LoginController extends Controller
         $em->flush();
 
         return $this->redirectToRoute("evento_index");
+    }
+
+
+    private function ObtenerIP(){
+
+        $client  = @$_SERVER['HTTP_CLIENT_IP']; 
+        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR']; 
+        $remote  = $_SERVER['REMOTE_ADDR']; 
+
+        $ip= gethostbyname( gethostbyaddr($_SERVER['REMOTE_ADDR']) );
+        return ($ip !='')?$ip:"20.20.20.20";
     }
 }

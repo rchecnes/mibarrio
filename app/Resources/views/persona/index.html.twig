@@ -15,12 +15,12 @@
     {% endif %}
 
     <p class="group-new-botton">
-        <a href="{{ path('persona_new') }}" class="btn btn-primary">Nuevo</a>
+        <a href="{{ path('persona_new') }}" class="btn btn-primary">Nueva Persona</a>
     </p>
 
-    <div class="count">
-        {{ pagination.getTotalItemCount }}
-    </div>
+    <p class="count align-right">
+        <b>Total Registro:</b>&nbsp;&nbsp;{{ pagination.getTotalItemCount }}
+    </p>
 
     <table class="table table-bordered">
         <thead>
@@ -33,13 +33,14 @@
         </thead>
         <tbody>
         {% for entity in pagination %}
-            <tr>
+            {%set class= (entity.activo==0)?"fila-deshabilitado":""%}
+            <tr class="{{class}}">
                 <!--<td><a href="{{ path('persona_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>-->
                 <td>{{ entity.numero }}</td>
                 <td>{{ entity.dni }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>
-                    <a href="{{ path('persona_show', { 'id': entity.id }) }}" title="Editar Asistencia">
+                    <a href="{{ path('persona_edit', { 'id': entity.id }) }}" title="Editar Asistencia">
                       <i class="fa fa-pencil-square-o bigger-200"></i>
                     </a>&nbsp;&nbsp;
                     <a href="{{ path('persona_edit', { 'id': entity.id }) }}" class="color-red" title="Registrar Asistencia">

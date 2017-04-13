@@ -13,7 +13,14 @@ class EmpresaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nombre')->add('ruc')->add('condicion')->add('fecha_registro')->add('fecha_inicio')->add('fecha_fin')        ;
+        $builder->add('nombre', 'text',array(
+            'attr'  =>array('class'=>'form-control'),
+            'label' => 'Nombre:',
+        ))
+        ->add('ruc', 'text',array(
+            'attr'  =>array('class'=>'form-control'),
+            'label' => 'RUC:'
+        ));
     }
     
     /**

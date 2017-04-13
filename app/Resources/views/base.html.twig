@@ -111,13 +111,13 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{#{ path('persona_editperfil', { 'id': user.persona.id }) }#}">
+                                            <a href="{{ path('persona_editperfil', { 'id': app.session.get('persona_id') }) }}">
                                                 <i class="ace-icon fa fa-user"></i>
                                                 Editar Información
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{#{ path('acceso_change_password',{ 'id': user.id }) }#}">
+                                            <a href="{{ path('acceso_change_password',{ 'id': app.session.get('usuario_id') }) }}">
                                                 <i class="ace-icon fa fa-key"></i>
                                                 Cambiar Contraseña
                                             </a>
@@ -125,7 +125,7 @@
                                         <li class="divider"></li>
 
                                         <li>
-                                            <a href="{#{path('cerrar_sesion')}#}">
+                                            <a href="{{path('cerrar_sesion')}}">
                                                 <i class="ace-icon fa fa-power-off"></i>
                                                 Cerra Sesión
                                             </a>

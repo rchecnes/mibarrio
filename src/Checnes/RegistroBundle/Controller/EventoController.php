@@ -124,9 +124,8 @@ class EventoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
-        $anio = $session->get("anio");
-        $user = $session->get("user");
-        ld($user);exit();
+        $anio       = $session->get("anio");
+        $usuario_id = $session->get("usuario_id");
 
         $entity = new Evento();
 
@@ -239,7 +238,7 @@ class EventoController extends Controller
             throw $this->createNotFoundException('Unable to find Evento entity.');
         }
 
-        $anio         = $session->get("anio");
+        $anio           = $session->get("anio");
         $usuario_id     = $session->get("usuario_id");
         $reg_asistencia = $request->request->get('reg_asistencia');
 

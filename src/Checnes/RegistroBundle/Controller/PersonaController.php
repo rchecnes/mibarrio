@@ -24,14 +24,14 @@ class PersonaController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
-        $dql   = "SELECT p FROM ChecnesRegistroBundle:Persona p";
+        $dql   = "SELECT p FROM ChecnesRegistroBundle:Persona p WHERE p.estado=1";
         $query = $em->createQuery($dql);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            10/*limit per page*/
+            3/*limit per page*/
         );
 
         return $this->render('persona/index.html.twig', array(
@@ -80,8 +80,11 @@ class PersonaController extends Controller
             $persona->setApellidoPaterno($form['apellido_paterno']);
             $persona->setApellidoMaterno($form['apellido_materno']);
             $persona->setNumero($form['numero']);
-            $persona->setEsDirigente($form['es_dirigente']);
-            $persona->setEstado($form['estado']);
+            $es_dirigente = (isset($form['es_dirigente']))?$form['es_dirigente']:0;
+            $persona->setEsDirigente($es_dirigente);
+            $activo = (isset($form['activo']))?$form['activo']:0;
+            $persona->setActivo($activo);
+            $persona->setEstado(1);
             $persona->setAnio($session->get('anio'));
             $persona->setEstadoCivil($form['estado_civil']);
 
@@ -131,21 +134,62 @@ class PersonaController extends Controller
     public function editAction(Request $request, Persona $persona)
     {
 
-        $deleteForm = $this->createDeleteForm($persona);
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\PersonaType', $persona);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('persona_edit', array('id' => $persona->getId()));
-        }
 
         return $this->render('persona/edit.html.twig', array(
-            'persona' => $persona,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'titulo'    => 'Editar Persona',
+            'id'        => $persona->getId()
         ));
+    }
+
+    /**
+     * Displays a form to edit an existing persona entity.
+     *
+     * @Route("/{id}/update", name="persona_update")
+     * @Method({"GET", "POST"})
+     */
+    public function updateAction(Request $request, Persona $persona)
+    {
+
+        $form    = $request->request->get('checnes_registrobundle_persona');
+        $session = $request->getSession();
+
+        if ($form) {
+            
+            $em = $this->getDoctrine()->getManager();
+            $persona->setDni($form['dni']);
+            $persona->setNombre($form['nombre']);
+            $persona->setApellidoPaterno($form['apellido_paterno']);
+            $persona->setApellidoMaterno($form['apellido_materno']);
+            $persona->setNumero($form['numero']);
+            $es_dirigente = (isset($form['es_dirigente']))?$form['es_dirigente']:0;
+            $persona->setEsDirigente($es_dirigente);
+            $activo = (isset($form['activo']))?$form['activo']:0;
+            $persona->setActivo($activo);
+            $persona->setEstado(1);
+            $persona->setAnio($session->get('anio'));
+            $persona->setEstadoCivil($form['estado_civil']);
+
+            $obj_lote  = $em->getRepository('ChecnesRegistroBundle:Lote')->find($form['lote']);
+            $obj_cargo = $em->getRepository('ChecnesRegistroBundle:Cargo')->find($form['cargo']);
+            $obj_user  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
+
+            $persona->setLote($obj_lote);
+            $persona->setCargo($obj_cargo);
+            $persona->setUsuarioMod($obj_user);
+            $persona->setFechaMod(new \DateTime(date('Y-m-d h:i:s')));
+            
+            $em->persist($persona);
+            $em->flush($persona);
+
+            $session->getFlashBag()->add("success",'La persona se creo de manera correcta!.');
+
+        }else{
+            $session->getFlashBag()->add("error",'Ocurrio un error!');
+        }
+
+        return $this->redirectToRoute('persona_index');
     }
 
     /**

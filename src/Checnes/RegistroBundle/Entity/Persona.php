@@ -140,6 +140,13 @@ class Persona
     /**
      * @var bool
      *
+     * @ORM\Column(name="activo", type="boolean",nullable=true, options={"default":"1"})
+     */
+    private $activo;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="estado", type="boolean",nullable=true, options={"default":"1"})
      */
     private $estado;
@@ -562,5 +569,29 @@ class Persona
     public function getUsuarioElim()
     {
         return $this->usuario_elim;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     *
+     * @return Persona
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean
+     */
+    public function getActivo()
+    {
+        return $this->activo;
     }
 }

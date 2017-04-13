@@ -47,7 +47,7 @@ class RolController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($rol);
-            $em->flush($rol);
+            $em->flush();
 
             return $this->redirectToRoute('rol_show', array('id' => $rol->getId()));
         }
@@ -113,7 +113,7 @@ class RolController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($rol);
-            $em->flush($rol);
+            $em->flush();
         }
 
         return $this->redirectToRoute('rol_index');

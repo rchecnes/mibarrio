@@ -21,20 +21,7 @@ class AsistenciaEvento
      */
     private $id;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetimetz")
-     */
-    private $fecha_creacion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_modificacion", type="datetimetz")
-     */
-    private $fecha_modificacion;
-
+    
     /**
      * @var bool
      *
@@ -57,6 +44,13 @@ class AsistenciaEvento
     private $estado;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="cerrado", type="boolean", nullable=true, options={"default":"0"})
+     */
+    private $cerrado;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Evento", inversedBy="asistencia_evento")
      * @ORM\JoinColumn(name="evento_id", referencedColumnName="id")
      */
@@ -77,15 +71,32 @@ class AsistenciaEvento
     private $anio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="asistencia_evento")
-     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_crea", type="datetimetz", nullable=true)
      */
-    private $usuario;
+    private $fecha_crea;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_mod", type="datetimetz", nullable=true)
+     */
+    private $fecha_mod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="asistencia_evento")
+     * @ORM\JoinColumn(name="usuario_crea_id", referencedColumnName="id", nullable=true)
+     */
+    private $usuario_crea;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="asistencia_evento")
+     * @ORM\JoinColumn(name="usuario_mod_id", referencedColumnName="id", nullable=true)
+     */
+    private $usuario_mod;
 
     
-
-    
-
     /**
      * Get id
      *
@@ -310,5 +321,125 @@ class AsistenciaEvento
     public function getTardanza()
     {
         return $this->tardanza;
+    }
+
+    /**
+     * Set fechaCrea
+     *
+     * @param \DateTime $fechaCrea
+     *
+     * @return AsistenciaEvento
+     */
+    public function setFechaCrea($fechaCrea)
+    {
+        $this->fecha_crea = $fechaCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCrea
+     *
+     * @return \DateTime
+     */
+    public function getFechaCrea()
+    {
+        return $this->fecha_crea;
+    }
+
+    /**
+     * Set fechaMod
+     *
+     * @param \DateTime $fechaMod
+     *
+     * @return AsistenciaEvento
+     */
+    public function setFechaMod($fechaMod)
+    {
+        $this->fecha_mod = $fechaMod;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaMod
+     *
+     * @return \DateTime
+     */
+    public function getFechaMod()
+    {
+        return $this->fecha_mod;
+    }
+
+    /**
+     * Set usuarioCrea
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
+     *
+     * @return AsistenciaEvento
+     */
+    public function setUsuarioCrea(\Checnes\RegistroBundle\Entity\Usuario $usuarioCrea = null)
+    {
+        $this->usuario_crea = $usuarioCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioCrea
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioCrea()
+    {
+        return $this->usuario_crea;
+    }
+
+    /**
+     * Set usuarioMod
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioMod
+     *
+     * @return AsistenciaEvento
+     */
+    public function setUsuarioMod(\Checnes\RegistroBundle\Entity\Usuario $usuarioMod = null)
+    {
+        $this->usuario_mod = $usuarioMod;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioMod
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioMod()
+    {
+        return $this->usuario_mod;
+    }
+
+    /**
+     * Set cerrado
+     *
+     * @param boolean $cerrado
+     *
+     * @return AsistenciaEvento
+     */
+    public function setCerrado($cerrado)
+    {
+        $this->cerrado = $cerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get cerrado
+     *
+     * @return boolean
+     */
+    public function getCerrado()
+    {
+        return $this->cerrado;
     }
 }

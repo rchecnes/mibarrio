@@ -67,6 +67,9 @@ class LoginController extends Controller
 
                     //Sesion
                     $session->set('user',$entity);
+                    $session->set('rol_id',$entity->getRol()->getId());
+                    $session->set('rol_nombre',$entity->getRol()->getNombre());
+                    $session->set('rol_nombre_sis',$entity->getRol()->getNombreSis());
                     $session->set('usuario_id',$entity->getId());
                     $session->set('anio',date('Y'));
                     $session->set('persona_id',$entity->getPersona()->getId());
@@ -90,7 +93,21 @@ class LoginController extends Controller
                     if (!is_object($obj_acso)) {
                         return $this->redirectToRoute("acceso_change_password");
                     }else{
-                        return $this->redirectToRoute("evento_index");
+                        $conn = $this->get('database_connection');
+                        //Obtenemos la ruta por defecto
+                        $rol_id=$entity->getRol()->getId();
+
+                        $sql = "SELECT * FROM menu_x_rol mxr
+                        INNER JOIN menu m ON(mxr.menu_id=m.id)
+                        WHERE mxr.rol_id=$rol_id AND mxr.defecto=1";
+                        $resp = $conn->executeQuery($sql)->fetchAll();
+
+                        $ruta_def = '';
+                        foreach ($resp as $key => $f) {
+                            $ruta_def = $f['enlace'];
+                        }
+
+                        return $this->redirect($ruta_def);
                     }
 
                 }else{

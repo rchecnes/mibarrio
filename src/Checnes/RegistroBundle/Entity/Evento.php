@@ -64,13 +64,6 @@ class Evento
     private $hora_final;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetimetz")
-     */
-    private $fecha_creacion;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="descripcion", type="text", nullable=true)
@@ -97,16 +90,49 @@ class Evento
     private $anio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento")
-     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
-     */
-    private $usuario;
-
-    /**
      * @ORM\ManyToOne(targetEntity="TipoActividad", inversedBy="evento")
      * @ORM\JoinColumn(name="tipo_actividad_id", referencedColumnName="id")
      */
     private $tipo_actividad;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_crea", type="datetimetz", nullable=true)
+     */
+    private $fecha_crea;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_mod", type="datetimetz", nullable=true)
+     */
+    private $fecha_mod;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_elim", type="datetimetz", nullable=true)
+     */
+    private $fecha_elim;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento")
+     * @ORM\JoinColumn(name="usuario_crea_id", referencedColumnName="id", nullable=true)
+     */
+    private $usuario_crea;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento")
+     * @ORM\JoinColumn(name="usuario_mod_id", referencedColumnName="id", nullable=true)
+     */
+    private $usuario_mod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evento")
+     * @ORM\JoinColumn(name="usuario_elim_id", referencedColumnName="id", nullable=true)
+     */
+    private $usuario_elim;
 
     /**
      * @ORM\OneToMany(targetEntity="EventoParticipante", mappedBy="evento")
@@ -128,9 +154,6 @@ class Evento
     }
 
     
-
-    
-
     /**
      * Get id
      *
@@ -495,5 +518,149 @@ class Evento
     public function getEventoParticipante()
     {
         return $this->evento_participante;
+    }
+
+    /**
+     * Set fechaCrea
+     *
+     * @param \DateTime $fechaCrea
+     *
+     * @return Evento
+     */
+    public function setFechaCrea($fechaCrea)
+    {
+        $this->fecha_crea = $fechaCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCrea
+     *
+     * @return \DateTime
+     */
+    public function getFechaCrea()
+    {
+        return $this->fecha_crea;
+    }
+
+    /**
+     * Set fechaMod
+     *
+     * @param \DateTime $fechaMod
+     *
+     * @return Evento
+     */
+    public function setFechaMod($fechaMod)
+    {
+        $this->fecha_mod = $fechaMod;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaMod
+     *
+     * @return \DateTime
+     */
+    public function getFechaMod()
+    {
+        return $this->fecha_mod;
+    }
+
+    /**
+     * Set usuarioCrea
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
+     *
+     * @return Evento
+     */
+    public function setUsuarioCrea(\Checnes\RegistroBundle\Entity\Usuario $usuarioCrea = null)
+    {
+        $this->usuario_crea = $usuarioCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioCrea
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioCrea()
+    {
+        return $this->usuario_crea;
+    }
+
+    /**
+     * Set usuarioMod
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioMod
+     *
+     * @return Evento
+     */
+    public function setUsuarioMod(\Checnes\RegistroBundle\Entity\Usuario $usuarioMod = null)
+    {
+        $this->usuario_mod = $usuarioMod;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioMod
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioMod()
+    {
+        return $this->usuario_mod;
+    }
+
+    /**
+     * Set fechaElim
+     *
+     * @param \DateTime $fechaElim
+     *
+     * @return Evento
+     */
+    public function setFechaElim($fechaElim)
+    {
+        $this->fecha_elim = $fechaElim;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaElim
+     *
+     * @return \DateTime
+     */
+    public function getFechaElim()
+    {
+        return $this->fecha_elim;
+    }
+
+    /**
+     * Set usuarioElim
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioElim
+     *
+     * @return Evento
+     */
+    public function setUsuarioElim(\Checnes\RegistroBundle\Entity\Usuario $usuarioElim = null)
+    {
+        $this->usuario_elim = $usuarioElim;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioElim
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioElim()
+    {
+        return $this->usuario_elim;
     }
 }

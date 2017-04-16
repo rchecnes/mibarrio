@@ -28,6 +28,13 @@ class MenuXRol
      */
     private $estado;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="defecto", type="boolean", nullable=true, options={"default":"0"})
+     */
+    private $defecto;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Rol", inversedBy="menu_x_rol")
@@ -125,5 +132,29 @@ class MenuXRol
     public function getMenu()
     {
         return $this->menu;
+    }
+
+    /**
+     * Set defecto
+     *
+     * @param boolean $defecto
+     *
+     * @return MenuXRol
+     */
+    public function setDefecto($defecto)
+    {
+        $this->defecto = $defecto;
+
+        return $this;
+    }
+
+    /**
+     * Get defecto
+     *
+     * @return boolean
+     */
+    public function getDefecto()
+    {
+        return $this->defecto;
     }
 }

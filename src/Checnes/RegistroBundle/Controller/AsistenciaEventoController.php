@@ -35,6 +35,8 @@ class AsistenciaEventoController extends Controller
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
                 INNER JOIN e.tipo_actividad a
                 WHERE e.anio='$anio'
+                AND e.estado=1
+                AND e.condicion NOT IN('porconfirmar','cancelado')
                 ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql)->getResult();
 
@@ -163,7 +165,8 @@ class AsistenciaEventoController extends Controller
                     $obj_asist->setTardanza($tardanza);
                 }
 
-                $obj_asist->setFechaModificacion(new \DateTime(date('Y-m-d h:i:sa')));
+                $obj_asist->setFechaMod(new \DateTime(date('Y-m-d h:i:sa')));
+                $obj_asist->setUsuarioMod($obj_usu);
                 $em->persist($obj_asist);
                 
             }else{
@@ -174,13 +177,12 @@ class AsistenciaEventoController extends Controller
 
                 $entityAsEv->setEvento($obj_evnt);
                 $entityAsEv->setPersona($obj_pers);
-                $entityAsEv->setFechaCreacion(new \DateTime(date('Y-m-d h:i:sa')));
-                $entityAsEv->setFechaModificacion(new \DateTime(date('Y-m-d h:i:sa')));
+                $entityAsEv->setFechaCrea(new \DateTime(date('Y-m-d h:i:sa')));
                 $entityAsEv->setAsistio($asistio);
                 $entityAsEv->setTardanza($tardanza);
                 $entityAsEv->setAnio($anio);
-                $entityAsEv->setUsuario($obj_usu);
-                $entityAsEv->setEstado(true);
+                $entityAsEv->setUsuarioCrea($obj_usu);
+                $entityAsEv->setEstado(1);
                 $em->persist($entityAsEv);
             }
         }

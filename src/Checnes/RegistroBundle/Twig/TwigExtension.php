@@ -1,17 +1,20 @@
 <?php
 namespace Checnes\RegistroBundle\Twig;
 
+
 class TwigExtension extends \Twig_Extension
 {
 	private $conn;
     private $em;
     private $url_base;
+    private $generator;
 
     public function __construct()
     {
-        $this->conn = $GLOBALS['kernel']->getContainer()->get('database_connection');
-        $this->em   = $GLOBALS['kernel']->getContainer()->get('doctrine')->getManager();
-        $this->url_base = $GLOBALS['kernel']->getContainer()->getParameter('base_url');
+        $this->conn     = $GLOBALS['kernel']->getContainer()->get('database_connection');
+        $this->em       = $GLOBALS['kernel']->getContainer()->get('doctrine')->getManager();
+        $this->url_base = $GLOBALS['kernel']->getContainer()->get('router')->getContext()->getBaseUrl();
+       
     }
 
     public function getFilters()
@@ -79,23 +82,11 @@ class TwigExtension extends \Twig_Extension
         return $cantidad;
     }
 
-    
-
-
-    /*public function getMenu($rol_id){
-
-    	//$em = $this->getDoctrine()->getManager();
-
-    	$entity = $this->em->getRepository('ChecnesRegistroBundle:MenuXRol')->findBy(array('rol'=>$rol_id),array());
-
-    	//print($entity->getNombre());
-    	//ld($entity);
-
-    	return $entity;
-    }*/
-    public function getMenuXRol($padre=0)
+    public function getMenuXRol($padre=0, $rol_id)
     {
-        $sql = "SELECT * FROM menu WHERE padre=$padre ORDER BY orden DESC";
+        $sql = "SELECT * FROM menu_x_rol mxr
+        INNER JOIN menu m ON(mxr.menu_id=m.id)
+        WHERE m.padre=$padre AND mxr.rol_id=$rol_id ORDER BY m.orden DESC";
         $resp = $this->conn->executeQuery($sql)->fetchAll();
 
         if(empty($resp)){return "";}
@@ -103,14 +94,15 @@ class TwigExtension extends \Twig_Extension
         $c = 1;
         foreach ($resp as $key => $row) {
             $active = "";
-            /*if ($c==1) {
-                $active = "active";
-            }*/
-
+          
             if ($row['tiene_hijo'] == 0) {
+
+                $route = "";
+
+                $active = ($row['defecto'] == 1)?"active":"";
                 $enlace = ($row['enlace'] !='')?$row['enlace']:'#';
                 $menu .= "<li class='".$active."'>";
-                $menu .= "<a href='".$this->url_base."/".$enlace."'>";
+                $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
                 $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                 $menu .= "</a>";
                 $menu .= "</li>";
@@ -121,7 +113,7 @@ class TwigExtension extends \Twig_Extension
                 $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                 $menu .= "<b class='arrow fa fa-angle-down'></b>";
                 $menu .= "</a>";
-                $menu .= $this->getMenuXRol($row['id']);
+                $menu .= $this->getMenuXRol($row['id'], $rol_id);
                 $menu .= "</li>";
             }
             $c++;
@@ -133,55 +125,12 @@ class TwigExtension extends \Twig_Extension
             $menu="<ul class='submenu nav-show'>$menu</ul>";
         }
         
-
-        //if($padre==0){$menu="<div id='menu_cab'>$menu</div>";}
         if($padre==0){$menu=$menu;}
         
         return $menu;
     }
 
-    /*public function getMenu($padre=0)
-    {
-        $sql = "SELECT * FROM menu WHERE padre=$padre AND estado=1";
-        $resp = $this->conn->executeQuery($sql)->fetchAll();
-
-        if(empty($resp)){return "";}
-        $menu = "";
-        foreach ($resp as $key => $row) {
-
-            if ($row['tiene_hijo'] == 0) {
-                $menu .= "<li>";
-                $menu .= "<a href='#' id='".$row['id']."' name='".$row['id']."'>";
-                $menu .= "<i class='fa  fa-file-code-o fa-4x'></i><span class='menu-text'>".$row['nombre']."</span>";
-                $menu .= "</a>";
-                $menu .= "</li>";
-
-            }else{
-                $menu .= "<li>";
-                $menu .= "<a href='#' id='".$row['id']."' name='".$row['id']."' class='dropdown-toggle'>";
-                $menu .= "<i class='fa  fa-folder-open-o fa-4x'></i><span class='menu-text'>".$row['nombre']."</span>";
-                $menu .= "<b class='arrow fa fa-plus'></b>";
-                $menu .= "</a>";
-                $menu .= $this->getMenu($row['id']);
-                $menu .= "</li>";
-            }
-        }
-
-        if ($padre ==0) {
-            $menu="<ul class=''>$menu</ul>";
-        }else{
-            $menu="<ul class=''>$menu</ul>";
-        }
-        
-
-        //if($padre==0){$menu="<div id='menu_cab'>$menu</div>";}
-        if($padre==0){$menu=$menu;}
-        
-        return $menu;
-    }*/
-
-
-
+   
     public function getName()
     {
         return 'Twig extension';

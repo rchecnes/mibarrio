@@ -30,7 +30,7 @@ class EventoController extends Controller
 
         //$lotes = $em->getRepository('ChecnesRegistroBundle:Lote')->findAll();
 
-        $dql = "SELECT e FROM ChecnesRegistroBundle:Evento e";
+        $dql = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1";
         $resp_dql = $em->createQuery($dql)->getResult();
 
         $evento = array();
@@ -130,18 +130,20 @@ class EventoController extends Controller
         $entity = new Evento();
 
         $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
-        $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+        $obj_usu  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
 
         $entity->setTipoActividad($obj_tipa);
         $entity->setCondicion($request->request->get('condicion'));
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
-        $entity->setFechaCreacion(new \DateTime(date('Y-m-d')));
+        $entity->setFechaCrea(new \DateTime(date('Y-m-d h:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
         $entity->setHoraInicio($request->request->get('hora_inicio'));
         $entity->setHoraFinal($request->request->get('hora_final'));
         $entity->setTipoPersona($request->request->get('tipo_persona'));
-        $entity->setUsuario($obj_usu);
+        $entity->setUsuarioCrea($obj_usu);
+        //$entity->setUsuarioMod('NULL');
+        //$entity->setUsuarioElim('NULL');
         $entity->setAnio($anio);
         $entity->setEstado(1);
         $em->persist($entity);
@@ -253,12 +255,12 @@ class EventoController extends Controller
                 $entity->setCondicion($request->request->get('condicion'));
                 $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
                 $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
-                $entity->setFechaCreacion(new \DateTime(date('Y-m-d')));
+                $entity->setFechaMod(new \DateTime(date('Y-m-d h:i:s')));
                 $entity->setDescripcion($request->request->get('detalle'));
                 $entity->setHoraInicio($request->request->get('hora_inicio'));
                 $entity->setHoraFinal($request->request->get('hora_final'));
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
-                $entity->setUsuario($obj_usu);
+                $entity->setUsuarioMod($obj_usu);
                 $entity->setAnio($anio);
                 $em->persist($entity);
                 $em->flush();
@@ -348,7 +350,9 @@ class EventoController extends Controller
      */
     public function deleteAction(Request $request)
     {   
-        $em = $this->getDoctrine()->getManager();
+        $em         = $this->getDoctrine()->getManager();
+        $session    = $request->getSession();
+        $usuario_id = $session->get("usuario_id");
 
         $entity = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->request->get('id'));
 
@@ -357,7 +361,14 @@ class EventoController extends Controller
         }
 
         if ($entity->getCondicion() == 'porconfirmar' || $entity->getCondicion() == 'cancelado') {
-            $em->remove($entity);
+
+            $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+
+            $entity->setFechaElim(new \DateTime(date('Y-m-d h:i:s')));
+            $entity->setUsuarioElim($obj_usu);
+            $entity->setEstado(0);
+            //$em->remove($entity);
+            $em->persist($entity);
             $em->flush();
 
             $obj_participantes = $entity->getEventoParticipante();

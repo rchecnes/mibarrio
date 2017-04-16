@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    {%set message_success = app.session.flashbag.get('success')%}
+    {% if message_success %}
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            {% for msg  in  message_success%}
+                {{ msg}}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" action="{{ path('rol_savpermiso')}}" id="form_permiso" name="form_permiso">
+        {{menus|raw}}
+
+        <p>
+            <input type="hidden" id="rol_id" name="rol_id" value="{{rol_id}}">
+            <input type="hidden" id="menu_grupo_id" name="menu_grupo_id" value="">
+            <input type="hidden" id="menu_default_id" name="menu_default_id" value="">
+            <input type="submit" value="Guardar" id="guardar" class="btn btn-success"/>
+            <a href="{{ path('rol_index')}}" class="btn btn-default"><< Volver</a>
+        </p>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script type="text/javascript">
+$(document).ready(function(){
+
+    add = function(id, tiene_hijo){
+        //console.log(tiene_hijo);
+        if (tiene_hijo == 0) {
+
+            if ($("#check_"+id).is(':checked')) {
+                $("#defecto_"+id).show();
+            }else{
+                $("#defecto_"+id).hide();
+            }
+            
+        }
+    }
+
+    $("#guardar").on("click", function(e){
+        e.preventDefault();
+
+        var menu_grupo_id = "";
+        var c = 1;
+        var a = $("input[type='checkbox']:checked").length;
+        $("input[type='checkbox']:checked").each(function(){
+            if (c<a) {
+                menu_grupo_id += $(this).val()+",";  
+            }else{
+                menu_grupo_id += $(this).val();
+            }
+            c++;
+        });
+
+        var menu_default_id = "";
+        $("input[type='radio']").each(function(){
+            if ($(this).is(":checked")) {
+                menu_default_id += $(this).val();  
+            }
+        });
+
+        $("#menu_grupo_id").val(menu_grupo_id);
+        $("#menu_default_id").val(menu_default_id);
+
+        $("#form_permiso").submit();
+    })
+
+
+
+
+});
+</script>
+    
+{% endblock %}

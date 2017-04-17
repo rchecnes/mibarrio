@@ -35,7 +35,6 @@
         {% for entity in pagination %}
             {%set class= (entity.activo==0)?"fila-deshabilitado":""%}
             <tr class="{{class}}">
-                <!--<td><a href="{{ path('persona_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>-->
                 <td>{{ entity.numero }}</td>
                 <td>{{ entity.dni }}</td>
                 <td>{{ entity.nombre }}</td>

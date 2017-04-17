@@ -6,7 +6,8 @@ use Checnes\RegistroBundle\Entity\Rol;
 use Checnes\RegistroBundle\Entity\MenuXRol;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Rol controller.
@@ -110,6 +111,8 @@ class RolController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        $rol = $em->getRepository('ChecnesRegistroBundle:Rol')->find($id);
+
         /*$dql   = "SELECT m FROM ChecnesRegistroBundle:Menu m ORDER BY m.orden DESC";
         $menus = $em->createQuery($dql)->getResult();*/
         $menu = "<table class='table table-bordered'>";
@@ -120,9 +123,9 @@ class RolController extends Controller
         $menu .= "</table>";
 
         return $this->render('rol/permiso.html.twig', array(
-            'menus'   => $menu,//$this->getMenuPermiso(0),
-            'titulo' => 'Asignar Permiso',
-            'rol_id' => $id
+            'menus'  => $menu,//$this->getMenuPermiso(0),
+            'titulo' => 'Asignar Permiso a: Rol '.$rol->getNombre(),
+            'rol'    => $rol
         ));
     }
 

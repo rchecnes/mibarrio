@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets%}
+	{{ parent() }}
+   
+{% endblock %}
+
+{% block body %}
+    <p>
+    	<a href="{{path('evento_newlistado')}}" class="btn btn-primary">Nuevo Evento</a>
+    </p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for evento in eventos %}
+            <tr>
+            	<td>{{ evento.fechainicio |date("d/m/Y") }}</td>
+            	<td>{{ evento.horainicio }} - {{ evento.horafinal }}</td>
+                <td>{{ evento.tipoactividad.nombre }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="">Nuevo</a>
+                        </li>
+                        <li>
+                            <a href="">Editar</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+    
+{% endblock %}

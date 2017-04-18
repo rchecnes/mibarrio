@@ -24,8 +24,8 @@ class EventoController extends Controller
      * @Route("/", name="evento_index")
      * @Method("GET")
      */
-    public function indexAction()
-    {
+    public function indexAction(){
+
         $em = $this->getDoctrine()->getManager();
 
         //$lotes = $em->getRepository('ChecnesRegistroBundle:Lote')->findAll();
@@ -96,7 +96,7 @@ class EventoController extends Controller
     /**
      *
      * @Route("/new", name="evento_new")
-     * @Method("POST")
+     * @Method("POST|GET")
      */
     public function newAction(Request $request){
 
@@ -411,5 +411,46 @@ class EventoController extends Controller
         }
         //return json_encode($resp);
         return new JsonResponse($array);
+    }
+
+    /**
+     * Lists all Lote entities.
+     *
+     * @Route("/lista", name="evento_listado")
+     * @Method("GET")
+     */
+    public function listadoAction(){
+        
+        $em = $this->getDoctrine()->getManager();
+
+        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1";
+        $resp = $em->createQuery($dql)->getResult();
+
+        
+        $data['eventos'] = $resp;
+        $data['titulo']  = "Listado de evento";
+
+        return $this->render('ChecnesRegistroBundle:Evento:listado.html.twig',$data);
+    }
+
+    /**
+     *
+     * @Route("/newlistado", name="evento_newlistado")
+     * @Method("POST|GET")
+     */
+    public function newListadoAction(Request $request){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
+        $html_op_tipac = '';
+        foreach ($tipo_actividad as $key => $entity) {
+            $html_op_tipac .= '<option value="'.$entity->getId().'">'.$entity->getNombre().'</option>';
+        }
+
+        $data['tipo_actividad_html'] = $html_op_tipac;
+        $data['fecha_fin']     = $request->request->get('dayClick');
+        $data['titulo']              = "Nuevo evento de calendario - ".$request->request->get('dayClick');
+        return $this->render('ChecnesRegistroBundle:Evento:newListado.html.twig', $data);
     }
 }

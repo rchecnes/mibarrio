@@ -106,10 +106,9 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <table class="table table-bordered" id="participantes">
                 <tr>
-                  <th>Nro</th>
-                  <th>Nombres</th>
-                  <th>Responsable</th>
-                  <th>Acciones</th>
+                  <th>Nro.</th>
+                  <th>Nombre</th>
+                  <th>Resp.</th>
                 </tr>
                 {%set participantes = ''%}
                 {% for parti in evento.eventoparticipante %}
@@ -123,7 +122,6 @@
                       <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}" disabled="disabled">
                     {%endif%} 
                     </td>
-                    <td><button type="button" class="btn btn-sm btn-danger" disabled="disabled" data-toggle="button" onclick="deleteParticipante('{{parti.persona.id}}')">Eliminar</button></td>
                   </tr>
                   {%if participantes == ''%}
                     {%set participantes = participantes~parti.persona.id %}

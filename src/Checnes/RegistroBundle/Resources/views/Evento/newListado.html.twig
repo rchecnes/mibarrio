@@ -19,6 +19,7 @@
         <div class="form-group">
           <input type="hidden" class="form-control" id="nombre" name="nombre">
           <input type="hidden" class="form-control" id="fecha" name="fecha">
+          <input type="hidden" class="form-control" id="origen" name="origen" value="form_normal">
           <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
         </div>
         <div class="row">
@@ -168,7 +169,7 @@
       $('.date-picker').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true
-    }).datepicker("update", '{{fecha_fin}}');
+      }).datepicker("update", '{{fecha_inicio}}');
 
 
     $("input[name='condicion']").on("click", function(){

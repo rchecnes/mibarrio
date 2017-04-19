@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<form role="form" method="POST" name="evento" id="evento" action="#">
+
+      <div class="tabbable">
+        <ul class="nav nav-tabs" id="myTab">
+          <li class="active"><a data-toggle="tab" href="#inicio">Inicio</a></li>
+          <li><a data-toggle="tab" href="#participante">Participante(s)</a></li>
+        </ul>
+
+      <div class="tab-content">
+        <div id="inicio" class="tab-pane fade in active">
+          <div class="row">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="form-group">
+                    <label for="tipo">Tipo de actividad:</label>
+                    <input type="text" class="form-control" id="tipo_actividad" name="tipo_actividad" value="{{evento.tipoactividad.nombre}}">
+                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="form-group">
+                      <label for="tipo">Tipo de persona:</label>
+                      <div class="controls">
+                        <label class="radio-inline">
+                          <input type="radio" name="tipo_persona" id="tipo_persona_general" value="general" checked="checked">
+                          General
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="tipo_persona" id="tipo_persona_dirigente" value="dirigente">
+                          Dirigentes
+                        </label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label for="hora_inicio">Hora Inicio:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio}}">
+                            <div class="input-group-addon">
+                               <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Hora Fin:</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final" value="{{evento.horafinal}}">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="form-group">
+                      <label>Fecha Fin:</label>
+                      <div class="input-group date">
+                        <div class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="detalle">Detalles:</label>
+            <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento">hhhh</textarea>
+          </div>
+          <div class="form-group">
+            <fieldset>
+              <legend class="form-group"><label for="condicion">Estado</label></legend>
+              <div class="controls">
+              <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>
+              <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>
+              <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>
+              <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>
+              <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div id="participante" class="tab-pane fade">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <label>Buscar Persona:</label>
+                <div class="form-group input-group">
+                  <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
+                  <span class="input-group-addon">
+                    <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
+                  </span>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <table class="table table-bordered" id="participantes">
+                <tr>
+                  <th>Nro</th>
+                  <th>Nombres</th>
+                  <th>Responsable</th>
+                  <th>Acciones</th>
+                </tr>
+                {%set participantes = ''%}
+                {% for parti in evento.eventoparticipante %}
+                  <tr id="filapersona_{{parti.persona.id}}">
+                    <td>{{parti.persona.numero}}</td>
+                    <td>{{parti.persona.apellidopaterno}}&nbsp;{{parti.persona.apellidomaterno}},&nbsp;{{parti.persona.nombre}}</td>
+                    <td>
+                    {%if parti.responsable ==1%}
+                      <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}" checked="checked" disabled="disabled">
+                    {%else%}
+                      <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}" disabled="disabled">
+                    {%endif%} 
+                    </td>
+                    <td><button type="button" class="btn btn-sm btn-danger" disabled="disabled" data-toggle="button" onclick="deleteParticipante('{{parti.persona.id}}')">Eliminar</button></td>
+                  </tr>
+                  {%if participantes == ''%}
+                    {%set participantes = participantes~parti.persona.id %}
+                  {%else%}
+                    {%set participantes = participantes~'-'~parti.persona.id %}
+                  {%endif%}
+                  
+                {%endfor%}
+              </table>
+              <input type="hidden" id="codigo_participantes" name="codigo_participantes" value="{{participantes}}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="align-center" style="padding-top: 10px">
+      <a class="btn btn-default" href="{{path('evento_listado')}}">Cancelar</a>
+    </p>
+        
+  </div>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    //Seleccionamos check y radios
+    //$("#tipo_actividad").val("{{evento.tipoactividad.id}}");
+    //$("#tipo_actividad").val("{{evento.tipoactividad.id}}");
+    $("#tipo_persona_{{evento.tipopersona}}").prop("checked",true);
+    $("#cond_{{evento.condicion}}").prop("checked",true);
+    //Bloquemaos todo
+    $("#evento input[type='text']").attr("disabled","disabled");
+    $("#evento select, #evento textarea").attr("disabled","disabled");
+    $("#evento input[type='radio']").attr("disabled","disabled");
+    
+  })
+</script>
+{% endblock %}

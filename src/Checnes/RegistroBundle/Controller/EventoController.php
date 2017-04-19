@@ -187,7 +187,12 @@ class EventoController extends Controller
         if ($reg_asistencia == 'REG_ASISTENCIA') {
             return $this->redirectToRoute("asistenciaevento_listapersona",array('evento'=>$entity->getId()));
         }else{
-            return $this->redirectToRoute("evento_index");
+
+            if ($request->request->get('origen')) {
+                return $this->redirectToRoute("evento_listado");
+            }else{
+                return $this->redirectToRoute("evento_index");
+            }
         }
 
     }
@@ -320,7 +325,11 @@ class EventoController extends Controller
         if ($reg_asistencia == 'REG_ASISTENCIA') {
             return $this->redirectToRoute("asistenciaevento_listapersona",array('evento'=>$id));
         }else{
-            return $this->redirectToRoute("evento_index");
+            if ($request->request->get('origen')) {
+                return $this->redirectToRoute("evento_listado");
+            }else{
+                return $this->redirectToRoute("evento_index");
+            }
         }
         
     }
@@ -423,7 +432,7 @@ class EventoController extends Controller
         
         $em = $this->getDoctrine()->getManager();
 
-        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1";
+        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1 ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql)->getResult();
 
         
@@ -449,8 +458,52 @@ class EventoController extends Controller
         }
 
         $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_fin']     = $request->request->get('dayClick');
-        $data['titulo']              = "Nuevo evento de calendario - ".$request->request->get('dayClick');
+        $data['fecha_inicio']        = date('Y-m-d');
+        $data['titulo']              = "Nuevo evento de calendario - ".date('Y-m-d');
         return $this->render('ChecnesRegistroBundle:Evento:newListado.html.twig', $data);
+    }
+
+    /**
+     *
+     * @Route("/{id}/editlistado", name="evento_editlistado")
+     * @Method("POST|GET")
+     */
+    public function editListadoAction(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
+
+        $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
+        $html_op_tipac = '';
+        foreach ($tipo_actividad as $key => $entity) {
+            $selected = ($entity->getId()==$evento->getTipoActividad()->getId())?"selected='selected'":"";
+            $html_op_tipac .= '<option value="'.$entity->getId().'" '.$selected.'>'.$entity->getNombre().'</option>';
+        }       
+
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
+
+        $data['tipo_actividad_html'] = $html_op_tipac;
+        $data['evento']              = $evento;
+        $data['participantes']       = $evento->getEventoParticipante();
+        $data['titulo']              = "Editar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d');
+
+        return $this->render('ChecnesRegistroBundle:Evento:editListado.html.twig', $data);
+    }
+
+    /**
+     *
+     * @Route("/{id}/showlistado", name="evento_showlistado")
+     * @Method("POST|GET")
+     */
+    public function showListadoAction(Request $request,$id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($id);
+
+        $data['evento']  = $evento;
+        $data['titulo']  = "Visualizar evento de calendario: ".$evento->getFechaInicio()->format('Y-m-d');
+        return $this->render('ChecnesRegistroBundle:Evento:showListado.html.twig', $data);
     }
 }

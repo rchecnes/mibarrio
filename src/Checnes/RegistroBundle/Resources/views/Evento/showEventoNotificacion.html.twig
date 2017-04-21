@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
 <form role="form" method="POST" name="evento" id="evento" action="#">
-
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{titulo}}</h4>
+    </div>
+    <div class="modal-body">
       <div class="tabbable">
         <ul class="nav nav-tabs" id="myTab">
           <li class="active"><a data-toggle="tab" href="#inicio">Inicio</a></li>
@@ -12,13 +13,13 @@
       <div class="tab-content">
         <div id="inicio" class="tab-pane fade in active">
           <div class="row">
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
                     <label for="tipo">Tipo de actividad:</label>
                     <input type="text" class="form-control" id="tipo_actividad" name="tipo_actividad" value="{{evento.tipoactividad.nombre}}">
                   </div>
               </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
                       <label for="tipo">Tipo de persona:</label>
                       <div class="controls">
@@ -73,10 +74,15 @@
                   </div>
               </div>
           </div>
-          <div class="form-group">
-            <label for="detalle">Detalles:</label>
-            <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento">hhhh</textarea>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="form-group">
+                <label for="detalle">Detalles:</label>
+                <textarea class="form-control" id="detalle" name="detalle" rows="4" placeholder="Escriba el detalle del evento">hhhh</textarea>
+            </div>
+            </div>
           </div>
+          
           <div class="form-group">
             <fieldset>
               <legend class="form-group"><label for="condicion">Estado</label></legend>
@@ -137,21 +143,7 @@
         </div>
       </div>
     </div>
-    <p class="align-center" style="padding-top: 10px">
-      {% if origen_solic == 'notificacion'%}
-        <a class="btn btn-default" href="{{path('inicio_index')}}">Cancelar</a>
-      {% else %}
-        <a class="btn btn-default" href="{{path('evento_listado')}}">Cancelar</a>
-      {% endif %}
-      
-    </p>
-        
-  </div>
 </form>
-{% endblock %}
-
-{% block javascripts %}
-  {{ parent() }}
 <script type="text/javascript">
   $(document).ready(function(){
 
@@ -167,4 +159,3 @@
     
   })
 </script>
-{% endblock %}

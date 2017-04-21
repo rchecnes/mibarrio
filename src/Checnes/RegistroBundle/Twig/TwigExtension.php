@@ -30,11 +30,12 @@ class TwigExtension extends \Twig_Extension
    public function getFunctions()
     {
         return array(
-            'getMenu'  => new \Twig_Function_Method($this, 'getMenu'),
-            'getMenuXRol'  => new \Twig_Function_Method($this, 'getMenuXRol'),
+            'getMenu'                   => new \Twig_Function_Method($this, 'getMenu'),
+            'getMenuXRol'               => new \Twig_Function_Method($this, 'getMenuXRol'),
             'existeRegistroAsistencia'  => new \Twig_Function_Method($this, 'existeRegistroAsistencia'),
-            'getNombrePadre'  => new \Twig_Function_Method($this, 'getNombrePadre'),
-            'getCantidadHijo'  => new \Twig_Function_Method($this, 'getCantidadHijo')
+            'getNombrePadre'            => new \Twig_Function_Method($this, 'getNombrePadre'),
+            'getCantidadHijo'           => new \Twig_Function_Method($this, 'getCantidadHijo'),
+            'getNotificacionEvento'     => new \Twig_Function_Method($this, 'getNotificacionEvento')
             
             
             );
@@ -128,6 +129,38 @@ class TwigExtension extends \Twig_Extension
         if($padre==0){$menu=$menu;}
         
         return $menu;
+    }
+
+    public function getNotificacionEvento(){
+        
+        $fecha_actual = date('Y-m-d');
+
+        $sqlev = "  SELECT
+                    e.*,
+                    te.nombre AS nomb_tipoevento
+                    FROM evento e
+                    INNER JOIN tipo_actividad te ON(e.tipo_actividad_id=te.id)
+                    WHERE e.condicion IN('confirmado','realizandose')
+                    /*AND DATE_FORMAT(e.fecha_fin,'%Y-%m-%d')>='$fecha_actual'*/";
+        //echo $sqlev;
+        $resp = $this->conn->executeQuery($sqlev)->fetchAll();
+
+        $cant_event = 0;
+
+        $eventos    = array();
+        $evento_det = array();
+
+        foreach ($resp as $key => $ev) {
+            
+            $cant_event +=1;
+
+            $evento_det[] = $ev;
+        }
+
+        $eventos['cantidad'] = $cant_event;
+        $eventos['detalle']  = $evento_det;
+
+        return $eventos;
     }
 
    

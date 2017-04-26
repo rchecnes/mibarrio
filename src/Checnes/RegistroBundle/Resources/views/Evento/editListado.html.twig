@@ -45,6 +45,10 @@
 	                      <input type="radio" name="tipo_persona" id="tipo_persona_dirigente" value="dirigente">
 	                      Dirigentes
 	                    </label>
+	                    <label class="radio-inline">
+                      	<input type="radio" name="tipo_persona" id="tipo_persona_seleccionar" value="seleccionar">
+	                      Seleccionar
+	                    </label>
 	                  </div>
 	              </div>
 	          </div>
@@ -119,7 +123,11 @@
 	        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	          <label>Buscar Persona:</label>
 	          <div class="form-group input-group">
-	            <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
+	          {%set disabled=''%}
+	          {%if evento.tipopersona!='seleccionar'%}
+	          	{%set disabled='disabled'%}
+	          {%endif%}
+	            <input type="text" class="form-control ui-autocomplete-input"  id="bus_persona" {{disabled}} name="bus_persona" placeholder="Buscar ..." autocomplete="off">
 	            <span class="input-group-addon">
 	              <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
 	            </span>
@@ -137,6 +145,7 @@
 	              <th>Acc.</th>
 	            </tr>
 	            {%set participantes = ''%}
+
 	            {% for parti in evento.eventoparticipante %}
 	              <tr id="filapersona_{{parti.persona.id}}">
 	                <td>{{parti.persona.numero}}</td>
@@ -146,7 +155,7 @@
 	                  <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}" checked="checked">
 	                {%else%}
 	                  <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}">
-	                {%endif%} 
+	                {%endif%}
 	                </td>
 	                <td><a href="#" onclick="deleteParticipante('{{parti.persona.id}}')" class="color-orange"><i class="ace-icon fa fa-trash-o bigger-200"></i></a></td>
 	              </tr>
@@ -155,7 +164,6 @@
 	              {%else%}
 	                {%set participantes = participantes~'-'~parti.persona.id %}
 	              {%endif%}
-	              
 	            {%endfor%}
 	          </table>
 	          <input type="hidden" id="codigo_participantes" name="codigo_participantes" value="{{participantes}}">
@@ -236,6 +244,15 @@
         $("#guardar_registrar_asistencia").show();
       }else{
         $("#guardar_registrar_asistencia").hide();
+      }
+    });
+
+    $("input:radio[name='tipo_persona']").on("click", function(){
+      
+      if ($(this).val() == 'seleccionar') {
+        $("#bus_persona").removeAttr("disabled");
+      }else{
+        $("#bus_persona").attr("disabled","disabled");
       }
     });
 

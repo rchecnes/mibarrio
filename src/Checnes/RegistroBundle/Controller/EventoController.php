@@ -119,8 +119,7 @@ class EventoController extends Controller
      * @Route("/create", name="evento_create")
      * @Method("POST")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
@@ -153,7 +152,7 @@ class EventoController extends Controller
         $participantes = $request->request->get('codigo_participantes');
         $participantes = explode('-', $participantes);
 
-        if ($participantes !='') {
+        if ($participantes !='' && $request->request->get('tipo_persona') == 'seleccionar') {
 
             $obj_evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($entity->getId());
 
@@ -286,7 +285,7 @@ class EventoController extends Controller
                 //Fin eliminar y registrar
                          
 
-                if ($participantes !='') {
+                if ($participantes !='' && $request->request->get('tipo_persona')=='seleccionar') {
 
                     $obj_evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($entity->getId());
 

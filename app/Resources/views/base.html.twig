@@ -65,41 +65,46 @@
 
                         <li class="purple dropdown-modal">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <i class="ace-icon fa fa-bell"></i>
+                                <i class="ace-icon fa fa-bell icon-animated-bell"></i>
                                 <span class="badge badge-important">{{cantidad_ev}}</span>
                             </a>
 
-                            <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close" style="width: 320px; height: 237px; left: 631px; right: auto; top: 14px;">
+                            <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
                                 <li class="dropdown-header">
                                     <i class="ace-icon fa fa-exclamation-triangle"></i>
                                     {{cantidad_ev}} Notificación
                                 </li>
-                                <li class="dropdown-content ace-scroll"  style="position: relative;">
-                                    <div class="scroll-track scroll-active" style="display: block; height: 163px;">
-                                        <div class="scroll-bar" style="height: 75px; top: 0px;"></div>
-                                    </div>
-                                    <div class="" style="max-height: 163px;">
-                                        <ul class="dropdown-menu dropdown-navbar">
+
+                                <li class="dropdown-content">                        
+                                    <div class="scroll-content">
+                                        <ul class="dropdown-menu dropdown-navbar navbar-pink">
                                             {% for detev in getNotificacionEvento().detalle %}
                                             <li>
-                                                <!--<a href="{#{ path('evento_showlistado', { 'id': detev.id }) }#}?origen=notificacion" class="clearfix">-->
-                                                    <div class="row">
-                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <a href="{{ path('evento_showlistado', { 'id': detev.id }) }}?origen=notificacion">
+                                                    <div class="clearfix">
+
+                                                        <span class="msg-title">
+                                                            <span class="blue">Actividad:</span>
                                                             {{detev.nomb_tipoevento}}
-                                                            <a href="{{ path('evento_showlistado', { 'id': detev.id }) }}?origen=notificacion" class="color-orange"><i class="ace-icon fa fa-eye bigger-200"></i></a>
-                                                        </div>
-                                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                            Fecha Inicio: {{detev.fecha_inicio | date('d/m/Y')}}<br>
-                                                            Hora Inicio: {{detev.hora_inicio}}<br>
-                                                        </div>
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <span class="blue">Fecha:</span>
+                                                            <i class="ace-icon fa fa-calendar"></i>
+                                                            <span>{{detev.fecha_inicio | date('d/m/Y')}}</span>
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <span class="blue">Hora:</span>
+                                                            <i class="ace-icon fa fa-clock-o"></i>
+                                                            <span>{{detev.hora_inicio}}</span>
+                                                        </span>
+
                                                     </div>
-                                                <!--</a>-->
+                                                </a>
                                             </li>
                                             {% endfor %}
                                         </ul>
                                     </div>
-                                </li>                            
-                                
+                                </li>
                             </ul>
                         </li>
                         

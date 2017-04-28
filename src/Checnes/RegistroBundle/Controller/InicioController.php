@@ -25,20 +25,26 @@ class InicioController extends Controller
         $rols = $em->getRepository('ChecnesRegistroBundle:Rol')->findAll();*/
 
         $data_meses  = array();
-        $data_evento = array();
+        $data_evento_faena = array();
+        $data_evento_reunion = array();
+        $data_evento_salida = array();
         $mes_actual  = date('m');
 
         foreach ($this->getMeses() as $key => $m) {
         	if ($m['id'] <= $mes_actual) {
         		$data_meses[] = $m['abrev'];
-        		$data_evento[] = rand(1,4);
+        		$data_evento_faena[] = rand(1,4);
+                $data_evento_reunion[] = rand(1,4);
+                $data_evento_salida[] = rand(1,4);
         	}
         }
         
         return $this->render('inicio/index.html.twig', array(
-            'titulo'     => 'Inicio',
-            'data_meses' => json_encode($data_meses),
-            'data_evento'=> json_encode($data_evento)
+            'titulo'             => 'Inicio',
+            'data_meses'         => json_encode($data_meses),
+            'data_evento_faena'  => json_encode($data_evento_faena),
+            'data_evento_reunion'=> json_encode($data_evento_reunion),
+            'data_evento_salida' => json_encode($data_evento_salida)
         ));
     }
 

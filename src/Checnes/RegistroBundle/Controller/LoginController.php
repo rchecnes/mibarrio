@@ -45,7 +45,6 @@ class LoginController extends Controller
         $remenber = $request->request->get('remenber');
 
         $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->findOneBy(array('usuario'=>$usuario,'estado'=>1));
-        
 
         if (is_object($entity)) {
 
@@ -83,6 +82,7 @@ class LoginController extends Controller
 
                     //Registramos acceso;
                     $acceso = new ControlAcceso();
+                    
                     $acceso->setUsuario($entity);
                     $acceso->setFechaAcceso(new \DateTime(date('Y-m-d h:i:sa')));
                     $acceso->setIp($this->ObtenerIP());
@@ -92,8 +92,10 @@ class LoginController extends Controller
                     
 
                     if (!is_object($obj_acso)) {
-                        return $this->redirectToRoute("acceso_change_password");
+                        echo "Llega a acceso";
+                        //return $this->redirectToRoute("acceso_change_password");
                     }else{
+
                         $conn = $this->get('database_connection');
                         //Obtenemos la ruta por defecto
                         $rol_id=$entity->getRol()->getId();
@@ -101,6 +103,7 @@ class LoginController extends Controller
                         $sql = "SELECT * FROM menu_x_rol mxr
                         INNER JOIN menu m ON(mxr.menu_id=m.id)
                         WHERE mxr.rol_id=$rol_id AND mxr.defecto=1";
+                      
                         $resp = $conn->executeQuery($sql)->fetchAll();
 
                         $ruta_def = '';
@@ -108,7 +111,12 @@ class LoginController extends Controller
                             $ruta_def = $f['enlace'];
                         }
 
-                        return $this->redirect($ruta_def);
+                        if ($ruta_def!='') {
+                            return $this->redirect($ruta_def);
+                        }else{
+                            $session->getFlashBag()->add("error",'No tiene definido perfil para ingresar');
+                            return $this->redirectToRoute("acceso");
+                        }
                     }
 
                 }else{

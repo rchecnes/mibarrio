@@ -118,24 +118,6 @@ class Persona
      * @ORM\Column(name="fecha_elim", type="datetimetz", nullable=true)
      */
     private $fecha_elim;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
-     * @ORM\JoinColumn(name="user_crea_id", referencedColumnName="id",nullable=true)
-     */
-    private $usuario_crea;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
-     * @ORM\JoinColumn(name="user_mod_id", referencedColumnName="id",nullable=true)
-     */
-    private $usuario_mod;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="persona")
-     * @ORM\JoinColumn(name="user_elim_id", referencedColumnName="id",nullable=true)
-     */
-    private $usuario_elim;
     
     /**
      * @var bool
@@ -497,78 +479,6 @@ class Persona
     public function getCargo()
     {
         return $this->cargo;
-    }
-
-    /**
-     * Set usuarioCrea
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
-     *
-     * @return Persona
-     */
-    public function setUsuarioCrea(\Checnes\RegistroBundle\Entity\Usuario $usuarioCrea = null)
-    {
-        $this->usuario_crea = $usuarioCrea;
-
-        return $this;
-    }
-
-    /**
-     * Get usuarioCrea
-     *
-     * @return \Checnes\RegistroBundle\Entity\Usuario
-     */
-    public function getUsuarioCrea()
-    {
-        return $this->usuario_crea;
-    }
-
-    /**
-     * Set usuarioMod
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioMod
-     *
-     * @return Persona
-     */
-    public function setUsuarioMod(\Checnes\RegistroBundle\Entity\Usuario $usuarioMod = null)
-    {
-        $this->usuario_mod = $usuarioMod;
-
-        return $this;
-    }
-
-    /**
-     * Get usuarioMod
-     *
-     * @return \Checnes\RegistroBundle\Entity\Usuario
-     */
-    public function getUsuarioMod()
-    {
-        return $this->usuario_mod;
-    }
-
-    /**
-     * Set usuarioElim
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioElim
-     *
-     * @return Persona
-     */
-    public function setUsuarioElim(\Checnes\RegistroBundle\Entity\Usuario $usuarioElim = null)
-    {
-        $this->usuario_elim = $usuarioElim;
-
-        return $this;
-    }
-
-    /**
-     * Get usuarioElim
-     *
-     * @return \Checnes\RegistroBundle\Entity\Usuario
-     */
-    public function getUsuarioElim()
-    {
-        return $this->usuario_elim;
     }
 
     /**

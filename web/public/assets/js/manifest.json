@@ -1,0 +1,17 @@
+{
+  "short_name": "SICI",
+  "name": "Sistema de CI",
+  "icons": [
+    {
+      "src": "../images/app.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "density": 1.0
+    }
+  ],
+  "start_url": "../../app.php",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#4f8450",
+  "background_color": "#4f8450"
+} 

@@ -45,6 +45,7 @@ class LoginController extends Controller
         $remenber = $request->request->get('remenber');
 
         $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->findOneBy(array('usuario'=>$usuario,'estado'=>1));
+        
 
         if (is_object($entity)) {
 

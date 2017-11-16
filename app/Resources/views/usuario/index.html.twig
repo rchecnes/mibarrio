@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <p>
+        <a href="{{ path('usuario_new') }}" class="btn btn-primary"><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>&nbsp;Nuevo</a>
+    </p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Activo</th>
+                <th>Año</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.usuario }}</td>
+                <td>{% if usuario.activo %}SI{% else %}NO{% endif %}</td>
+                <td>{{ usuario.anio }}</td>
+                <td>
+                    <a href="{{ path('usuario_show', { 'id': usuario.id }) }}" title="Editar Cargo">
+                      <i class="fa fa-pencil-square-o fa-2x"></i>
+                    </a>&nbsp;&nbsp;
+                    <a href="{{ path('usuario_edit', { 'id': usuario.id }) }}" title="Ver Cargo">
+                        <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

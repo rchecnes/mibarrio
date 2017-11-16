@@ -403,8 +403,8 @@ class EventoController extends Controller
 
         $conn = $this->get('database_connection');
 
-        $es_dirigente = ($request->request->get('tipoP') == 'dirigente')?'1':'1,0';
-        $term         = $request->request->get('term');
+        $es_dirigente = ($request->query->get('tipoP') == 'dirigente')?'1':'1,0';
+        $term         = $request->query->get('term');
 
         $sql = "SELECT id,numero,
                 CONCAT(apellido_paterno,' ',apellido_materno,', ',nombre)AS label,

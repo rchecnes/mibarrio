@@ -10,3 +10,4 @@
 /bin/
 /composer.phar
 sftp-config.json
+app/config/parameters.yml

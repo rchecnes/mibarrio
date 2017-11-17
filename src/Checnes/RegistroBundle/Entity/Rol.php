@@ -64,6 +64,12 @@ class Rol
         $this->menu_x_rol = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public function __toString()
+    {
+    
+        return $this->getNombre();
+    }
+
     /**
      * Get id
      *

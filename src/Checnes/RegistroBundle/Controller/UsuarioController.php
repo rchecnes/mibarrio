@@ -64,7 +64,7 @@ class UsuarioController extends Controller
 
         $term         = $request->query->get('term');
 
-        $sql = "SELECT id,numero,
+        $sql = "SELECT id,numero,dni,
                 CONCAT(apellido_paterno,' ',apellido_materno,', ',nombre)AS label,
                 CONCAT(apellido_paterno,' ',apellido_materno,',',nombre)AS value
                 FROM persona WHERE activo=1 AND estado=1 AND id NOT IN(SELECT persona_id FROM usuario) AND (nombre LIKE '%$term%' OR apellido_paterno LIKE '%$term%' OR apellido_materno LIKE '%$term%') LIMIT 5";

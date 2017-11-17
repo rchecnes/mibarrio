@@ -2,9 +2,9 @@
 parameters:
     database_host: 127.0.0.1
     database_port: null
-    database_name: null
-    database_user: null
-    database_password: null
+    database_name: rchecnes_barrio
+    database_user: rchecnes_dev
+    database_password: 11checnes2424raisa11
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null

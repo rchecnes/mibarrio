@@ -24,7 +24,7 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="usuario", type="string", length=255)
+     * @ORM\Column(name="usuario", type="string", length=255, unique=true)
      */
     private $usuario;
 
@@ -52,7 +52,7 @@ class Usuario
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="ultimo_acceso", type="datetimetz")
+     * @ORM\Column(name="ultimo_acceso", type="datetimetz", nullable=true)
      */
     private $ultimo_acceso;
 
@@ -85,7 +85,7 @@ class Usuario
 
     /**
      * @ORM\ManyToOne(targetEntity="Persona", inversedBy="usuario")
-     * @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="persona_id", referencedColumnName="id", unique=true)
      */
     private $persona;
 

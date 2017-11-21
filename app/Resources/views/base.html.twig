@@ -140,6 +140,7 @@
                                                 Actualizar
                                             </a>
                                         </li>
+                                        {% if app.session.get('rol_nombre') !='DEMO' %}
                                         <li>
                                             <a href="{{ path('persona_editperfil', { 'id': app.session.get('persona_id') }) }}">
                                                 <i class="ace-icon fa fa-user"></i>
@@ -153,6 +154,7 @@
                                             </a>
                                         </li>
                                         <li class="divider"></li>
+                                        {%endif%}
 
                                         <li>
                                             <a href="{{path('cerrar_sesion')}}">

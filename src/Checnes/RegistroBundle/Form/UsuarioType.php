@@ -14,15 +14,19 @@ class UsuarioType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('usuario')
-        ->add('password')
-        ->add('salt')
-        ->add('fecha_creacion')
-        ->add('ultimo_acceso')
-        ->add('activo')
-        ->add('estado')
-        ->add('anio')
-        //->add('rol')
+        $builder
+        ->add('usuario', 'text',array(
+            'attr'=>array('class'=>'form-control','autocomplete'=>false),
+            'label' => 'Usuario:'
+        ))
+        ->add('password', 'password',array(
+            'attr'=>array('class'=>'form-control'),
+            'label' => 'Password:'
+        ))
+        ->add('activo', 'checkbox',array(
+            'attr'=>array('class'=>'form-control'),
+            'label' => 'Habilitado:'
+        ))
         ->add('rol', 'entity', array(
                 'attr'          => array('class' => 'form-control'),
                 'class'         => 'ChecnesRegistroBundle:Rol',
@@ -36,7 +40,7 @@ class UsuarioType extends AbstractType
                     return $qb;
                 }                
         ))
-        //->add('persona')
+        ->add('persona','hidden')
         ;
     }
     

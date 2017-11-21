@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <form method="post" action="{#{ path('usuario_sav')}#}">
+    <form method="post" action="{{ path('usuario_sav')}}">
 
         <div class="row">
             <div class="cols col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -13,19 +13,24 @@
                     <span class="input-group-addon">
                         <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
                     </span>
+                    {{form_widget(form.persona) }}
                 </div>
+            </div>
+            <div class=" cols col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                {{form_label(form.usuario)}}
+                {{form_widget(form.usuario) }}
+            </div>
+            <div class=" cols col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                {{form_label(form.password)}}
+                {{form_widget(form.password) }}
             </div>
             <div class=" cols col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 {{form_label(form.rol)}}
                 {{form_widget(form.rol) }}
             </div>
             <div class=" cols col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <label>User name:</label>
-                <input type="text" class="form-control" id="user_name" name="user_name" required="required" autocomplete="off">
-            </div>
-            <div class=" cols col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <label>Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required="required" autocomplete="off">
+                {{form_label(form.activo)}}
+                {{form_widget(form.activo) }}
             </div>
         </div>
 
@@ -59,8 +64,8 @@
                 //console.log(ui);
                   //addPersona(ui.item);
                 $(this).val(ui.value);
-                $("#persona_id").val(ui.item.id);
-                $("#user_name").val(ui.item.dni);
+                $("#checnes_registrobundle_usuario_persona").val(ui.item.id);
+                $("#checnes_registrobundle_usuario_usuario").val(ui.item.dni);
                 //return false;
               }
             });

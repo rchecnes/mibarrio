@@ -80,6 +80,53 @@ class UsuarioController extends Controller
     }
 
     /**
+     * Creates a new usuario entity.
+     *
+     * @Route("/sav", name="usuario_sav")
+     * @Method({"GET", "POST"})
+     */
+    public function savAction(Request $request)
+    {
+        
+        $form    = $request->request->get('checnes_registrobundle_usuario');
+        $session = $request->getSession();
+
+        if ($form) {
+            
+            $em = $this->getDoctrine()->getManager();
+
+            $usuario  = $form['usuario'];
+            $password = $form['password'];
+            $obj_rol  = $em->getRepository('ChecnesRegistroBundle:Rol')->find($form['rol']);
+            $obj_per  = $em->getRepository('ChecnesRegistroBundle:Persona')->find($form['persona']);
+            $activo   = $form['activo'];
+            $salt     = md5($password);
+
+            $user = new Usuario();
+            $user->setUsuario($usuario);
+            $user->setPassword($password);
+            $user->setSalt($salt);
+            $user->setFechaCreacion(new \DateTime(date('Y-m-d h:i:s')));
+            $user->setUltimoAcceso(NULL);
+            $user->setAnio($session->get('anio'));
+            $user->setActivo($activo);
+            $user->setEstado(1);
+            $user->setRol($obj_rol);
+            $user->setPersona($obj_per);
+
+            $em->persist($user);
+            $em->flush($user);
+
+            $session->getFlashBag()->add("success","El usuario $usuario, se creo de manera correcta!");
+
+        }else{
+            $session->getFlashBag()->add("error",'Ocurrio un error!');
+        }
+
+        return $this->redirectToRoute('usuario_index');
+    }
+
+    /**
      * Finds and displays a usuario entity.
      *
      * @Route("/{id}", name="usuario_show")
@@ -103,21 +150,54 @@ class UsuarioController extends Controller
      */
     public function editAction(Request $request, Usuario $usuario)
     {
-        $deleteForm = $this->createDeleteForm($usuario);
+
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\UsuarioType', $usuario);
-        $editForm->handleRequest($request);
+        
+        return $this->render('usuario/edit.html.twig',array(
+            'edit_form' => $editForm->createView(),
+            'id'        => $usuario->getId(),
+            'titulo'    => 'Editar Usuario'
+        ));
+    }
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+    /**
+     * Displays a form to edit an existing persona entity.
+     *
+     * @Route("/{id}/update", name="usuario_update")
+     * @Method({"GET", "POST"})
+     */
+    public function updateAction(Request $request, Usuario $user)
+    {
 
-            return $this->redirectToRoute('usuario_edit', array('id' => $usuario->getId()));
+        $form    = $request->request->get('checnes_registrobundle_usuario');
+        $session = $request->getSession();
+
+        if ($form) {
+            
+            $em = $this->getDoctrine()->getManager();
+
+            $usuario  = $form['usuario'];
+            $password = $form['password'];
+            $obj_rol  = $em->getRepository('ChecnesRegistroBundle:Rol')->find($form['rol']);
+            $activo   = $form['activo'];
+            $salt     = md5($password);
+
+            $user->setUsuario($usuario);
+            $user->setPassword($password);
+            $user->setSalt($salt);
+            $user->setActivo($activo);
+            $user->setRol($obj_rol);
+
+            $em->persist($user);
+            $em->flush($user);
+
+            $session->getFlashBag()->add("success","El usuario $usuario, se actualizo de manera correcta!");
+
+        }else{
+            $session->getFlashBag()->add("error",'Ocurrio un error!');
         }
 
-        return $this->render('usuario/edit.html.twig', array(
-            'usuario' => $usuario,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirectToRoute('usuario_index');
     }
 
     /**

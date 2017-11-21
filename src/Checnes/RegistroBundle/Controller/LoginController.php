@@ -91,9 +91,9 @@ class LoginController extends Controller
                     $em->flush();
                     
 
-                    if (!is_object($obj_acso)) {
-                        echo "Llega a acceso";
-                        //return $this->redirectToRoute("acceso_change_password");
+                    if (is_object($obj_acso)==false && $entity->getRol()->getNombre() !='DEMO' && $entity->getRol()->getNombre() !='demo') {
+
+                        return $this->redirectToRoute("acceso_change_password");
                     }else{
 
                         $conn = $this->get('database_connection');

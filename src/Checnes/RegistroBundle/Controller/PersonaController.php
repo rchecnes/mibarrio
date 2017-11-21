@@ -32,7 +32,7 @@ class PersonaController extends Controller
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            3/*limit per page*/
+            10/*limit per page*/
         );
 
         return $this->render('persona/index.html.twig', array(
@@ -91,11 +91,9 @@ class PersonaController extends Controller
 
             $obj_lote  = $em->getRepository('ChecnesRegistroBundle:Lote')->find($form['lote']);
             $obj_cargo = $em->getRepository('ChecnesRegistroBundle:Cargo')->find($form['cargo']);
-            $obj_user  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
 
             $persona->setLote($obj_lote);
             $persona->setCargo($obj_cargo);
-            $persona->setUsuarioCrea($obj_user);
             $persona->setFechaCrea(new \DateTime(date('Y-m-d h:i:s')));
             
             $em->persist($persona);
@@ -174,11 +172,9 @@ class PersonaController extends Controller
 
             $obj_lote  = $em->getRepository('ChecnesRegistroBundle:Lote')->find($form['lote']);
             $obj_cargo = $em->getRepository('ChecnesRegistroBundle:Cargo')->find($form['cargo']);
-            $obj_user  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
 
             $persona->setLote($obj_lote);
             $persona->setCargo($obj_cargo);
-            $persona->setUsuarioMod($obj_user);
             $persona->setFechaMod(new \DateTime(date('Y-m-d h:i:s')));
             
             $em->persist($persona);

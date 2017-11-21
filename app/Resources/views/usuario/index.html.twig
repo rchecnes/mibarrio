@@ -1,7 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {%set message_success = app.session.flashbag.get('success')%}
+    {% if message_success %}
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            {% for msg  in  message_success%}
+                {{ msg}}
+            {% endfor %}
+        </div>
+    {% endif %}
 
+    {%set message_error = app.session.flashbag.get('error')%}
+    {% if message_error %}
+        <div class="alert alert-danger">
+            <button class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            {% for msg  in  message_error%}
+                {{ msg}}
+            {% endfor %}
+        </div>
+    {% endif %}
     <p>
         <a href="{{ path('usuario_new') }}" class="btn btn-primary"><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>&nbsp;Nuevo</a>
     </p>
@@ -10,7 +32,7 @@
             <tr>
                 <th>Usuario</th>
                 <th>Activo</th>
-                <th>Año</th>
+                <th>Rol</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -19,12 +41,12 @@
             <tr>
                 <td>{{ usuario.usuario }}</td>
                 <td>{% if usuario.activo %}SI{% else %}NO{% endif %}</td>
-                <td>{{ usuario.anio }}</td>
+                <td>{{ usuario.rol.nombre }}</td>
                 <td>
-                    <a href="{{ path('usuario_show', { 'id': usuario.id }) }}" title="Editar Cargo">
+                    <a href="{{ path('usuario_edit', { 'id': usuario.id }) }}" title="Editar Cargo">
                       <i class="fa fa-pencil-square-o fa-2x"></i>
                     </a>&nbsp;&nbsp;
-                    <a href="{{ path('usuario_edit', { 'id': usuario.id }) }}" title="Ver Cargo">
+                    <a href="{{ path('usuario_show', { 'id': usuario.id }) }}" title="Ver Cargo">
                         <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
                     </a>
                 </td>

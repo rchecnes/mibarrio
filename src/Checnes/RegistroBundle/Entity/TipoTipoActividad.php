@@ -36,6 +36,13 @@ class TipoTipoActividad
     private $descripcion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre_sistema", type="string", length=60, nullable=true)
+     */
+    private $nombre_sistema;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="activo", type="boolean", options={"default":"1"})
@@ -270,5 +277,29 @@ class TipoTipoActividad
     public function getTipoActividad()
     {
         return $this->tipo_actividad;
+    }
+
+    /**
+     * Set nombreSistema
+     *
+     * @param string $nombreSistema
+     *
+     * @return TipoTipoActividad
+     */
+    public function setNombreSistema($nombreSistema)
+    {
+        $this->nombre_sistema = $nombreSistema;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreSistema
+     *
+     * @return string
+     */
+    public function getNombreSistema()
+    {
+        return $this->nombre_sistema;
     }
 }

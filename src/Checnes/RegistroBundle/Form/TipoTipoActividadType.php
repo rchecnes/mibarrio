@@ -13,7 +13,7 @@ class TipoTipoActividadType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nombre')->add('descripcion')->add('activo')->add('estado')->add('fecha_creacion')->add('fecha_modificacion');
+        $builder->add('nombre')->add('nombre_sistema')->add('descripcion')->add('activo')->add('estado')->add('fecha_creacion')->add('fecha_modificacion');
     }
     
     /**

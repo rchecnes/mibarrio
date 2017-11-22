@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Evento</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entity in evento %}
+      <tr>
+        <td>{{entity.tipoactividad.nombre}}</td>
+        <td>{{entity.tipopersona}}</td>
+        <td>{{entity.fechainicio |date('Y-m-d') }}</td>
+        <td>{{entity.horainicio}}</td>
+        <td>
+          {%set cantasist = existeRegistroAsistencia(entity.id)%}
+          {%if cantasist > 0%}
+            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" class="color-purple" title="Editar Aportación">
+              <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
+            </a>
+          {%else%}
+            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" title="Registrar Aportación">
+              <i class="ace-icon fa fa-check-square-o bigger-200"></i>
+            </a>
+          {%endif%}
+          
+        </td>
+      </tr>
+    {%endfor%}
+    </tbody>
+    
+  </table>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+  });
+
+</script>
+{% endblock %}

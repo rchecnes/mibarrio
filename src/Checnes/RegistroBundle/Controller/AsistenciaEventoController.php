@@ -34,9 +34,11 @@ class AsistenciaEventoController extends Controller
 
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
                 INNER JOIN e.tipo_actividad a
+                INNER JOIN a.tipo_tipo_actividad ta
                 WHERE e.anio='$anio'
                 AND e.estado=1
                 AND e.condicion NOT IN('porconfirmar','cancelado')
+                AND ta.nombre_sistema='asistencia'
                 ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql)->getResult();
 
@@ -44,6 +46,40 @@ class AsistenciaEventoController extends Controller
     	return $this->render('ChecnesRegistroBundle:AsistenciaEvento:index.html.twig', array(
             'personas' => '',
             'titulo'   =>'Listado De Eventos',
+            'evento'   => $resp
+        ));
+    }
+
+    /**
+     * Lists all Lote entities.
+     *
+     * @Route("/aportacion", name="asistenciaevento_aportacion")
+     * @Method("GET")
+     */
+    public function aportacionAction(Request $request)
+    {   
+        $em = $this->getDoctrine()->getManager();
+
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        $usuario_id = $session->get("usuario_id");
+        $anio       = $session->get("anio");
+
+        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
+                INNER JOIN e.tipo_actividad a
+                INNER JOIN a.tipo_tipo_actividad ta
+                WHERE e.anio='$anio'
+                AND e.estado=1
+                AND e.condicion NOT IN('porconfirmar','cancelado')
+                AND ta.nombre_sistema='tesoreria'
+                ORDER BY e.fecha_inicio DESC";
+        $resp = $em->createQuery($dql)->getResult();
+
+
+        return $this->render('ChecnesRegistroBundle:RegistrarAportacion:index.html.twig', array(
+            'personas' => '',
+            'titulo'   =>'Listado De Aportacion',
             'evento'   => $resp
         ));
     }

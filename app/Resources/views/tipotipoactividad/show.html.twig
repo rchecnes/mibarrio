@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tipotipoactividad</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tipoTipoActividad.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ tipoTipoActividad.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ tipoTipoActividad.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Activo</th>
+                <td>{% if tipoTipoActividad.activo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{% if tipoTipoActividad.estado %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fecha_creacion</th>
+                <td>{% if tipoTipoActividad.fechacreacion %}{{ tipoTipoActividad.fechacreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fecha_modificacion</th>
+                <td>{% if tipoTipoActividad.fechamodificacion %}{{ tipoTipoActividad.fechamodificacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tipotipoactividad_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('tipotipoactividad_edit', { 'id': tipoTipoActividad.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

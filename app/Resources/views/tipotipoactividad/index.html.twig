@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tipotipoactividads list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Activo</th>
+                <th>Estado</th>
+                <th>Fecha_creacion</th>
+                <th>Fecha_modificacion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tipoTipoActividad in tipoTipoActividads %}
+            <tr>
+                <td><a href="{{ path('tipotipoactividad_show', { 'id': tipoTipoActividad.id }) }}">{{ tipoTipoActividad.id }}</a></td>
+                <td>{{ tipoTipoActividad.nombre }}</td>
+                <td>{{ tipoTipoActividad.descripcion }}</td>
+                <td>{% if tipoTipoActividad.activo %}Yes{% else %}No{% endif %}</td>
+                <td>{% if tipoTipoActividad.estado %}Yes{% else %}No{% endif %}</td>
+                <td>{% if tipoTipoActividad.fechacreacion %}{{ tipoTipoActividad.fechacreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if tipoTipoActividad.fechamodificacion %}{{ tipoTipoActividad.fechamodificacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('tipotipoactividad_show', { 'id': tipoTipoActividad.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('tipotipoactividad_edit', { 'id': tipoTipoActividad.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tipotipoactividad_new') }}">Create a new tipoTipoActividad</a>
+        </li>
+    </ul>
+{% endblock %}

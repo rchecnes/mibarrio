@@ -33,7 +33,7 @@
                 {{form_widget(form.activo) }}
             </div>
         </div>
-
+        {{ form_widget(form._token) }}
         <input type="submit" value="Crear" class="btn btn-success">
         <a href="{{ path('usuario_index') }}" class="btn btn-defaul">Cancelar</a>
     </form>    

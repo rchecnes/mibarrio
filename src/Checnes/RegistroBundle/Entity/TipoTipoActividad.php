@@ -5,12 +5,12 @@ namespace Checnes\RegistroBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TipoActividad
+ * TipoTipoActividad
  *
- * @ORM\Table(name="tipo_actividad")
- * @ORM\Entity(repositoryClass="Checnes\RegistroBundle\Repository\TipoActividadRepository")
+ * @ORM\Table(name="tipo_tipo_actividad")
+ * @ORM\Entity(repositoryClass="Checnes\RegistroBundle\Repository\TipoTipoActividadRepository")
  */
-class TipoActividad
+class TipoTipoActividad
 {
     /**
      * @var int
@@ -36,25 +36,18 @@ class TipoActividad
     private $descripcion;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nombre_sistema", type="string", length=60, nullable=true)
-     */
-    private $nombre_sistema;
-
-    /**
      * @var bool
      *
-     * @ORM\Column(name="estado", type="boolean", options={"default":"1"}, nullable=true)
-     */
-    private $estado;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="activo", type="boolean", options={"default":"1"}, nullable=true)
+     * @ORM\Column(name="activo", type="boolean", options={"default":"1"})
      */
     private $activo;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="estado", type="boolean", options={"default":"1"})
+     */
+    private $estado;
 
     /**
      * @var \DateTime
@@ -71,11 +64,17 @@ class TipoActividad
     private $fecha_modificacion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TipoTipoActividad", inversedBy="tipo_actividad")
-     * @ORM\JoinColumn(name="tipo_tipo_actividad_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="TipoActividad", mappedBy="tipo_tipo_actividad")
      */
-    private $tipo_tipo_actividad;
+    private $tipo_actividad;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tipo_actividad = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -83,10 +82,12 @@ class TipoActividad
         return $this->getNombre();
     }
 
+    
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -98,7 +99,7 @@ class TipoActividad
      *
      * @param string $nombre
      *
-     * @return TipoActividad
+     * @return TipoTipoActividad
      */
     public function setNombre($nombre)
     {
@@ -122,7 +123,7 @@ class TipoActividad
      *
      * @param string $descripcion
      *
-     * @return TipoActividad
+     * @return TipoTipoActividad
      */
     public function setDescripcion($descripcion)
     {
@@ -142,59 +143,11 @@ class TipoActividad
     }
 
     /**
-     * Set estado
-     *
-     * @param boolean $estado
-     *
-     * @return TipoActividad
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-
-    /**
-     * Get estado
-     *
-     * @return bool
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    /**
-     * Set nombreSistema
-     *
-     * @param string $nombreSistema
-     *
-     * @return TipoActividad
-     */
-    public function setNombreSistema($nombreSistema)
-    {
-        $this->nombre_sistema = $nombreSistema;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreSistema
-     *
-     * @return string
-     */
-    public function getNombreSistema()
-    {
-        return $this->nombre_sistema;
-    }
-
-    /**
      * Set activo
      *
      * @param boolean $activo
      *
-     * @return TipoActividad
+     * @return TipoTipoActividad
      */
     public function setActivo($activo)
     {
@@ -214,11 +167,35 @@ class TipoActividad
     }
 
     /**
+     * Set estado
+     *
+     * @param boolean $estado
+     *
+     * @return TipoTipoActividad
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
      * Set fechaCreacion
      *
      * @param \DateTime $fechaCreacion
      *
-     * @return TipoActividad
+     * @return TipoTipoActividad
      */
     public function setFechaCreacion($fechaCreacion)
     {
@@ -242,7 +219,7 @@ class TipoActividad
      *
      * @param \DateTime $fechaModificacion
      *
-     * @return TipoActividad
+     * @return TipoTipoActividad
      */
     public function setFechaModificacion($fechaModificacion)
     {
@@ -262,26 +239,36 @@ class TipoActividad
     }
 
     /**
-     * Set tipoTipoActividad
+     * Add tipoActividad
      *
-     * @param \Checnes\RegistroBundle\Entity\TipoTipoActividad $tipoTipoActividad
+     * @param \Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad
      *
-     * @return TipoActividad
+     * @return TipoTipoActividad
      */
-    public function setTipoTipoActividad(\Checnes\RegistroBundle\Entity\TipoTipoActividad $tipoTipoActividad = null)
+    public function addTipoActividad(\Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad)
     {
-        $this->tipo_tipo_actividad = $tipoTipoActividad;
+        $this->tipo_actividad[] = $tipoActividad;
 
         return $this;
     }
 
     /**
-     * Get tipoTipoActividad
+     * Remove tipoActividad
      *
-     * @return \Checnes\RegistroBundle\Entity\TipoTipoActividad
+     * @param \Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad
      */
-    public function getTipoTipoActividad()
+    public function removeTipoActividad(\Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad)
     {
-        return $this->tipo_tipo_actividad;
+        $this->tipo_actividad->removeElement($tipoActividad);
+    }
+
+    /**
+     * Get tipoActividad
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTipoActividad()
+    {
+        return $this->tipo_actividad;
     }
 }

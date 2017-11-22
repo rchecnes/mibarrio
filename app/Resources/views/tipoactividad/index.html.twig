@@ -1,43 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    
+    {%set message_success = app.session.flashbag.get('success')%}
+    {% if message_success %}
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            {% for msg  in  message_success%}
+                {{ msg}}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {%set message_error = app.session.flashbag.get('error')%}
+    {% if message_error %}
+        <div class="alert alert-danger">
+            <button class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            {% for msg  in  message_error%}
+                {{ msg}}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <p>
+        <a href="{{ path('tipoactividad_new') }}" class="btn btn-primary"><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>&nbsp;Nuevo</a>
+    </p>
+
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Nombre_sistema</th>
                 <th>Estado</th>
-                <th>Actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-        {% for tipoActividad in tipoActividads %}
+        {% for tipo_actividad in tipoActividads %}
             <tr>
-                <td><a href="{{ path('tipoactividad_show', { 'id': tipoActividad.id }) }}">{{ tipoActividad.id }}</a></td>
-                <td>{{ tipoActividad.nombre }}</td>
-                <td>{{ tipoActividad.descripcion }}</td>
-                <td>{{ tipoActividad.nombresistema }}</td>
-                <td>{% if tipoActividad.estado %}Yes{% else %}No{% endif %}</td>
+                <!--<td><a href="{#{ path('tipoactividad_show', { 'id': tipo_actividad.id }) }#}">{#{ tipo_actividad.id }#}</a></td>-->
+                <td>{{ tipo_actividad.nombre }}</td>
+                <td>{% if tipo_actividad.activo %}SI{% else %}NO{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('tipoactividad_show', { 'id': tipoActividad.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('tipoactividad_edit', { 'id': tipoActividad.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('tipoactividad_edit', { 'id': tipo_actividad.id }) }}" title="Editar Cargo">
+                      <i class="fa fa-pencil-square-o fa-2x"></i>
+                    </a>&nbsp;&nbsp;
+                    <a href="{{ path('tipoactividad_show', { 'id': tipo_actividad.id }) }}" title="Ver Cargo">
+                        <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('tipoactividad_new') }}">Create a new tipoActividad</a>
-        </li>
-    </ul>
 {% endblock %}

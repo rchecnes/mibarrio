@@ -44,12 +44,16 @@ class TipoActividadController extends Controller
         $form = $this->createForm('Checnes\RegistroBundle\Form\TipoActividadType', $tipoActividad);
         $form->handleRequest($request);
 
+        $session = $request->getSession();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($tipoActividad);
             $em->flush($tipoActividad);
 
-            return $this->redirectToRoute('tipoactividad_show', array('id' => $tipoActividad->getId()));
+            $session->getFlashBag()->add("success",'El registro se creó correctamente!');
+
+            return $this->redirectToRoute('tipoactividad_index');
         }
 
         return $this->render('tipoactividad/new.html.twig', array(
@@ -86,16 +90,21 @@ class TipoActividadController extends Controller
         $editForm = $this->createForm('Checnes\RegistroBundle\Form\TipoActividadType', $tipoActividad);
         $editForm->handleRequest($request);
 
+        $session = $request->getSession();
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('tipoactividad_edit', array('id' => $tipoActividad->getId()));
+            //return $this->redirectToRoute('tipoactividad_edit', array('id' => $tipoActividad->getId()));
+            $session->getFlashBag()->add("success",'El registro se edito correctamente!');
+
+            return $this->redirectToRoute('tipoactividad_index');
         }
 
         return $this->render('tipoactividad/edit.html.twig', array(
             'tipoActividad' => $tipoActividad,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'id' => $tipoActividad->getId(),
+            'edit_form' => $editForm->createView()
         ));
     }
 

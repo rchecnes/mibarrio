@@ -7,8 +7,7 @@
       <tr>
         <th>Evento</th>
         <th>Tipo</th>
-        <th>Fecha</th>
-        <th>Hora</th>
+        <th>Fecha Ini.</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -16,20 +15,23 @@
       {% for entity in evento %}
       <tr>
         <td>{{entity.tipoactividad.nombre}}</td>
-        <td>{{entity.tipopersona}}</td>
-        <td>{{entity.fechainicio |date('Y-m-d') }}</td>
-        <td>{{entity.horainicio}}</td>
+        <td>{{entity.tipopersona| mayuscula}}</td>
+        <td>{{entity.fechainicio |date('d/m/Y') }} {#{entity.horainicio}#} {#{entity.fechafin |date('d/m/Y') }#} {#{entity.horafinal}#}</td>
         <td>
-          {{getDiffFechasActual(entity.fechainicio, entity.horainicio)}}
+          {% set pasarlista  = getDiffFechasActual(entity.fechainicio, entity.horainicio) %}
+
           {%set cantasist = existeRegistroAsistencia(entity.id)%}
-          {%if cantasist > 0%}
-            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" class="color-purple" title="Editar Asistencia">
-              <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
-            </a>
-          {%else%}
-            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" title="Registrar Asistencia">
-              <i class="ace-icon fa fa-check-square-o bigger-200"></i>
-            </a>
+
+          {%if pasarlista == 0%}
+            {%if cantasist > 0%}
+              <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" class="color-purple" title="Editar Asistencia">
+                <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
+              </a>
+            {%else%}
+              <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" title="Registrar Asistencia">
+                <i class="ace-icon fa fa-check-square-o bigger-200"></i>
+              </a>
+            {%endif%}
           {%endif%}
           
         </td>

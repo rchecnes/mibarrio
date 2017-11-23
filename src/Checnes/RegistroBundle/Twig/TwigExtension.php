@@ -20,7 +20,8 @@ class TwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('price', array($this, 'priceFilter'))
+            new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
+            new \Twig_SimpleFilter('mayuscula', array($this, 'mayuscula'))
             //'getMenu' => new \Twig_Filter_Method($this, 'getMenu'),
             //'formatNum'         => new \Twig_Filter_Method($this, 'formatNum')
   
@@ -41,6 +42,10 @@ class TwigExtension extends \Twig_Extension
             
             );
      }
+
+    public function mayuscula($texto){
+        return strtoupper($texto);
+    }
 
     public function existeRegistroAsistencia($evento_id){
 
@@ -183,13 +188,18 @@ class TwigExtension extends \Twig_Extension
             $fech_ini .= " ".$hora_ini;
         }
 
-        $datetime1 = date_create($fech_ini);
-        $datetime2 = date_create(date('Y-m-d H:i:s'));
-        $intervalo = date_diff($datetime1, $datetime2);
-
+        $fecha_f = date('Y-m-d H:i:s');
+        $diff   = (strtotime($fech_ini)-strtotime($fecha_f));
         
-        //ld($intervalo->format('%R%a días'));
-        //ld($intervalo->format('Y-m-d H:i:s'));
+        
+        $d = floor($diff / 86400);
+        $h = floor(($diff - ($d * 86400)) / 3600);
+        $m = floor(($diff - ($d * 86400) - ($h * 3600)) / 60);
+        $s = $diff % 60;
+    
+        //ld("Dias: $d, horas: $h, minutos: $m, segundos: $s");
+
+        return $h;
     }
 
    

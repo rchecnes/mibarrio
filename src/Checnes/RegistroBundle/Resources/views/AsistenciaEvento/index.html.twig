@@ -20,6 +20,7 @@
         <td>{{entity.fechainicio |date('Y-m-d') }}</td>
         <td>{{entity.horainicio}}</td>
         <td>
+          {{getDiffFechasActual(entity.fechainicio, entity.horainicio)}}
           {%set cantasist = existeRegistroAsistencia(entity.id)%}
           {%if cantasist > 0%}
             <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" class="color-purple" title="Editar Asistencia">

@@ -35,7 +35,8 @@ class TwigExtension extends \Twig_Extension
             'existeRegistroAsistencia'  => new \Twig_Function_Method($this, 'existeRegistroAsistencia'),
             'getNombrePadre'            => new \Twig_Function_Method($this, 'getNombrePadre'),
             'getCantidadHijo'           => new \Twig_Function_Method($this, 'getCantidadHijo'),
-            'getNotificacionEvento'     => new \Twig_Function_Method($this, 'getNotificacionEvento')
+            'getNotificacionEvento'     => new \Twig_Function_Method($this, 'getNotificacionEvento'),
+            'getDiffFechasActual'       => new \Twig_Function_Method($this, 'getDiffFechasActual')
             
             
             );
@@ -83,8 +84,7 @@ class TwigExtension extends \Twig_Extension
         return $cantidad;
     }
 
-    public function getMenuXRol($padre=0, $rol_id)
-    {
+    public function getMenuXRol($padre=0, $rol_id){
         $sql = "SELECT * FROM menu_x_rol mxr
         INNER JOIN menu m ON(mxr.menu_id=m.id)
         WHERE m.padre=$padre AND mxr.rol_id=$rol_id ORDER BY m.orden DESC";
@@ -162,6 +162,34 @@ class TwigExtension extends \Twig_Extension
         $eventos['detalle']  = $evento_det;
 
         return $eventos;
+    }
+
+    public function getDiffFechasActual($fecha_ini, $hora_ini){
+
+        $fech_ini = "";
+        if (is_object($fecha_ini)) {
+            
+            $fech_ini = $fecha_ini->format('Y-m-d');
+
+        }else{
+            $fech_ini = $fecha_ini;
+        }
+
+        if (is_object($hora_ini)) {
+            
+            $fech_ini .= " ".$hora_ini->format('H:i:s');
+
+        }else{
+            $fech_ini .= " ".$hora_ini;
+        }
+
+        $datetime1 = date_create($fech_ini);
+        $datetime2 = date_create(date('Y-m-d H:i:s'));
+        $intervalo = date_diff($datetime1, $datetime2);
+
+        
+        //ld($intervalo->format('%R%a días'));
+        //ld($intervalo->format('Y-m-d H:i:s'));
     }
 
    

@@ -14,8 +14,7 @@ class LoginController extends Controller
     /**
      * @Route("/", name="acceso")
      */
-    public function indexAction()
-    {
+    public function indexAction(){
 
         $em = $this->getDoctrine()->getManager();
 
@@ -210,10 +209,13 @@ class LoginController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
+        $session = $request->getSession();
 
         $em = $this->getDoctrine()->getManager();
 
-        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Actualizar Contraseña'));
+        $obj_user = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
+
+        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Actualizar Usuario | Contraseña','entity'=>$obj_user));
     }
 
     /**
@@ -226,12 +228,30 @@ class LoginController extends Controller
 
         $entity = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($session->get('usuario_id'));
 
-        $entity->setPassword($request->request->get('password'));
-        $entity->setSalt(md5($request->request->get('password')));
-        $em->persist($entity);
-        $em->flush();
+        $password_ant_sis = $entity->getSalt();
+        $new_password = md5($request->request->get('password'));
+        $ant_password = md5($request->request->get('password_anterior'));
+        $user_name = $request->request->get('user_name');
+        //ld($ant_password."---".$password_ant_sis);exit();
+        if ($ant_password == $password_ant_sis) {
+            
+            $entity->setPassword($request->request->get('password'));
+            $entity->setSalt($new_password);
+            $entity->setUsuario($user_name);
 
-        return $this->redirectToRoute("evento_index");
+            $em->persist($entity);
+            $em->flush();
+
+            $session->getFlashBag()->add("success",'La contraseña se actualizó correctamente!');
+
+        }else{
+
+            $session->getFlashBag()->add("error",'La contraseña anterior no coincide con la nueva contraseña');
+            
+        }
+
+        return $this->render('ChecnesRegistroBundle:Login:changePassword.html.twig', array('titulo'=>'Actualizar Usuario | Contraseña','entity'=>$entity));
+        
     }
 
 

@@ -146,8 +146,8 @@ class TwigExtension extends \Twig_Extension
                     FROM evento e
                     INNER JOIN tipo_actividad te ON(e.tipo_actividad_id=te.id)
                     WHERE e.condicion IN('confirmado','realizandose')
-                    ORDER BY DATE_FORMAT(e.fecha_inicio,'%Y-%m-%d') DESC
-                    LIMIT 10";
+                    AND DATE_ADD(fecha_fin, INTERVAL 1 DAY) >= DATE_FORMAT(NOW(), '%Y-%m-%d')
+                    ORDER BY DATE_FORMAT(e.fecha_inicio,'%Y-%m-%d') DESC";
         //echo $sqlev;
         $resp = $this->conn->executeQuery($sqlev)->fetchAll();
 

@@ -119,6 +119,15 @@
 .color-orange{
     color: #d15b47;
 }
+.color-yellow{
+    color:#FFB752;
+}
+.color-green{
+    color: #5cb85c;
+}
+.color-blue{
+    color: #438EB9;
+}
 
 .cols{
     padding-bottom: 6px;

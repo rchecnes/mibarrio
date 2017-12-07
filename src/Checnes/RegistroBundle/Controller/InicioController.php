@@ -39,7 +39,7 @@ class InicioController extends Controller
         	}
         }
         
-        return $this->render('inicio/index.html.twig', array(
+        return $this->render('inicio/bienvenido.html.twig', array(
             'titulo'             => 'Inicio',
             'data_meses'         => json_encode($data_meses),
             'data_evento_faena'  => json_encode($data_evento_faena),

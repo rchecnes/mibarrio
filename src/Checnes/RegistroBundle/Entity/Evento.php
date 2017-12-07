@@ -69,9 +69,23 @@ class Evento
      * @ORM\Column(name="descripcion", type="text", nullable=true)
      */
     private $descripcion;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="multa", type="boolean", nullable=true, options={"default":"0"})
+     */
+    private $multa;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="monto_multa", type="float", nullable=true, options={"default":"0"})
+     */
+    private $monto_multa;
     
     /**
-     * @var bool
+     * @var boolean
      *
      * @ORM\Column(name="estado", type="boolean")
      */
@@ -662,5 +676,53 @@ class Evento
     public function getUsuarioElim()
     {
         return $this->usuario_elim;
+    }
+
+    /**
+     * Set multa
+     *
+     * @param boolean $multa
+     *
+     * @return Evento
+     */
+    public function setMulta($multa)
+    {
+        $this->multa = $multa;
+
+        return $this;
+    }
+
+    /**
+     * Get multa
+     *
+     * @return boolean
+     */
+    public function getMulta()
+    {
+        return $this->multa;
+    }
+
+    /**
+     * Set montoMulta
+     *
+     * @param float $montoMulta
+     *
+     * @return Evento
+     */
+    public function setMontoMulta($montoMulta)
+    {
+        $this->monto_multa = $montoMulta;
+
+        return $this;
+    }
+
+    /**
+     * Get montoMulta
+     *
+     * @return float
+     */
+    public function getMontoMulta()
+    {
+        return $this->monto_multa;
     }
 }

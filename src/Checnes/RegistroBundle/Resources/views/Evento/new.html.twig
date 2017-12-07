@@ -48,6 +48,34 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="tipo">¿Multa?:</label>
+                <div class="controls">
+                  <label class="radio-inline">
+                    <input type="radio" name="multa" id="multa_no" value="0" checked="checked">
+                    NO
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="multa" id="multa_si" value="1">
+                    SI
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="grupo_multa_monto" style="display: none">
+              <div class="form-group">
+                <label for="tipo">Monto de la multa:</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                       <i class="fa fa-money"></i>
+                    </div>
+                    <input type="text" class="form-control align-center" id="monto_multa" name="monto_multa" placeholder="0.00">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="bootstrap-timepicker">
                     <div class="form-group">
@@ -244,6 +272,14 @@
           addPersona(ui.item);
           $(this).val('').focus();
           return false;
+      }
+    });
+
+    $("input:radio[name='multa']").on("click", function(){
+      if ($(this).val()=='1') {
+        $("#grupo_multa_monto").show();
+      }else{
+        $("#grupo_multa_monto").hide();
       }
     });
 

@@ -125,7 +125,6 @@ class EventoController extends Controller
 
         $anio       = $session->get("anio");
         $usuario_id = $session->get("usuario_id");
-
         $entity = new Evento();
 
         $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
@@ -141,9 +140,9 @@ class EventoController extends Controller
         $entity->setHoraFinal($request->request->get('hora_final'));
         $entity->setTipoPersona($request->request->get('tipo_persona'));
         $entity->setUsuarioCrea($obj_usu);
-        //$entity->setUsuarioMod('NULL');
-        //$entity->setUsuarioElim('NULL');
         $entity->setAnio($anio);
+        $entity->setMulta($request->request->get('multa'));
+        $entity->setMontoMulta($request->request->get('monto_multa'));
         $entity->setEstado(1);
         $em->persist($entity);
         $em->flush();
@@ -231,8 +230,7 @@ class EventoController extends Controller
      * @Route("/{id}/update", name="evento_update")
      * @Method({"GET", "POST"})
      */
-    public function updateAction(Request $request, $id)
-    {   
+    public function updateAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
@@ -266,6 +264,8 @@ class EventoController extends Controller
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
                 $entity->setUsuarioMod($obj_usu);
                 $entity->setAnio($anio);
+                $entity->setMulta($request->request->get('multa'));
+                $entity->setMontoMulta($request->request->get('monto_multa'));
                 $em->persist($entity);
                 $em->flush();
 
@@ -329,8 +329,7 @@ class EventoController extends Controller
             }else{
                 return $this->redirectToRoute("evento_index");
             }
-        }
-        
+        }    
     }
 
     /**
@@ -356,8 +355,7 @@ class EventoController extends Controller
      * @Route("/delete", name="evento_delete")
      * @Method({"GET", "POST"})
      */
-    public function deleteAction(Request $request)
-    {   
+    public function deleteAction(Request $request){   
         $em         = $this->getDoctrine()->getManager();
         $session    = $request->getSession();
         $usuario_id = $session->get("usuario_id");
@@ -397,8 +395,7 @@ class EventoController extends Controller
      * @Route("/buscarpersona", name="evento_buscarpersona")
      * @Method({"GET"})
      */
-    public function buscarPersonaAction(Request $request)
-    {   
+    public function buscarPersonaAction(Request $request){   
         $em = $this->getDoctrine()->getManager();
 
         $conn = $this->get('database_connection');

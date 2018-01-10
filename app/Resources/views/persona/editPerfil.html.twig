@@ -67,6 +67,7 @@
 			</div>
 		</div>
 		{{ form_widget(edit_form._token) }}
-		<input type="submit" value="Guardar Información" class="btn btn-success"/>
+		<input type="submit" value="Guardar" class="btn btn-success"/>
+		<a href="{{ path('inicio_index') }}" class="btn btn-defaul">Cancelar</a>
 	</form>
 {% endblock %}

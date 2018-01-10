@@ -5,18 +5,20 @@
   <table class="table table-bordered">
     <thead>
       <tr>
+        <th>Id</th>
         <th>Evento</th>
-        <th>Tipo</th>
         <th>Fecha Ini.</th>
+        <th>Fecha Fin.</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for entity in evento %}
       <tr>
-        <td>{{entity.tipoactividad.nombre}}</td>
-        <td>{{entity.tipopersona| mayuscula}}</td>
-        <td>{{entity.fechainicio |date('d/m/Y') }} {#{entity.horainicio}#} {#{entity.fechafin |date('d/m/Y') }#} {#{entity.horafinal}#}</td>
+        <td>{{entity.id|str_pad}}</td>
+        <td>{{entity.asunto| mayuscula}}</td>
+        <td>{{entity.fechainicio |date('d/m/Y') }}</td>
+        <td>{{entity.fechafin |date('d/m/Y') }}</td>
         <td>
           {% set pasarlista  = getDiffFechasActual(entity.fechainicio, entity.horainicio) %}
 

@@ -139,6 +139,7 @@ class EventoController extends Controller
         $entity->setHoraInicio($request->request->get('hora_inicio'));
         $entity->setHoraFinal($request->request->get('hora_final'));
         $entity->setTipoPersona($request->request->get('tipo_persona'));
+        $entity->setAsunto($request->request->get('asunto'));
         $entity->setUsuarioCrea($obj_usu);
         $entity->setAnio($anio);
         $entity->setMulta($request->request->get('multa'));
@@ -262,6 +263,7 @@ class EventoController extends Controller
                 $entity->setHoraInicio($request->request->get('hora_inicio'));
                 $entity->setHoraFinal($request->request->get('hora_final'));
                 $entity->setTipoPersona($request->request->get('tipo_persona'));
+                $entity->setAsunto($request->request->get('asunto'));
                 $entity->setUsuarioMod($obj_usu);
                 $entity->setAnio($anio);
                 $entity->setMulta($request->request->get('multa'));

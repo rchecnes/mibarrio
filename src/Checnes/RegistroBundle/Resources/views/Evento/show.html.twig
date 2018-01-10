@@ -13,12 +13,20 @@
       <div class="tab-content">
         <div id="inicio" class="tab-pane fade in active">
           <div class="row">
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                  <div class="form-group">
-                    <label for="tipo">Tipo de actividad:</label>
-                    <input type="text" class="form-control" id="tipo_actividad" name="tipo_actividad" value="{{evento.tipoactividad.nombre}}">
-                  </div>
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="form-group">
+                <label for="tipo">Asunto</label>
+                <input type="text" class="form-control align-left" id="asunto" name="asunto" required="required" placeholder="Asunto" value="{{evento.asunto}}">
               </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="tipo">Tipo de actividad:</label>
+                  <input type="text" class="form-control" id="tipo_actividad" name="tipo_actividad" value="{{evento.tipoactividad.nombre}}">
+                </div>
+            </div>
+          </div>
+          <div class="row">
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                   <div class="form-group">
                       <label for="tipo">Tipo de persona:</label>

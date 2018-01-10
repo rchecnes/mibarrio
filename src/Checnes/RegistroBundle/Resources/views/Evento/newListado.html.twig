@@ -23,6 +23,12 @@
           <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
         </div>
         <div class="row">
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="form-group">
+                <label for="tipo">Asunto</label>
+                <input type="text" class="form-control align-left" id="asunto" name="asunto" required="required" placeholder="Asunto">
+              </div>
+          </div>
           <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="tipo">Tipo de actividad:</label>
@@ -31,7 +37,9 @@
                 </select>
               </div>
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                   <label for="tipo">Tipo de persona:</label>
                   <div class="controls">
@@ -50,9 +58,9 @@
                   </div>
               </div>
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5">
                 <div class="form-group">
                   <label for="tipo">¿Multa?:</label>
                   <div class="controls">
@@ -67,7 +75,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="grupo_multa_monto" style="display: none">
+              <div class="col-xs-8 col-sm-7 col-md-7 col-lg-7" id="grupo_multa_monto" style="display: none">
                 <div class="form-group">
                   <label for="tipo">Monto de la multa:</label>
                   <div class="input-group">
@@ -80,7 +88,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>          
         <div class="row">
           <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
               <div class="bootstrap-timepicker">
@@ -179,7 +187,6 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <p class="align-center" style="padding-top: 10px">
-          <button type="button" class="btn btn-danger" values="registrar_asistencia" id="guardar_registrar_asistencia" name="enviar"  style="display: none">Guardar y Registrar Asistencia</button>
           <button type="submit" class="btn btn-primary" id="enviar" name="enviar">Guardar</button>
           <a class="btn btn-default" href="{{path('evento_listado')}}">Cancelar</a>
         </p>

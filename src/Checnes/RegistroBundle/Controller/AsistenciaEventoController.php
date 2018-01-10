@@ -35,8 +35,7 @@ class AsistenciaEventoController extends Controller
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
                 INNER JOIN e.tipo_actividad a
                 INNER JOIN a.tipo_tipo_actividad ta
-                WHERE e.anio='$anio'
-                AND e.estado=1
+                WHERE e.estado=1
                 AND e.condicion NOT IN('porconfirmar','cancelado')
                 AND ta.nombre_sistema='asistencia'
                 ORDER BY e.fecha_inicio DESC";
@@ -69,8 +68,7 @@ class AsistenciaEventoController extends Controller
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
                 INNER JOIN e.tipo_actividad a
                 INNER JOIN a.tipo_tipo_actividad ta
-                WHERE e.anio='$anio'
-                AND e.estado=1
+                WHERE e.estado=1
                 AND e.condicion NOT IN('porconfirmar','cancelado')
                 AND ta.nombre_sistema='tesoreria'
                 ORDER BY e.fecha_inicio DESC";

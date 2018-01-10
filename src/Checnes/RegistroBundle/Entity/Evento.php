@@ -99,9 +99,17 @@ class Evento
     /**
      * @var string
      *
+     * @ORM\Column(name="asunto", type="string", nullable=false, length=255)
+     */
+    private $asunto;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="anio", type="string", length=4)
      */
     private $anio;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoActividad", inversedBy="evento")

@@ -21,7 +21,8 @@ class TwigExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
-            new \Twig_SimpleFilter('mayuscula', array($this, 'mayuscula'))
+            new \Twig_SimpleFilter('mayuscula', array($this, 'mayuscula')),
+            new \Twig_SimpleFilter('str_pad', array($this, 'str_pad'))
             //'getMenu' => new \Twig_Filter_Method($this, 'getMenu'),
             //'formatNum'         => new \Twig_Filter_Method($this, 'formatNum')
   
@@ -45,6 +46,10 @@ class TwigExtension extends \Twig_Extension
 
     public function mayuscula($texto){
         return strtoupper($texto);
+    }
+
+    public function str_pad($texto){
+        return str_pad($texto, 10, 0, STR_PAD_LEFT);
     }
 
     public function existeRegistroAsistencia($evento_id){

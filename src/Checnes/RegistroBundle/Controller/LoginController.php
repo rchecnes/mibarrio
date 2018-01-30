@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class LoginController extends Controller
 {
     /**
-     * @Route("/", name="acceso")
+     * @Route("/login", name="login")
      */
     public function indexAction(){
 
@@ -33,10 +33,11 @@ class LoginController extends Controller
     }
 
     /**
-     * @Route("/validarusuario", name="validar_usuario")
+     * @Route("/check", name="login_check")
      */
-    public function validarUsuarioAction(Request $request)
+    public function checkAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $usuario  = $request->request->get('usuario');
@@ -48,7 +49,7 @@ class LoginController extends Controller
         if (is_object($entity)) {
 
             if ($entity->getActivo() == 1) {
-                
+
                 $obj_acso = $em->getRepository('ChecnesRegistroBundle:ControlAcceso')->findOneBy(array('usuario'=>$entity->getId()));
 
                 if (md5($password) == $entity->getSalt()) {
@@ -114,22 +115,22 @@ class LoginController extends Controller
                             return $this->redirect($ruta_def);
                         }else{
                             $session->getFlashBag()->add("error",'No tiene definido perfil para ingresar');
-                            return $this->redirectToRoute("acceso");
+                            return $this->redirectToRoute("login");
                         }
                     }
 
                 }else{
                     $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
-                    return $this->redirectToRoute("acceso");
+                    return $this->redirectToRoute("login");
 
                 }
             }else{
                 $session->getFlashBag()->add("error",'El usuario está deshabilitado');
-                return $this->redirectToRoute("acceso");
+                return $this->redirectToRoute("login");
             }
         }else{
             $session->getFlashBag()->add("error",'Usuario o clave incorrecto');
-            return $this->redirectToRoute("acceso");
+            return $this->redirectToRoute("login");
         }
         
     }
@@ -154,9 +155,9 @@ class LoginController extends Controller
     }
 
     /**
-     * @Route("/cerrarsesion", name="cerrar_sesion")
+     * @Route("/logout", name="logout")
      */
-    public function cerrarSesionAction()
+    public function logoutAction()
     {
         
     	//ld("holaaaa validando");

@@ -20,8 +20,7 @@
         "raulfraile/ladybug-bundle": "~1.0",
         "mopa/bootstrap-bundle": "~3.0",
         "twbs/bootstrap": "~3.3.0",
-        "knplabs/knp-paginator-bundle": "dev-master" 
-
+        "knplabs/knp-paginator-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

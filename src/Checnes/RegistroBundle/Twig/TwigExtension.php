@@ -39,7 +39,8 @@ class TwigExtension extends \Twig_Extension
             'getNombrePadre'            => new \Twig_Function_Method($this, 'getNombrePadre'),
             'getCantidadHijo'           => new \Twig_Function_Method($this, 'getCantidadHijo'),
             'getNotificacionEvento'     => new \Twig_Function_Method($this, 'getNotificacionEvento'),
-            'getDiffFechasActual'       => new \Twig_Function_Method($this, 'getDiffFechasActual')
+            'getDiffFechasActual'       => new \Twig_Function_Method($this, 'getDiffFechasActual'),
+            'getDispositivo'            => new \Twig_Function_Method($this, 'getDispositivo')
             
             
             );
@@ -53,8 +54,8 @@ class TwigExtension extends \Twig_Extension
         return strtoupper($texto);
     }
 
-    public function str_pad($texto){
-        return str_pad($texto, 10, 0, STR_PAD_LEFT);
+    public function str_pad($texto,$nums){
+        return str_pad($texto, $nums, 0, STR_PAD_LEFT);
     }
 
     public function existeRegistroAsistencia($evento_id){
@@ -105,6 +106,8 @@ class TwigExtension extends \Twig_Extension
         WHERE m.padre=$padre AND mxr.rol_id=$rol_id ORDER BY m.orden DESC";
         $resp = $this->conn->executeQuery($sql)->fetchAll();
 
+        $dispositivo = $this->getDispositivo();
+
         if(empty($resp)){return "";}
         $menu = "";
         $c = 1;
@@ -117,11 +120,25 @@ class TwigExtension extends \Twig_Extension
 
                 $active = ($row['defecto'] == 1)?"active":"";
                 $enlace = ($row['enlace'] !='')?$row['enlace']:'#';
-                $menu .= "<li class='".$active."'>";
-                $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
-                $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
-                $menu .= "</a>";
-                $menu .= "</li>";
+                
+                if ($dispositivo == 'mobil') {
+                    if ($enlace !='evento') {
+                        $menu .= "<li class='".$active."'>";
+                        $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
+                        $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
+                        $menu .= "</a>";
+                        $menu .= "</li>";
+                    }
+                }else{
+                    if ($enlace !='evento/lista') {
+                        $menu .= "<li class='".$active."'>";
+                        $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
+                        $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
+                        $menu .= "</a>";
+                        $menu .= "</li>";
+                    }
+                }
+                
 
             }else{
                 $menu .= "<li>";
@@ -212,7 +229,73 @@ class TwigExtension extends \Twig_Extension
         return $h;
     }
 
-   
+    public function getDispositivo(){
+        
+        $tablet_browser = 0;
+        $mobile_browser = 0;
+        $body_class     = 'desktop';
+         
+        if (preg_match('/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+            $tablet_browser++;
+            $body_class = "tablet";
+        }
+         
+        if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|iemobile)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+            $mobile_browser++;
+            $body_class = "mobile";
+        }
+         
+        if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
+            $mobile_browser++;
+            $body_class = "mobile";
+        }
+         
+        $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
+        $mobile_agents = array(
+            'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+            'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+            'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+            'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+            'newt','noki','palm','pana','pant','phil','play','port','prox',
+            'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+            'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+            'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+            'wapr','webc','winw','winw','xda ','xda-');
+         
+        if (in_array($mobile_ua,$mobile_agents)) {
+            $mobile_browser++;
+        }
+         
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'opera mini') > 0) {
+            $mobile_browser++;
+            //Check for tablets on opera mini alternative headers
+            $stock_ua = strtolower(isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA'])?$_SERVER['HTTP_X_OPERAMINI_PHONE_UA']:(isset($_SERVER['HTTP_DEVICE_STOCK_UA'])?$_SERVER['HTTP_DEVICE_STOCK_UA']:''));
+            if (preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $stock_ua)) {
+              $tablet_browser++;
+            }
+        }
+
+        $dispositivo = 'desktop';
+
+        if ($tablet_browser > 0) {
+            // Si es tablet has lo que necesites
+           //print 'es tablet';
+           $dispositivo = 'tablet';
+        }
+        else if ($mobile_browser > 0) {
+            // Si es dispositivo mobil has lo que necesites
+           //print 'es un mobil';
+           $dispositivo = 'mobil';
+        }
+        else {
+            // Si es ordenador de escritorio has lo que necesites
+           //print 'es un ordenador de escritorio';
+           $dispositivo = 'desktop';
+        }
+
+        return $dispositivo;  
+    }
+
     public function getName()
     {
         return 'Twig extension';

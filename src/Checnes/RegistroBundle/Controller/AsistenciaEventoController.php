@@ -39,13 +39,19 @@ class AsistenciaEventoController extends Controller
                 AND e.condicion NOT IN('porconfirmar','cancelado')
                 AND ta.nombre_sistema='asistencia'
                 ORDER BY e.fecha_inicio DESC";
-        $resp = $em->createQuery($dql)->getResult();
+        $resp = $em->createQuery($dql);
 
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $resp, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
 
     	return $this->render('ChecnesRegistroBundle:AsistenciaEvento:index.html.twig', array(
             'personas' => '',
-            'titulo'   =>'Listado De Eventos',
-            'evento'   => $resp
+            'titulo'   =>'Tomar Asistencia',
+            'pagination'   => $pagination
         ));
     }
 
@@ -70,15 +76,21 @@ class AsistenciaEventoController extends Controller
                 INNER JOIN a.tipo_tipo_actividad ta
                 WHERE e.estado=1
                 AND e.condicion NOT IN('porconfirmar','cancelado')
-                AND ta.nombre_sistema='tesoreria'
+                AND (ta.nombre_sistema='tesoreria' OR e.multa=1)
                 ORDER BY e.fecha_inicio DESC";
-        $resp = $em->createQuery($dql)->getResult();
+        $resp = $em->createQuery($dql);
 
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $resp, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
 
         return $this->render('ChecnesRegistroBundle:RegistrarAportacion:index.html.twig', array(
-            'personas' => '',
-            'titulo'   =>'Listado De Aportacion',
-            'evento'   => $resp
+            'personas'   => '',
+            'titulo'     =>'Listado de Aportación / Cobro',
+            'pagination' => $pagination
         ));
     }
 

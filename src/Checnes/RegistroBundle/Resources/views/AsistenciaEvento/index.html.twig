@@ -5,18 +5,19 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Evento</th>
-        <th>Fecha Ini.</th>
+        <!--<th>Id</th>-->
+        <th>Asunto</th>
+        <th>Fecha Inicio.</th>
         <th>Fecha Fin.</th>
+        
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      {% for entity in evento %}
+      {% for entity in pagination %}
       <tr>
-        <td>{{entity.id|str_pad}}</td>
-        <td>{{entity.asunto| mayuscula}}</td>
+        <!--<td>{#{entity.id|str_pad(4)}#}</td>-->
+        <td>{{entity.asunto| ucwords}}</td>
         <td>{{entity.fechainicio |date('d/m/Y') }}</td>
         <td>{{entity.fechafin |date('d/m/Y') }}</td>
         <td>
@@ -42,6 +43,10 @@
     </tbody>
     
   </table>
+  <!--Paginado-->
+  <div class="pagination-navigation">
+      {{ knp_pagination_render(pagination) }}
+  </div>
 {% endblock %}
 
 {% block javascripts %}

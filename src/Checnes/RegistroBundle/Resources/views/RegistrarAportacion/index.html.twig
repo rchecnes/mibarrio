@@ -5,20 +5,18 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>Evento</th>
-        <th>Tipo</th>
-        <th>Fecha</th>
-        <th>Hora</th>
+        <th>Asunto</th>
+        <th>Fecha Inicio</th>
+        <th>Fecha Fin</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      {% for entity in evento %}
+      {% for entity in pagination %}
       <tr>
-        <td>{{entity.tipoactividad.nombre}}</td>
-        <td>{{entity.tipopersona}}</td>
+        <td>{{entity.asunto}}</td>
         <td>{{entity.fechainicio |date('Y-m-d') }}</td>
-        <td>{{entity.horainicio}}</td>
+        <td>{{entity.fechafin | date('Y-m-d')}}</td>
         <td>
           {%set cantasist = existeRegistroAsistencia(entity.id)%}
           {%if cantasist > 0%}
@@ -37,6 +35,10 @@
     </tbody>
     
   </table>
+  <!--Paginado-->
+  <div class="pagination-navigation">
+      {{ knp_pagination_render(pagination) }}
+  </div>
 {% endblock %}
 
 {% block javascripts %}

@@ -7,23 +7,30 @@
 
 {% block body %}
     <p>
-    	<a href="{{path('evento_newlistado')}}" class="btn btn-primary">Nuevo Evento</a>
+    	
     </p>
+    <table width="100%">
+        <tr>
+            <td class="align-left"><a href="{{path('evento_newlistado')}}" class="btn btn-primary">Nuevo Evento</a></td>
+            <td class="align-right"><div class="count-reg"><b>Nro. Reg. {{ pagination.getTotalItemCount }}</b></div></td>
+        </tr>
+    </table>
+    <br>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
+                <th>Fecha Ini.</th>
+                <th>Fecha Fin.</th>
                 <th>Tipo</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for evento in eventos %}
+        {% for evento in pagination %}
             <tr>
-            	<td>{{ evento.fechainicio |date("Y-m-d") }}</td>
-            	<td>{{ evento.horainicio }}</td>
-                <td>{{ evento.tipoactividad.nombre }}</td>
+            	<td>{{ evento.fechainicio |date("Y-m-d") }} {{ evento.horainicio }}</td>
+            	<td>{{ evento.fechafin |date("Y-m-d") }} {{ evento.horafinal }}</td>
+                <td>{{ evento.asunto | ucwords }}</td>
                 <td>
                     {% if evento.fechainicio |date("Y-m-d") < 'now'|date('Y-m-d') %}
                         <a href="{{ path('evento_showlistado', { 'id': evento.id }) }}" class="color-orange"><i class="ace-icon fa fa-eye bigger-200"></i></a>
@@ -37,6 +44,10 @@
         {% endfor %}
         </tbody>
     </table>
+    <!--Paginado-->
+    <div class="pagination-navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}
 
 {% block javascripts %}

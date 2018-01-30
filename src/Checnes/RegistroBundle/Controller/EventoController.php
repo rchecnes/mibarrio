@@ -132,7 +132,7 @@ class EventoController extends Controller
 
         $entity->setTipoActividad($obj_tipa);
         $entity->setCondicion($request->request->get('condicion'));
-        $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
+        $entity->setFechaInicio(new \DateTime($request->request->get('fecha_inicio')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaCrea(new \DateTime(date('Y-m-d h:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
@@ -426,15 +426,25 @@ class EventoController extends Controller
      * @Route("/lista", name="evento_listado")
      * @Method("GET")
      */
-    public function listadoAction(){
+    public function listadoAction(Request $request){
         
         $em = $this->getDoctrine()->getManager();
 
-        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1 ORDER BY e.fecha_inicio DESC";
-        $resp = $em->createQuery($dql)->getResult();
+        $resp = $em->createQuery("SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1 ORDER BY e.fecha_inicio DESC");
 
+        #$em    = $this->get('doctrine.orm.entity_manager');
+        #$dql   = "SELECT a FROM AcmeMainBundle:Article a";
+        #$query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $resp, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
         
         $data['eventos'] = $resp;
+        $data['pagination'] = $pagination;
         $data['titulo']  = "Listado de evento";
 
         return $this->render('ChecnesRegistroBundle:Evento:listado.html.twig',$data);
@@ -458,6 +468,7 @@ class EventoController extends Controller
         $data['tipo_actividad_html'] = $html_op_tipac;
         $data['fecha_inicio']        = date('Y-m-d');
         $data['titulo']              = "Nuevo Evento: ".date('Y-m-d');
+
         return $this->render('ChecnesRegistroBundle:Evento:newListado.html.twig', $data);
     }
 

@@ -22,7 +22,8 @@ class TwigExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
             new \Twig_SimpleFilter('mayuscula', array($this, 'mayuscula')),
-            new \Twig_SimpleFilter('str_pad', array($this, 'str_pad'))
+            new \Twig_SimpleFilter('str_pad', array($this, 'str_pad')),
+            new \Twig_SimpleFilter('ucwords', array($this, 'ucwords'))
             //'getMenu' => new \Twig_Filter_Method($this, 'getMenu'),
             //'formatNum'         => new \Twig_Filter_Method($this, 'formatNum')
   
@@ -43,6 +44,10 @@ class TwigExtension extends \Twig_Extension
             
             );
      }
+
+    public function ucwords($texto){
+        return ucwords($texto);
+    }
 
     public function mayuscula($texto){
         return strtoupper($texto);

@@ -29,13 +29,6 @@ class Evento
     private $tipo_persona;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="condicion", type="string", length=50)
-     */
-    private $condicion;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_inicio", type="datetimetz")
@@ -87,9 +80,9 @@ class Evento
     /**
      * @var boolean
      *
-     * @ORM\Column(name="estado", type="boolean")
+     * @ORM\Column(name="activo", type="boolean", nullable=true, options={"default":"1"})
      */
-    private $estado;
+    private $activo;
 
     /**
      * @ORM\OneToMany(targetEntity="AsistenciaEvento", mappedBy="evento")
@@ -162,6 +155,12 @@ class Evento
     private $evento_participante;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Estado", inversedBy="evento")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id", nullable=true)
+     */
+    private $estado;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -175,7 +174,6 @@ class Evento
         return ucwords($this->getTipoActividad()->getNombre()).': '.ucwords($this->getTipoPersona()).'; F: '.$this->getFechaInicio()->format('d/m/Y').' - '.$this->getFechaFin()->format('d/m/Y').'; H: '.$this->getHoraInicio().' - '.$this->getHoraFinal();
     }
 
-    
     /**
      * Get id
      *
@@ -208,30 +206,6 @@ class Evento
     public function getTipoPersona()
     {
         return $this->tipo_persona;
-    }
-
-    /**
-     * Set condicion
-     *
-     * @param string $condicion
-     *
-     * @return Evento
-     */
-    public function setCondicion($condicion)
-    {
-        $this->condicion = $condicion;
-
-        return $this;
-    }
-
-    /**
-     * Get condicion
-     *
-     * @return string
-     */
-    public function getCondicion()
-    {
-        return $this->condicion;
     }
 
     /**
@@ -331,30 +305,6 @@ class Evento
     }
 
     /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return Evento
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fecha_creacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fecha_creacion;
-    }
-
-    /**
      * Set descripcion
      *
      * @param string $descripcion
@@ -379,27 +329,99 @@ class Evento
     }
 
     /**
-     * Set estado
+     * Set multa
      *
-     * @param boolean $estado
+     * @param boolean $multa
      *
      * @return Evento
      */
-    public function setEstado($estado)
+    public function setMulta($multa)
     {
-        $this->estado = $estado;
+        $this->multa = $multa;
 
         return $this;
     }
 
     /**
-     * Get estado
+     * Get multa
      *
      * @return boolean
      */
-    public function getEstado()
+    public function getMulta()
     {
-        return $this->estado;
+        return $this->multa;
+    }
+
+    /**
+     * Set montoMulta
+     *
+     * @param float $montoMulta
+     *
+     * @return Evento
+     */
+    public function setMontoMulta($montoMulta)
+    {
+        $this->monto_multa = $montoMulta;
+
+        return $this;
+    }
+
+    /**
+     * Get montoMulta
+     *
+     * @return float
+     */
+    public function getMontoMulta()
+    {
+        return $this->monto_multa;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     *
+     * @return Evento
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * Set asunto
+     *
+     * @param string $asunto
+     *
+     * @return Evento
+     */
+    public function setAsunto($asunto)
+    {
+        $this->asunto = $asunto;
+
+        return $this;
+    }
+
+    /**
+     * Get asunto
+     *
+     * @return string
+     */
+    public function getAsunto()
+    {
+        return $this->asunto;
     }
 
     /**
@@ -424,122 +446,6 @@ class Evento
     public function getAnio()
     {
         return $this->anio;
-    }
-
-    /**
-     * Add asistenciaEvento
-     *
-     * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
-     *
-     * @return Evento
-     */
-    public function addAsistenciaEvento(\Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento)
-    {
-        $this->asistencia_evento[] = $asistenciaEvento;
-
-        return $this;
-    }
-
-    /**
-     * Remove asistenciaEvento
-     *
-     * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
-     */
-    public function removeAsistenciaEvento(\Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento)
-    {
-        $this->asistencia_evento->removeElement($asistenciaEvento);
-    }
-
-    /**
-     * Get asistenciaEvento
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAsistenciaEvento()
-    {
-        return $this->asistencia_evento;
-    }
-
-    /**
-     * Set usuario
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuario
-     *
-     * @return Evento
-     */
-    public function setUsuario(\Checnes\RegistroBundle\Entity\Usuario $usuario = null)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \Checnes\RegistroBundle\Entity\Usuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set tipoActividad
-     *
-     * @param \Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad
-     *
-     * @return Evento
-     */
-    public function setTipoActividad(\Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad = null)
-    {
-        $this->tipo_actividad = $tipoActividad;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoActividad
-     *
-     * @return \Checnes\RegistroBundle\Entity\TipoActividad
-     */
-    public function getTipoActividad()
-    {
-        return $this->tipo_actividad;
-    }
-
-    /**
-     * Add eventoParticipante
-     *
-     * @param \Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante
-     *
-     * @return Evento
-     */
-    public function addEventoParticipante(\Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante)
-    {
-        $this->evento_participante[] = $eventoParticipante;
-
-        return $this;
-    }
-
-    /**
-     * Remove eventoParticipante
-     *
-     * @param \Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante
-     */
-    public function removeEventoParticipante(\Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante)
-    {
-        $this->evento_participante->removeElement($eventoParticipante);
-    }
-
-    /**
-     * Get eventoParticipante
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEventoParticipante()
-    {
-        return $this->evento_participante;
     }
 
     /**
@@ -591,6 +497,88 @@ class Evento
     }
 
     /**
+     * Set fechaElim
+     *
+     * @param \DateTime $fechaElim
+     *
+     * @return Evento
+     */
+    public function setFechaElim($fechaElim)
+    {
+        $this->fecha_elim = $fechaElim;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaElim
+     *
+     * @return \DateTime
+     */
+    public function getFechaElim()
+    {
+        return $this->fecha_elim;
+    }
+
+    /**
+     * Add asistenciaEvento
+     *
+     * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
+     *
+     * @return Evento
+     */
+    public function addAsistenciaEvento(\Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento)
+    {
+        $this->asistencia_evento[] = $asistenciaEvento;
+
+        return $this;
+    }
+
+    /**
+     * Remove asistenciaEvento
+     *
+     * @param \Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento
+     */
+    public function removeAsistenciaEvento(\Checnes\RegistroBundle\Entity\AsistenciaEvento $asistenciaEvento)
+    {
+        $this->asistencia_evento->removeElement($asistenciaEvento);
+    }
+
+    /**
+     * Get asistenciaEvento
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAsistenciaEvento()
+    {
+        return $this->asistencia_evento;
+    }
+
+    /**
+     * Set tipoActividad
+     *
+     * @param \Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad
+     *
+     * @return Evento
+     */
+    public function setTipoActividad(\Checnes\RegistroBundle\Entity\TipoActividad $tipoActividad = null)
+    {
+        $this->tipo_actividad = $tipoActividad;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoActividad
+     *
+     * @return \Checnes\RegistroBundle\Entity\TipoActividad
+     */
+    public function getTipoActividad()
+    {
+        return $this->tipo_actividad;
+    }
+
+    /**
      * Set usuarioCrea
      *
      * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
@@ -639,30 +627,6 @@ class Evento
     }
 
     /**
-     * Set fechaElim
-     *
-     * @param \DateTime $fechaElim
-     *
-     * @return Evento
-     */
-    public function setFechaElim($fechaElim)
-    {
-        $this->fecha_elim = $fechaElim;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaElim
-     *
-     * @return \DateTime
-     */
-    public function getFechaElim()
-    {
-        return $this->fecha_elim;
-    }
-
-    /**
      * Set usuarioElim
      *
      * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioElim
@@ -687,50 +651,60 @@ class Evento
     }
 
     /**
-     * Set multa
+     * Add eventoParticipante
      *
-     * @param boolean $multa
+     * @param \Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante
      *
      * @return Evento
      */
-    public function setMulta($multa)
+    public function addEventoParticipante(\Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante)
     {
-        $this->multa = $multa;
+        $this->evento_participante[] = $eventoParticipante;
 
         return $this;
     }
 
     /**
-     * Get multa
+     * Remove eventoParticipante
      *
-     * @return boolean
+     * @param \Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante
      */
-    public function getMulta()
+    public function removeEventoParticipante(\Checnes\RegistroBundle\Entity\EventoParticipante $eventoParticipante)
     {
-        return $this->multa;
+        $this->evento_participante->removeElement($eventoParticipante);
     }
 
     /**
-     * Set montoMulta
+     * Get eventoParticipante
      *
-     * @param float $montoMulta
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEventoParticipante()
+    {
+        return $this->evento_participante;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param \Checnes\RegistroBundle\Entity\Estado $estado
      *
      * @return Evento
      */
-    public function setMontoMulta($montoMulta)
+    public function setEstado(\Checnes\RegistroBundle\Entity\Estado $estado = null)
     {
-        $this->monto_multa = $montoMulta;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get montoMulta
+     * Get estado
      *
-     * @return float
+     * @return \Checnes\RegistroBundle\Entity\Estado
      */
-    public function getMontoMulta()
+    public function getEstado()
     {
-        return $this->monto_multa;
+        return $this->estado;
     }
 }

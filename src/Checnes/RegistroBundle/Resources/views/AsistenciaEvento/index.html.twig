@@ -2,7 +2,7 @@
 
 {% block body %}
   
-  <table class="table table-bordered">
+  <table class="table table-bordered table-striped">
     <thead>
       <tr>
         <!--<th>Id</th>-->
@@ -18,14 +18,14 @@
       <tr>
         <!--<td>{#{entity.id|str_pad(4)}#}</td>-->
         <td>{{entity.asunto| ucwords}}</td>
-        <td>{{entity.fechainicio |date('d/m/Y') }}</td>
-        <td>{{entity.fechafin |date('d/m/Y') }}</td>
+        <td>{{entity.fechainicio |date('d/m/Y') }} {{ entity.horainicio | ampm }}</td>
+        <td>{{entity.fechafin |date('d/m/Y') }} {{ entity.horafinal | ampm }}</td>
         <td>
           {% set pasarlista  = getDiffFechasActual(entity.fechainicio, entity.horainicio) %}
 
           {%set cantasist = existeRegistroAsistencia(entity.id)%}
 
-          {%if pasarlista == 0%}
+          
             {%if cantasist > 0%}
               <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}" class="color-purple" title="Editar Asistencia">
                 <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
@@ -35,7 +35,7 @@
                 <i class="ace-icon fa fa-check-square-o bigger-200"></i>
               </a>
             {%endif%}
-          {%endif%}
+          
           
         </td>
       </tr>

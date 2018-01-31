@@ -23,7 +23,8 @@ class TwigExtension extends \Twig_Extension
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
             new \Twig_SimpleFilter('mayuscula', array($this, 'mayuscula')),
             new \Twig_SimpleFilter('str_pad', array($this, 'str_pad')),
-            new \Twig_SimpleFilter('ucwords', array($this, 'ucwords'))
+            new \Twig_SimpleFilter('ucwords', array($this, 'ucwords')),
+            new \Twig_SimpleFilter('ampm', array($this, 'ampm')),
             //'getMenu' => new \Twig_Filter_Method($this, 'getMenu'),
             //'formatNum'         => new \Twig_Filter_Method($this, 'formatNum')
   
@@ -45,6 +46,10 @@ class TwigExtension extends \Twig_Extension
             
             );
      }
+
+    public function ampm($time){
+        return strtoupper(date("g:i a",strtotime($time)));
+    }
 
     public function ucwords($texto){
         return ucwords($texto);

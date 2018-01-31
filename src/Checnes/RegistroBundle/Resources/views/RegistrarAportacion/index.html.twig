@@ -2,7 +2,7 @@
 
 {% block body %}
   
-  <table class="table table-bordered">
+  <table class="table table-bordered table-striped">
     <thead>
       <tr>
         <th>Asunto</th>
@@ -15,8 +15,8 @@
       {% for entity in pagination %}
       <tr>
         <td>{{entity.asunto}}</td>
-        <td>{{entity.fechainicio |date('Y-m-d') }}</td>
-        <td>{{entity.fechafin | date('Y-m-d')}}</td>
+        <td>{{entity.fechainicio |date('d/m/Y') }} {{ entity.horainicio | ampm }}</td>
+        <td>{{entity.fechafin | date('d/m/Y')}} {{ entity.horafinal | ampm }}</td>
         <td>
           {%set cantasist = existeRegistroAsistencia(entity.id)%}
           {%if cantasist > 0%}

@@ -145,7 +145,7 @@
 		  	//agremaos resumen
 		  	element.find('.fc-content').append(html_cont);
 
-		  	if (event.condicion == 'porconfirmar' || event.condicion == 'cancelado') {
+		  	if (event.estado == 1 || event.estado == 5) {
 
 		  		var html_close = '<div class="box-tools pull-right closeon">';
 			  	html_close += '<button type="button" class="btn btn-box-tool" data-widget="remove" style="border: 4px solid #abbabc;"><i class="fa fa-times"></i></button>';

@@ -30,7 +30,7 @@ class EventoController extends Controller
 
         //$lotes = $em->getRepository('ChecnesRegistroBundle:Lote')->findAll();
 
-        $dql = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1";
+        $dql = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.activo=1";
         $resp_dql = $em->createQuery($dql)->getResult();
 
         $evento = array();
@@ -41,7 +41,7 @@ class EventoController extends Controller
             $border_color = '#f39c12';
 
             //condicion
-            if (strtolower($entity->getCondicion())=='porconfirmar') {
+            /*if (strtolower($entity->getCondicion())=='porconfirmar') {
                 $background_color = '#E0BA7E';
                 $border_color = '#E0BA7E';
             }else if(strtolower($entity->getCondicion())=='confirmado'){
@@ -56,7 +56,7 @@ class EventoController extends Controller
             }else if(strtolower($entity->getCondicion())=='cancelado'){
                 $background_color = '#00c0ef';
                 $border_color = '#00c0ef';
-            }
+            }*/
 
             $evento[] = array(
                 'title'=>ucwords($entity->getTipoActividad()->getNombre().': '.$entity->getTipoPersona()),//title for calendar
@@ -70,7 +70,7 @@ class EventoController extends Controller
                 'id_event' => $entity->getId(),
                 'detalle' => $entity->getDescripcion(),
                 'tipo_actividad'=> $entity->getTipoActividad()->getId(),
-                'condicion'=>$entity->getCondicion(),
+                'estado'=>$entity->getEstado()->getId(),
                 'hora_inicio'=>$entity->getHoraInicio(),
                 'hora_final'=>$entity->getHoraFinal(),
                 'tipo_persona'=>$entity->getTipoPersona()

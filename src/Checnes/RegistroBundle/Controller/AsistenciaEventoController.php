@@ -36,7 +36,7 @@ class AsistenciaEventoController extends Controller
                 INNER JOIN e.tipo_actividad a
                 INNER JOIN a.tipo_tipo_actividad ta
                 WHERE e.estado=1
-                AND e.condicion NOT IN('porconfirmar','cancelado')
+                AND e.estado NOT IN(3,4,5)
                 AND ta.nombre_sistema='asistencia'
                 ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql);
@@ -75,7 +75,7 @@ class AsistenciaEventoController extends Controller
                 INNER JOIN e.tipo_actividad a
                 INNER JOIN a.tipo_tipo_actividad ta
                 WHERE e.estado=1
-                AND e.condicion NOT IN('porconfirmar','cancelado')
+                AND e.estado NOT IN(5)
                 AND (ta.nombre_sistema='tesoreria' OR e.multa=1)
                 ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql);

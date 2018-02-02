@@ -189,6 +189,7 @@
             }
             else
             {	
+            	console.log(date.format());
 			    $.post( "{{path('evento_new')}}",{'dayClick':date.format()}, function( data ) {
 				  $("#modal_content").html( data );
 				  $("#myModal #fecha").val(date.format());

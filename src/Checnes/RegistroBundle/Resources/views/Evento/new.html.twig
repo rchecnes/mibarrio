@@ -15,7 +15,7 @@
           <div class="form-group">
             <!--<label for="nombre">Nombre</label>-->
             <input type="hidden" class="form-control" id="nombre" name="nombre">
-            <input type="hidden" class="form-control" id="fecha_inicio" name="fecha_inicio">
+            <input type="hidden" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{fecha_inicio}}">
             <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
           </div>
           <div class="row">
@@ -131,16 +131,22 @@
           </div>
 
           <div class="form-group">
-            <fieldset>
+            <label for="detalle">Estado:</label>
+            <select class="form-control" id="estado" name="estado" required="required">
+              <option value="1">Emitido</option>
+              <option value="2">Cerrado</option>
+              <option value="3">Anulado</option>
+            </select>
+            <!--<fieldset>
                 <legend class="form-group"><label for="condicion">Estado</label></legend>
                     <div class="controls">
-                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>
+                    <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Emitido</label>
                     <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>
                     <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>
                     <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>
                     <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
                     </div>
-            </fieldset>
+            </fieldset>-->
           </div>
         </div>
 
@@ -209,7 +215,7 @@
       $('.date-picker').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true
-    }).datepicker("update", '{{fecha_fin}}');
+    }).datepicker("update", '{{fecha_inicio}}');
 
 
     $("input[name='condicion']").on("click", function(){

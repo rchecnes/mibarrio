@@ -59,21 +59,21 @@ class EventoController extends Controller
             }*/
 
             $evento[] = array(
-                'title'=>ucwords($entity->getTipoActividad()->getNombre().': '.$entity->getTipoPersona()),//title for calendar
-                'nombre'=>"",//nombre for bd
-                'description'=>$entity->getDescripcion(),
-                'start'=>date_format($entity->getFechaInicio(), 'Y-m-d'),
-                'end'=>date_format($entity->getFechaFin(), 'Y-m-d'),
+                'title'          =>ucwords($entity->getTipoActividad()->getNombre().': '.$entity->getTipoPersona()),//title for calendar
+                'nombre'         =>"",//nombre for bd
+                'description'    =>$entity->getDescripcion(),
+                'start'          =>date_format($entity->getFechaInicio(), 'Y-m-d'),
+                'end'            =>date_format($entity->getFechaFin(), 'Y-m-d'),
                 'backgroundColor'=>$background_color,
-                'borderColor'=>$border_color,
-                'class'=>'evento_calendar',
-                'id_event' => $entity->getId(),
-                'detalle' => $entity->getDescripcion(),
-                'tipo_actividad'=> $entity->getTipoActividad()->getId(),
-                'estado'=>$entity->getEstado()->getId(),
-                'hora_inicio'=>$entity->getHoraInicio(),
-                'hora_final'=>$entity->getHoraFinal(),
-                'tipo_persona'=>$entity->getTipoPersona()
+                'borderColor'    =>$border_color,
+                'class'          =>'evento_calendar',
+                'id_event'       =>$entity->getId(),
+                'detalle'        =>$entity->getDescripcion(),
+                'tipo_actividad' =>$entity->getTipoActividad()->getId(),
+                'estado'         =>$entity->getEstado()->getId(),
+                'hora_inicio'    =>$entity->getHoraInicio(),
+                'hora_final'     =>$entity->getHoraFinal(),
+                'tipo_persona'   =>$entity->getTipoPersona()
             );
             //print(date_format($entity->getFechaInicio(), 'Y/m/d'));
         }
@@ -109,7 +109,7 @@ class EventoController extends Controller
         }
 
         $data['tipo_actividad_html'] = $html_op_tipac;
-        $data['fecha_fin']     = $request->request->get('dayClick');
+        $data['fecha_inicio']        = $request->request->get('dayClick');
         $data['titulo']              = "Nuevo Evento: ".$request->request->get('dayClick');
         return $this->render('ChecnesRegistroBundle:Evento:new.html.twig', $data);
     }
@@ -125,13 +125,14 @@ class EventoController extends Controller
 
         $anio       = $session->get("anio");
         $usuario_id = $session->get("usuario_id");
-        $entity = new Evento();
+        $entity     = new Evento();
 
         $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
         $obj_usu  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+        $obj_stat = $em->getRepository('ChecnesRegistroBundle:Estado')->find($request->request->get('estado'));
 
         $entity->setTipoActividad($obj_tipa);
-        $entity->setCondicion($request->request->get('condicion'));
+        $entity->setEstado($obj_stat);
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha_inicio')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaCrea(new \DateTime(date('Y-m-d h:i:s')));
@@ -144,7 +145,7 @@ class EventoController extends Controller
         $entity->setAnio($anio);
         $entity->setMulta($request->request->get('multa'));
         $entity->setMontoMulta($request->request->get('monto_multa'));
-        $entity->setEstado(1);
+        $entity->setActivo(1);
         $em->persist($entity);
         $em->flush();
 

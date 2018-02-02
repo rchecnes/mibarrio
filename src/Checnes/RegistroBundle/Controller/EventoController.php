@@ -40,23 +40,17 @@ class EventoController extends Controller
             $background_color = '#f39c12';//color de pendiente
             $border_color = '#f39c12';
 
-            //condicion
-            /*if (strtolower($entity->getCondicion())=='porconfirmar') {
-                $background_color = '#E0BA7E';
-                $border_color = '#E0BA7E';
-            }else if(strtolower($entity->getCondicion())=='confirmado'){
-                $background_color = '#f39c12';
-                $border_color = '#f39c12';
-            }else if(strtolower($entity->getCondicion())=='realizandose'){
-                $background_color = '#00a65a';
-                $border_color = '#00a65a';
-            }else if(strtolower($entity->getCondicion())=='finalizo'){
-                $background_color = '#dd4b39';
-                $border_color = '#dd4b39';
-            }else if(strtolower($entity->getCondicion())=='cancelado'){
-                $background_color = '#00c0ef';
-                $border_color = '#00c0ef';
-            }*/
+            //Estados
+            if ($entity->getEstado()->getId()==1) { //Emitido
+                $background_color = '#87b87f';
+                $border_color = '#6d9865';
+            }else if($entity->getEstado()->getId()==2){//Cerrado
+                $background_color = '#d15b47';
+                $border_color = '#6d9865';
+            }else if($entity->getEstado()->getId()==3){//Cerrado
+                $background_color = '#892e65';
+                $border_color = '#6d9865';
+            }
 
             $evento[] = array(
                 'title'          =>ucwords($entity->getTipoActividad()->getNombre().': '.$entity->getTipoPersona()),//title for calendar
@@ -65,7 +59,7 @@ class EventoController extends Controller
                 'start'          =>date_format($entity->getFechaInicio(), 'Y-m-d'),
                 'end'            =>date_format($entity->getFechaFin(), 'Y-m-d'),
                 'backgroundColor'=>$background_color,
-                'borderColor'    =>$border_color,
+                'border'    =>'1px solid '.$border_color,
                 'class'          =>'evento_calendar',
                 'id_event'       =>$entity->getId(),
                 'detalle'        =>$entity->getDescripcion(),
@@ -248,81 +242,71 @@ class EventoController extends Controller
         $usuario_id     = $session->get("usuario_id");
         $reg_asistencia = $request->request->get('reg_asistencia');
 
-        //if (strtolower($entity->getCondicion()) != 'finalizo' && strtolower($entity->getCondicion()) != 'cancelado') {
+        
 
-            //if (strtolower($entity->getCondicion()) != 'cancelado') {
+        $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
+        $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+        $obj_stat = $em->getRepository('ChecnesRegistroBundle:Estado')->find($request->request->get('estado'));
 
-                $obj_tipa = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->request->get('tipo_actividad'));
-                $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
+        $entity->setTipoActividad($obj_tipa);
+        $entity->setEstado($obj_stat);
+        $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
+        $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
+        $entity->setFechaMod(new \DateTime(date('Y-m-d h:i:s')));
+        $entity->setDescripcion($request->request->get('detalle'));
+        $entity->setHoraInicio($request->request->get('hora_inicio'));
+        $entity->setHoraFinal($request->request->get('hora_final'));
+        $entity->setTipoPersona($request->request->get('tipo_persona'));
+        $entity->setAsunto($request->request->get('asunto'));
+        $entity->setUsuarioMod($obj_usu);
+        $entity->setAnio($anio);
+        $entity->setMulta($request->request->get('multa'));
+        $entity->setMontoMulta($request->request->get('monto_multa'));
+        $em->persist($entity);
+        $em->flush();
 
-                $entity->setTipoActividad($obj_tipa);
-                $entity->setCondicion($request->request->get('condicion'));
-                $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
-                $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
-                $entity->setFechaMod(new \DateTime(date('Y-m-d h:i:s')));
-                $entity->setDescripcion($request->request->get('detalle'));
-                $entity->setHoraInicio($request->request->get('hora_inicio'));
-                $entity->setHoraFinal($request->request->get('hora_final'));
-                $entity->setTipoPersona($request->request->get('tipo_persona'));
-                $entity->setAsunto($request->request->get('asunto'));
-                $entity->setUsuarioMod($obj_usu);
-                $entity->setAnio($anio);
-                $entity->setMulta($request->request->get('multa'));
-                $entity->setMontoMulta($request->request->get('monto_multa'));
-                $em->persist($entity);
-                $em->flush();
+        //Eliminamos y Resgistramos participantes
+        $participantes = $request->request->get('codigo_participantes');
+        $participantes = explode('-', $participantes);
 
-                //Eliminamos y Resgistramos participantes
-                $participantes = $request->request->get('codigo_participantes');
-                $participantes = explode('-', $participantes);
+        $obj_participantes = $entity->getEventoParticipante();
+        if (is_object($obj_participantes)) {
+            foreach ($obj_participantes as $key => $parti) {
 
-                $obj_participantes = $entity->getEventoParticipante();
-                if (is_object($obj_participantes)) {
-                    foreach ($obj_participantes as $key => $parti) {
+                $em->remove($parti);
 
-                        $em->remove($parti);
+            }
+            $em->flush();
+        }
+        //Fin eliminar y registrar
+                 
 
-                    }
-                    $em->flush();
+        if ($participantes !='' && $request->request->get('tipo_persona')=='seleccionar') {
+
+            $obj_evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($entity->getId());
+
+            for ($i=0; $i < count($participantes); $i++) {
+
+                if ($participantes[$i] !='') {
+
+                    $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
+
+                    $responsable = ($request->request->get('perresp_'.$participantes[$i]))?true:false;
+
+                    $participante = new EventoParticipante();
+                    $participante->setPersona($obj_per);
+                    $participante->setUsuario($obj_usu);
+                    $participante->setEvento($obj_evento);
+                    $participante->setFechaCreacion(new \DateTime(date('Y-m-d H:i:s')));
+                    $participante->setFechaActualizacion(new \DateTime(date('Y-m-d H:i:s')));
+                    $participante->setResponsable($responsable);
+                    $em->persist($participante);
                 }
-                //Fin eliminar y registrar
-                         
+               
+            }
 
-                if ($participantes !='' && $request->request->get('tipo_persona')=='seleccionar') {
-
-                    $obj_evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($entity->getId());
-
-                    for ($i=0; $i < count($participantes); $i++) {
-
-                        if ($participantes[$i] !='') {
-
-                            $obj_per = $em->getRepository('ChecnesRegistroBundle:Persona')->find($participantes[$i]);
-
-                            $responsable = ($request->request->get('perresp_'.$participantes[$i]))?true:false;
-
-                            $participante = new EventoParticipante();
-                            $participante->setPersona($obj_per);
-                            $participante->setUsuario($obj_usu);
-                            $participante->setEvento($obj_evento);
-                            $participante->setFechaCreacion(new \DateTime(date('Y-m-d H:i:s')));
-                            $participante->setFechaActualizacion(new \DateTime(date('Y-m-d H:i:s')));
-                            $participante->setResponsable($responsable);
-                            $em->persist($participante);
-                        }
-                       
-                    }
-
-                    $em->flush();
-                }
-                //Fin registro participante
-
-            //}else{
-
-            //    $entity->setCondicion($request->request->get('condicion'));
-            //    $em->persist($entity);
-            //    $em->flush(); 
-            //}
-        //}
+            $em->flush();
+        }
         
         if ($reg_asistencia == 'REG_ASISTENCIA') {
             return $this->redirectToRoute("asistenciaevento_listapersona",array('evento'=>$id));

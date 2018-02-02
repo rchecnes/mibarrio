@@ -143,16 +143,12 @@
 			<div class="row">
           		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			      	<div class="form-group">
-			        	<fieldset>
-			            	<legend class="form-group"><label for="condicion">Estado</label></legend>
-			                <div class="controls">
-			                <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>
-			                <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>
-			                <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>
-			                <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>
-			                <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
-			                </div>
-			        	</fieldset>
+			        	<label for="detalle">Estado:</label>
+			            <select class="form-control" id="estado" name="estado" required="required">
+			              <option value="1" {%if evento.estado.id=='1' %} selected="selected" {%endif%}>Emitido</option>
+			              <option value="2" {%if evento.estado.id=='2' %} selected="selected" {%endif%}>Cerrado</option>
+			              <option value="3" {%if evento.estado.id=='3' %} selected="selected" {%endif%}>Anulado</option>
+			            </select>
 			      	</div>
 			    </div>
 			</div>
@@ -215,10 +211,6 @@
  	<div class="row">
       	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		  	<p class="align-center pull-center" style="padding-top: 10px">
-		          {%set button = 'display:none'%}
-		          {%if evento.condicion  =='realizandose' or evento.condicion  =='finalizo'%}
-		            {%set button = 'display:block'%}
-		          {%endif%}
 		          <button type="submit" class="btn btn-primary" id="enviar" name="enviar">Guardar</button>
 		          <a class="btn btn-default" href="{{path('evento_listado')}}">Cancelar</a>
 		    </p>
@@ -236,7 +228,6 @@
   $(document).ready(function(){
    
     $("#tipo_persona_{{evento.tipopersona}}").prop("checked",true);
-    $("#cond_{{evento.condicion}}").prop("checked",true);
     $("#tipo_actividad").val("{{evento.tipoactividad.id}}");
 
     $( "#guardar_registrar_asistencia").click(function(e) {
@@ -244,24 +235,6 @@
       $("#reg_asistencia").val('REG_ASISTENCIA');
       $("#evento" ).submit();
     });
-
-
-    var condicion = '{{evento.condicion}}';
-
-	switch(condicion) {
-	case 'confirmado':
-	    $("#evento #cond_porconfirmar").attr('disabled', 'disabled');
-	    break;
-	case 'realizandose':
-	    $("#evento #cond_porconfirmar, #evento #cond_confirmado").attr('disabled', 'disabled');
-	    break;
-	case 'finalizo':
-	    $("#evento input[type='radio']").attr('disabled','disabled');
-	    break;
-	case 'cancelado':
-	    $("#evento input[type='radio']").attr('disabled','disabled');
-	    break;
-	}
 
     //}else{
       //Timepicker

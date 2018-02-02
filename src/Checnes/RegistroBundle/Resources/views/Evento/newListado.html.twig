@@ -150,16 +150,12 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="form-group">
-              <fieldset>
-                  <legend class="form-group"><label for="condicion">Estado</label></legend>
-                      <div class="controls">
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_porconfirmar" value="porconfirmar" checked="checked"></input>Por confirmar</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_confirmado" value="confirmado"></input>Confirmado</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_realizandose" value="realizandose"></input>Realizandose</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_finalizo" value="finalizo"></input>Finalizó</label>
-                      <label class="radio-inline"><input type="radio" name="condicion" id="cond_cancelado" value="cancelado"></input>Cancelado</label>
-                      </div>
-              </fieldset>
+              <label for="detalle">Estado:</label>
+              <select class="form-control" id="estado" name="estado" required="required">
+                <option value="1">Emitido</option>
+                <option value="2">Cerrado</option>
+                <option value="3">Anulado</option>
+              </select>
             </div>
           </div>
         </div>

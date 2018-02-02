@@ -126,7 +126,7 @@ class TwigExtension extends \Twig_Extension
                 $active = ($row['defecto'] == 1)?"active":"";
                 $enlace = ($row['enlace'] !='')?$row['enlace']:'#';
                 
-                if ($dispositivo == 'mobil') {
+                /*if ($dispositivo == 'mobil') {
                     if ($enlace !='evento') {
                         $menu .= "<li class='".$active."'>";
                         $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
@@ -134,15 +134,15 @@ class TwigExtension extends \Twig_Extension
                         $menu .= "</a>";
                         $menu .= "</li>";
                     }
-                }else{
-                    if ($enlace !='evento/lista') {
+                }else{*/
+                    //if ($enlace !='evento/lista') {
                         $menu .= "<li class='".$active."'>";
                         $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
                         $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                         $menu .= "</a>";
                         $menu .= "</li>";
-                    }
-                }
+                    //}
+                //}
                 
 
             }else{

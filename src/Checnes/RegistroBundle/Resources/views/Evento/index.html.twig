@@ -99,7 +99,8 @@
 	        day: 'day'
 	      },
 	      css:{
-	      	margin:'5px'
+	      	margin:'5px',
+	      	border:'1px solid #000',
 	      },
 	      //Random default events
 	      events: {{eventos|raw}},
@@ -145,7 +146,7 @@
 		  	//agremaos resumen
 		  	element.find('.fc-content').append(html_cont);
 
-		  	if (event.estado == 1 || event.estado == 5) {
+		  	/*if (event.estado == 1 || event.estado == 5) {
 
 		  		var html_close = '<div class="box-tools pull-right closeon">';
 			  	html_close += '<button type="button" class="btn btn-box-tool" data-widget="remove" style="border: 4px solid #abbabc;"><i class="fa fa-times"></i></button>';
@@ -153,10 +154,10 @@
 
 			  	element.find('.fc-content .fc-title').append(html_close);
 			  	
-		  	}
+		  	}*/
 		  	
 			//boton eliminar evento
-			element.find(".closeon").on("click",function() {
+			/*element.find(".closeon").on("click",function() {
                $('#calendar').fullCalendar('removeEvents',event._id);
                //console.log(event);
                $.ajax({
@@ -167,7 +168,7 @@
                		$('#calendar').fullCalendar('removeEvents',event._id);
                	}
                })
-            });
+            });*/
 		  },
           dayRender: function(date, cell){
 		    
@@ -189,7 +190,7 @@
             }
             else
             {	
-            	console.log(date.format());
+            	//console.log(date.format());
 			    $.post( "{{path('evento_new')}}",{'dayClick':date.format()}, function( data ) {
 				  $("#modal_content").html( data );
 				  $("#myModal #fecha").val(date.format());
@@ -201,7 +202,7 @@
 	      },
 	      eventClick: function(calEvent, jsEvent, view){
 	      	var myDate = new Date();
-
+	      	//console.log(calEvent.estado);
             var activo = false;
 			myDate.setDate(myDate.getDate() - 1);
 
@@ -214,7 +215,7 @@
             }
 
             var url = "{{path('evento_edit')}}";
-            if (activo == false) {
+            if (activo == false || calEvent.estado=='2') {
                 url = "{{path('evento_show')}}";
             }
 	    	

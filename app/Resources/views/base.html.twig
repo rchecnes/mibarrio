@@ -93,7 +93,7 @@
                                         <ul class="dropdown-menu dropdown-navbar navbar-pink">
                                             {% for detev in getNotificacionEvento().detalle %}
                                             <li>
-                                                <a href="{{ path('evento_showlistado', { 'id': detev.id }) }}?origen=notificacion">
+                                                <a href="{{ path('notificacion_index', { 'id': detev.id }) }}">
                                                     <div class="clearfix">
 
                                                         <span class="msg-title">

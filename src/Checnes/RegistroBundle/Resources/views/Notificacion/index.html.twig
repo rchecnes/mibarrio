@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<table class="table table-sm table-bordered">
+  <tr>
+    <th>Asunto:</th>
+    <td>{{evento.asunto}}</td>
+  </tr>
+  <tr>
+    <th>Tipo de actividad:</th>
+    <td>{{evento.tipoactividad}}</td>
+  </tr>
+  <tr>
+    <th>Tipo de persona:</th>
+    <td>
+    	{%if evento.tipopersona=='general'%}
+    	General
+    	{%elseif evento.tipopersona=='dirigente'%}
+    	Diregentes
+    	{%elseif evento.tipopersona=='seleccionar'%}
+    	Sleccionados
+    	{% endif %}
+	</td>
+  </tr>
+  <tr>
+    <th>Fecha Inicio:</th>
+    <td>{{evento.fechainicio |date('d/m/Y') }} {{evento.horainicio | ampm}}</td>
+  </tr>
+  <tr>
+    <th>Fecha Fin:</th>
+    <td>{{evento.fechafin |date('d/m/Y') }} {{evento.horafinal | ampm}}</td>
+  </tr>
+<tr>
+    <th>Detalles:</th>
+    <td>{{evento.descripcion}}</td>
+</tr>
+<tr>
+    <th>Estado:</th>
+    <td>{{evento.estado.nombre}}</td>
+</tr>
+
+{%if evento.tipopersona=='seleccionar'%}
+<tr>
+    <th colspan="2">Participantes:</th>
+</tr>
+<tr>
+	<td colspan="2">
+		<table class="table table-sm table-bordered">
+			<tr>
+              <th>Nro.</th>
+              <th>Nombre</th>
+              <th>Resp.</th>
+            </tr>
+            {% for parti in evento.eventoparticipante %}
+	          <tr id="filapersona_{{parti.persona.id}}">
+	            <td>{{parti.persona.numero}}</td>
+	            <td>{{parti.persona.apellidopaterno}}&nbsp;{{parti.persona.apellidomaterno}},&nbsp;{{parti.persona.nombre}}</td>
+	            <td>
+	            {%if parti.responsable ==1%}
+	              <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}" checked="checked" disabled="disabled">
+	            {%else%}
+	              <input type="checkbox" id="perresp_{{parti.persona.id}}" name="perresp_{{parti.persona.id}}" disabled="disabled">
+	            {%endif%} 
+	            </td>
+	          </tr>
+	          
+	          
+	        {%endfor%}
+		</table>
+		
+	</td>
+</tr>
+{%endif%}
+
+
+
+  
+</table>
+{% endblock %}

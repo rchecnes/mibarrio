@@ -40,7 +40,7 @@ class TwigExtension extends \Twig_Extension
             'getNombrePadre'            => new \Twig_Function_Method($this, 'getNombrePadre'),
             'getCantidadHijo'           => new \Twig_Function_Method($this, 'getCantidadHijo'),
             'getNotificacionEvento'     => new \Twig_Function_Method($this, 'getNotificacionEvento'),
-            'getDiffFechasActual'       => new \Twig_Function_Method($this, 'getDiffFechasActual'),
+            'getPasarLista'       => new \Twig_Function_Method($this, 'getPasarLista'),
             'getDispositivo'            => new \Twig_Function_Method($this, 'getDispositivo')
             
             
@@ -177,7 +177,7 @@ class TwigExtension extends \Twig_Extension
                     te.nombre AS nomb_tipoevento
                     FROM evento e
                     INNER JOIN tipo_actividad te ON(e.tipo_actividad_id=te.id)
-                    WHERE e.estado_id IN(1,2)
+                    WHERE e.estado_id IN(1)
                     AND DATE_ADD(fecha_fin, INTERVAL 1 DAY) >= DATE_FORMAT(NOW(), '%Y-%m-%d')
                     ORDER BY DATE_FORMAT(e.fecha_inicio,'%Y-%m-%d') DESC";
         //echo $sqlev;
@@ -201,7 +201,7 @@ class TwigExtension extends \Twig_Extension
         return $eventos;
     }
 
-    public function getDiffFechasActual($fecha_ini, $hora_ini){
+    public function getPasarLista($fecha_ini, $hora_ini){
 
         $fech_ini = "";
         if (is_object($fecha_ini)) {
@@ -220,18 +220,12 @@ class TwigExtension extends \Twig_Extension
             $fech_ini .= " ".$hora_ini;
         }
 
-        $fecha_f = date('Y-m-d H:i:s');
-        $diff   = (strtotime($fech_ini)-strtotime($fecha_f));
-        
-        
-        $d = floor($diff / 86400);
-        $h = floor(($diff - ($d * 86400)) / 3600);
-        $m = floor(($diff - ($d * 86400) - ($h * 3600)) / 60);
-        $s = $diff % 60;
-    
-        //ld("Dias: $d, horas: $h, minutos: $m, segundos: $s");
+        $fecha_actual = date('Y-m-d H:i:s');
 
-        return $h;
+        if (strtotime($fecha_actual) < strtotime($fech_ini)) {
+            
+            return 'block';
+        }
     }
 
     public function getDispositivo(){

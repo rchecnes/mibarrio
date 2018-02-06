@@ -33,7 +33,7 @@
 		</div>
 	</div>
 </div><br>
-<form name="content-form" id="asistencia" name="asistencia"  method="POST" action="{{path('asistenciaevento_guadar')}}">
+<form name="content-form" id="asistencia" name="asistencia"  method="POST" action="{{path('asistenciaevento_guardar')}}">
   <table class="table table-bordered dataTable" role="grid">
   	<tr role="row">
   		<th>Nro</th>
@@ -56,13 +56,13 @@
 	  		<td>
 	  		{%if entity.asistio == true %}
 	  			{%if entity.tardanza == true %}
-	  				<input type="checkbox" checked="checked" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
+	  				<input type="checkbox" checked="checked" name="tardanza_{{contador}}" id="tardanza_{{contador}}"  class="tardanza">
 	  			{%else%}
-	  				<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" >
+	  				<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}"  class="tardanza">
 	  			{%endif%}
 	  		{%else%}
 	  			
-	  			<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" style="display: none">
+	  			<input type="checkbox" name="tardanza_{{contador}}" id="tardanza_{{contador}}" style="display: none" class="tardanza">
 	  			
 	  		{%endif%}
 	  			
@@ -71,12 +71,28 @@
 	  	</tr>
 	  	{%set contador=contador+1%}
 	  {%endfor%}
+	  <tr>
+	  	<th colspan="2">Total:</th>
+	  	<th colspan="2">
+	  		<table>
+	  			<tr>
+	  				<th>Asistio:</th>
+	  				<td><input type="text" name="cant_asistio" id="cant_asistio" class="input-oculto" readonly="readonly"></td>
+	  				<th>&nbsp;Falta:</th>
+	  				<td><input type="text" name="cant_falto" id="cant_falto" class="input-oculto" readonly="readonly"></td>
+	  				<th>&nbsp;Tarde:</th>
+	  				<td><input type="text" name="cant_tarde" id="cant_tarde" class="input-oculto" readonly="readonly"></td>
+	  			</tr>
+	  		</table>
+	  	</th>
+	  </tr>
 	  <input type="hidden" name="count_personas" id="count_personas" value="{{contador-1}}">
 	  <input type="hidden" name="evento" id="evento" value="{{evento.id}}">
   </table><br>
   <p class="aling-left">
   	{%if block=='NO'%}
-  		<button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar Asistencia</button>
+  		<button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar</button>
+  		<button type="submit" id="guardarcerrar" name="guardarcerrar" value="guardarcerrar" class="btn btn-danger">Guardar y Cerrar</button>
   	{%endif%}
   	<a href="{{path('asistenciaevento_index')}}" class="btn btn-default">Cancelar</a>
   </p>
@@ -94,6 +110,30 @@
 			$("input").attr('disabled','disabled');
 		}
 		
+		contarAsistencia = function(){
+			var cant_asistio = 0;
+			var cant_falto = 0;
+			var cant_tarde = 0;
+
+			$("input.asistio[type='checkbox']").each(function(){
+				if ($(this).is(':checked')==true) {
+					cant_asistio += 1;
+				}else{
+					cant_falto += 1;
+				}
+			});
+
+			$("input.tardanza[type='checkbox']").each(function(){
+				if ($(this).is(':checked')==true && $(this).is(':visible')==true) {
+					cant_tarde += 1;
+				}
+			});
+
+			$("#cant_asistio").val(cant_asistio);
+			$("#cant_falto").val(cant_falto);
+			$("#cant_tarde").val(cant_tarde);
+		}
+
 		$(".asistio").on("click", function(){
 			var id = $(this).attr('id');
 			split = id.split('_');
@@ -102,7 +142,15 @@
 			}else{
 				$("#tardanza_"+split[1]).hide();
 			}
+
+			contarAsistencia();
 		});
+
+		$(".tardanza").on("click", function(){
+			contarAsistencia();
+		});
+
+		contarAsistencia();
 
 	})
 </script>

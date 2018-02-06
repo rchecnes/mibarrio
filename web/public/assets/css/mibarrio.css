@@ -51,6 +51,7 @@
     margin-left: auto;
 }
 
+
 .iniciar-sesion{
     /*max-width: 200px;*/
 }
@@ -195,3 +196,12 @@
     background: #ffb752;
 }
 /**FIN PAGINACION**/
+
+input.input-oculto{
+    color: #464545!important;
+    background: #FFF!important;
+    cursor: default;
+    border: 0px !important;
+    width: 25px !important;
+    font-size: 16px !important;
+}

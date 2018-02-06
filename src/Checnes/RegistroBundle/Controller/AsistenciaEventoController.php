@@ -173,7 +173,7 @@ class AsistenciaEventoController extends Controller
 
     /**
      *
-     * @Route("/guardarasistencia", name="asistenciaevento_guadar")
+     * @Route("/guardarasistencia", name="asistenciaevento_guardar")
      * @Method("POST")
      */
     public function savAsistenciaAction(Request $request)
@@ -235,11 +235,38 @@ class AsistenciaEventoController extends Controller
                 $em->persist($entityAsEv);
             }
         }
-
-        
         $em->flush();
 
+        //ld($request->request->get("guardarcerrar"));exit();
+        if ($request->request->get("guardarcerrar")=='guardarcerrar') {
+           
+           $resp = $this->registrarCuentasCobrar($obj_evnt->getId());
+
+        }else{
+
+        }
+
+        
+
         return $this->redirectToRoute("asistenciaevento_index");
+    }
+
+
+    private function registrarCuentasCobrar($id_evento){
+
+        $conn = $this->get('database_connection');
+
+        //Consultamos a las personas que no asistieron al evento
+
+        $sql = "SELECT * FROM persona WHERE id NOT IN( SELECT persona_id FROM asistencia_evento WHERE evento_id='$id_evento')";
+
+        $resp = $conn->executeQuery($sql)->fetchAll();
+
+        $array = array();
+        foreach ($resp as $key => $row) {
+            $array[] = $row;//array('value'=>10,'label'=>'Juan');
+        }
+        //return json_encode($resp);
     }
 
     

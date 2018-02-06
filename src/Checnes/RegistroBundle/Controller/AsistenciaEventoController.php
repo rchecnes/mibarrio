@@ -35,10 +35,9 @@ class AsistenciaEventoController extends Controller
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e
                 INNER JOIN e.tipo_actividad a
                 INNER JOIN a.tipo_tipo_actividad ta
-                WHERE e.estado=1
-                AND e.estado IN(1)
+                WHERE e.estado IN(1,2)
                 AND ta.nombre_sistema='asistencia'
-                ORDER BY e.fecha_inicio DESC";
+                ORDER BY e.estado,e.fecha_inicio DESC";
         $resp = $em->createQuery($dql);
 
         $paginator  = $this->get('knp_paginator');
@@ -105,6 +104,9 @@ class AsistenciaEventoController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
+        //Variables
+        $block = $request->query->get('block');
+
         $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($request->query->get('evento'));
 
         $dql = "SELECT p FROM ChecnesRegistroBundle:Persona p";
@@ -163,7 +165,8 @@ class AsistenciaEventoController extends Controller
 
         return $this->render('ChecnesRegistroBundle:AsistenciaEvento:listaPersona.html.twig', array(
             'personas' => $personas,
-            'titulo'   => 'Registrar Asistencia',
+            'titulo'   => ($block=='NO')?'Registrar Asistencia':'Visualizar Asistencia',
+            'block'   => $block,
             'evento'   => $evento
         ));
     }

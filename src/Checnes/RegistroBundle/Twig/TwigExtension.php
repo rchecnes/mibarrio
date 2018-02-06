@@ -222,10 +222,12 @@ class TwigExtension extends \Twig_Extension
 
         $fecha_actual = date('Y-m-d H:i:s');
 
-        if (strtotime($fecha_actual) < strtotime($fech_ini)) {
+        //echo "ACT:".strtotime('+1 hour' , strtotime($fecha_actual))."<br>EVE:".strtotime($fech_ini);
+        if (strtotime('+1 hour' , strtotime($fecha_actual)) < strtotime($fech_ini)) {
             
-            return 'block';
+            return 'TEMPRANO';
         }
+        //$nuevafecha = strtotime ( '+1 hour' , strtotime ( $fecha ) ) ;
     }
 
     public function getDispositivo(){

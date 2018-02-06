@@ -75,7 +75,9 @@
 	  <input type="hidden" name="evento" id="evento" value="{{evento.id}}">
   </table><br>
   <p class="aling-left">
-  	<button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar Asistencia</button>
+  	{%if block=='NO'%}
+  		<button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar Asistencia</button>
+  	{%endif%}
   	<a href="{{path('asistenciaevento_index')}}" class="btn btn-default">Cancelar</a>
   </p>
 </form>
@@ -85,6 +87,12 @@
 {{ parent() }}
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		var block = '{{block}}';
+
+		if (block == 'SI') {
+			$("input").attr('disabled','disabled');
+		}
 		
 		$(".asistio").on("click", function(){
 			var id = $(this).attr('id');

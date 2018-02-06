@@ -21,27 +21,36 @@
         <td>{{entity.fechainicio |date('d/m/Y') }} {{ entity.horainicio | ampm }}</td>
         <td>{{entity.fechafin |date('d/m/Y') }} {{ entity.horafinal | ampm }}</td>
         <td>
-          {% set pasarlista  = getPasarLista(entity.fechainicio, entity.horainicio) %}
-          {{pasarlista}}
-          {% set cantasist = existeRegistroAsistencia(entity.id)%}
+          {% set icons =  'fa-eye bigger-200'%}
+          {% set class =  'color-block'%}
 
-          {% set icons =  'fa-check-square-o bigger-200'%}
-          {% set class =  'color-blue'%}
+          {%if entity.estado.id==1%}
+            {% set pasarlista  = getPasarLista(entity.fechainicio, entity.horainicio) %}
+            {% set cantasist = existeRegistroAsistencia(entity.id)%}
 
-          {% if cantasist > 0 %}
-            {% set icons = 'fa-pencil-square-o bigger-200' %}
-            {% set class = 'color-orange' %}
+            {% if cantasist > 0 %}
+              {% set icons = 'fa-pencil-square-o bigger-200' %}
+              {% set class = 'color-orange' %}
+            {% else %}
+              {% set icons = 'fa-check-square-o bigger-200' %}
+              {% set class = 'color-blue' %}
+            {% endif %}
+
+            {% if pasarlista =='TEMPRANO' %}
+              {% set icons = 'fa-eye bigger-200' %}
+              {% set class = 'color-block' %}
+            {% endif %}
+          {% else %}
+            {% set pasarlista  = 'BLOCK' %}
           {% endif %}
 
-          {% if pasarlista =='block' %}
-            {% set icons = 'fa-eye bigger-200' %}
-            {% set class = 'color-block' %}
+          {%if pasarlista !='TEMPRANO'%}
+            <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}&block={%if pasarlista=='BLOCK'%}SI{%else%}NO{%endif%}" title="{%if pasarlista=='BLOCK'%}Ver Asistencia{%else%}Registrar Asistencia{%endif%}" class="{{class}}">
+              <i class="ace-icon fa {{icons}}"></i>
+            </a>
           {% endif %}
-          
-          
-          <a href="{{path('asistenciaevento_listapersona')}}?evento={{entity.id}}block={%if pasarlista=='block'%}SI{%else%}NO{%endif%}" title="Registrar Asistencia" class="{{class}}">
-            <i class="ace-icon fa {{icons}}"></i>
-          </a>
+
+            
           
         </td>
       </tr>

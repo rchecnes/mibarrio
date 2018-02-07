@@ -179,6 +179,7 @@ class TwigExtension extends \Twig_Extension
                     INNER JOIN tipo_actividad te ON(e.tipo_actividad_id=te.id)
                     WHERE e.estado_id IN(1)
                     AND DATE_ADD(fecha_fin, INTERVAL 1 DAY) >= DATE_FORMAT(NOW(), '%Y-%m-%d')
+                    AND e.estado_id=1
                     ORDER BY DATE_FORMAT(e.fecha_inicio,'%Y-%m-%d') DESC";
         //echo $sqlev;
         $resp = $this->conn->executeQuery($sqlev)->fetchAll();

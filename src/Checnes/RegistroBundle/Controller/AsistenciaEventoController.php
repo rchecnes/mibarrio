@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Checnes\RegistroBundle\Form\AsistenciaEventoType;
 use Checnes\RegistroBundle\Entity\AsistenciaEvento;
+use Checnes\RegistroBundle\Entity\CuentasPorCobrar;
 
 /**
  * Evento controller.
@@ -235,41 +236,87 @@ class AsistenciaEventoController extends Controller
                 $em->persist($entityAsEv);
             }
         }
-        $em->flush();
 
         //ld($request->request->get("guardarcerrar"));exit();
         if ($request->request->get("guardarcerrar")=='guardarcerrar') {
            
-           $resp = $this->registrarCuentasCobrar($obj_evnt->getId());
+           $resp = $this->registrarCuentasCobrar($obj_evnt->getId(), $obj_evnt->getTipoPersona());
 
-        }else{
-
+           //Actualizamos a serrado
+           $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
+           $obj_evnt->setEstado($obj_esta);
+           $em->persist($obj_evnt);
         }
 
-        
+        $em->flush();
+
+        $session->getFlashBag()->add("success",'Se registro asistencia correctamente!.');
 
         return $this->redirectToRoute("asistenciaevento_index");
     }
 
 
-    private function registrarCuentasCobrar($id_evento){
+    private function registrarCuentasCobrar($evento_id, $tipo_persona){
 
         $conn = $this->get('database_connection');
+        $em   = $this->getDoctrine()->getManager();
+
+        $request    = $this->getRequest();
+        $session    = $request->getSession();
+        $anio       = $session->get("anio");
+        $usuario_id = $session->get("usuario_id");
+        $fecha_crea = date('Y-m-d H:s:i');
 
         //Consultamos a las personas que no asistieron al evento
+        $sql = "";
 
-        $sql = "SELECT * FROM persona WHERE id NOT IN( SELECT persona_id FROM asistencia_evento WHERE evento_id='$id_evento')";
+        if ($tipo_persona=='general' || $tipo_persona=='dirigente') {
+            
+            $and_where = ($tipo_persona=='dirigente')?"tipo_persona='dirigente' AND":"";
+            $sql = "SELECT id AS persona_id FROM persona WHERE $and_where id NOT IN( SELECT persona_id FROM asistencia_evento WHERE evento_id='$evento_id' AND asistio=1)";
 
+        }elseif($tipo_persona=='seleccionar'){
+
+            $sql = "SELECT persona_id FROM evento_participante WHERE persona_id NOT IN( SELECT persona_id FROM asistencia_evento WHERE evento_id='$evento_id' AND asistio=1)";
+        }
+        
         $resp = $conn->executeQuery($sql)->fetchAll();
 
         $array = array();
-        foreach ($resp as $key => $row) {
-            $array[] = $row;//array('value'=>10,'label'=>'Juan');
-        }
-        //return json_encode($resp);
-    }
+        $cant = 0;
 
-    
+        $obj_usu  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id); 
+        $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($evento_id);
+        $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(1);
+
+        foreach ($resp as $key => $row) {
+
+            $obj_pers = $em->getRepository('ChecnesRegistroBundle:Persona')->find($row['persona_id']);
+
+            $impo_sol = 200;
+            $impo_mon = 'PEN';
+
+            $ctacbr = new CuentasPorCobrar();
+            $ctacbr->setEvento($obj_evnt);
+            $ctacbr->setPersona($obj_pers);
+            $ctacbr->setUsuarioCrea($obj_usu);
+            $ctacbr->setFechaCrea(new \DateTime($fecha_crea));
+            $ctacbr->setPeriodo(date('m'));
+            $ctacbr->setAnio($anio);
+            $ctacbr->setImpoBase($impo_sol);
+            $ctacbr->setTipoMon($impo_mon);
+            $ctacbr->setEstado($obj_esta);
+            $ctacbr->setActivo(1);
+
+            $em->persist($ctacbr);
+
+            $cant ++;
+        }
+
+        $em->flush();
+
+        return $cant;
+    }
 }
 
 ?>

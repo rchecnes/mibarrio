@@ -22,49 +22,201 @@ class CuentasPorCobrar
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Evento", inversedBy="cuentas_por_cobrar")
+     * @ORM\JoinColumn(name="evento_id", referencedColumnName="id")
+     */
+    private $evento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Persona", inversedBy="cuentas_por_cobrar")
+     * @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
+     */
+    private $persona;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="cuentas_por_cobrar")
+     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     */
+    private $usuario_crea;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_crea", type="datetimetz", nullable=false)
+     */
+    private $fecha_crea;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="periodo", type="string", length=2, nullable=false)
+     */
+    private $periodo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="anio", type="string", length=4, nullable=false)
+     */
+    private $anio;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="impo_base", type="decimal", nullable=false)
+     */
+    private $impo_base;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo_mon", type="string", length=4, nullable=false)
+     */
+    private $tipo_mon;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Estado", inversedBy="cuentas_por_cobrar")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
+     */
+    private $estado;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="activo", type="boolean")
      */
     private $activo;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="evento", type="string", length=255)
-     */
-    private $evento;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="persona", type="string", length=255)
-     */
-    private $persona;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="fecha_creacion", type="string", length=255)
-     */
-    private $fecha_creacion;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="estado", type="string", length=255)
-     */
-    private $estado;
-
+    
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set fechaCrea
+     *
+     * @param \DateTime $fechaCrea
+     *
+     * @return CuentasPorCobrar
+     */
+    public function setFechaCrea($fechaCrea)
+    {
+        $this->fecha_crea = $fechaCrea;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCrea
+     *
+     * @return \DateTime
+     */
+    public function getFechaCrea()
+    {
+        return $this->fecha_crea;
+    }
+
+    /**
+     * Set periodo
+     *
+     * @param string $periodo
+     *
+     * @return CuentasPorCobrar
+     */
+    public function setPeriodo($periodo)
+    {
+        $this->periodo = $periodo;
+
+        return $this;
+    }
+
+    /**
+     * Get periodo
+     *
+     * @return string
+     */
+    public function getPeriodo()
+    {
+        return $this->periodo;
+    }
+
+    /**
+     * Set anio
+     *
+     * @param string $anio
+     *
+     * @return CuentasPorCobrar
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return string
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
+     * Set impoBase
+     *
+     * @param string $impoBase
+     *
+     * @return CuentasPorCobrar
+     */
+    public function setImpoBase($impoBase)
+    {
+        $this->impo_base = $impoBase;
+
+        return $this;
+    }
+
+    /**
+     * Get impoBase
+     *
+     * @return string
+     */
+    public function getImpoBase()
+    {
+        return $this->impo_base;
+    }
+
+    /**
+     * Set tipoMon
+     *
+     * @param string $tipoMon
+     *
+     * @return CuentasPorCobrar
+     */
+    public function setTipoMon($tipoMon)
+    {
+        $this->tipo_mon = $tipoMon;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoMon
+     *
+     * @return string
+     */
+    public function getTipoMon()
+    {
+        return $this->tipo_mon;
     }
 
     /**
@@ -84,7 +236,7 @@ class CuentasPorCobrar
     /**
      * Get activo
      *
-     * @return bool
+     * @return boolean
      */
     public function getActivo()
     {
@@ -94,11 +246,11 @@ class CuentasPorCobrar
     /**
      * Set evento
      *
-     * @param string $evento
+     * @param \Checnes\RegistroBundle\Entity\Evento $evento
      *
      * @return CuentasPorCobrar
      */
-    public function setEvento($evento)
+    public function setEvento(\Checnes\RegistroBundle\Entity\Evento $evento = null)
     {
         $this->evento = $evento;
 
@@ -108,7 +260,7 @@ class CuentasPorCobrar
     /**
      * Get evento
      *
-     * @return string
+     * @return \Checnes\RegistroBundle\Entity\Evento
      */
     public function getEvento()
     {
@@ -118,11 +270,11 @@ class CuentasPorCobrar
     /**
      * Set persona
      *
-     * @param string $persona
+     * @param \Checnes\RegistroBundle\Entity\Persona $persona
      *
      * @return CuentasPorCobrar
      */
-    public function setPersona($persona)
+    public function setPersona(\Checnes\RegistroBundle\Entity\Persona $persona = null)
     {
         $this->persona = $persona;
 
@@ -132,7 +284,7 @@ class CuentasPorCobrar
     /**
      * Get persona
      *
-     * @return string
+     * @return \Checnes\RegistroBundle\Entity\Persona
      */
     public function getPersona()
     {
@@ -140,37 +292,37 @@ class CuentasPorCobrar
     }
 
     /**
-     * Set fechaCreacion
+     * Set usuarioCrea
      *
-     * @param string $fechaCreacion
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
      *
      * @return CuentasPorCobrar
      */
-    public function setFechaCreacion($fechaCreacion)
+    public function setUsuarioCrea(\Checnes\RegistroBundle\Entity\Usuario $usuarioCrea = null)
     {
-        $this->fechaCreacion = $fechaCreacion;
+        $this->usuario_crea = $usuarioCrea;
 
         return $this;
     }
 
     /**
-     * Get fechaCreacion
+     * Get usuarioCrea
      *
-     * @return string
+     * @return \Checnes\RegistroBundle\Entity\Usuario
      */
-    public function getFechaCreacion()
+    public function getUsuarioCrea()
     {
-        return $this->fechaCreacion;
+        return $this->usuario_crea;
     }
 
     /**
      * Set estado
      *
-     * @param string $estado
+     * @param \Checnes\RegistroBundle\Entity\Estado $estado
      *
      * @return CuentasPorCobrar
      */
-    public function setEstado($estado)
+    public function setEstado(\Checnes\RegistroBundle\Entity\Estado $estado = null)
     {
         $this->estado = $estado;
 
@@ -180,7 +332,7 @@ class CuentasPorCobrar
     /**
      * Get estado
      *
-     * @return string
+     * @return \Checnes\RegistroBundle\Entity\Estado
      */
     public function getEstado()
     {

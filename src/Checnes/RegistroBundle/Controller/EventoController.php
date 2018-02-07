@@ -129,7 +129,7 @@ class EventoController extends Controller
         $entity->setEstado($obj_stat);
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha_inicio')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
-        $entity->setFechaCrea(new \DateTime(date('Y-m-d h:i:s')));
+        $entity->setFechaCrea(new \DateTime(date('Y-m-d H:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
         $entity->setHoraInicio($request->request->get('hora_inicio'));
         $entity->setHoraFinal($request->request->get('hora_final'));
@@ -252,7 +252,7 @@ class EventoController extends Controller
         $entity->setEstado($obj_stat);
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
-        $entity->setFechaMod(new \DateTime(date('Y-m-d h:i:s')));
+        $entity->setFechaMod(new \DateTime(date('Y-m-d H:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
         $entity->setHoraInicio($request->request->get('hora_inicio'));
         $entity->setHoraFinal($request->request->get('hora_final'));
@@ -357,7 +357,7 @@ class EventoController extends Controller
 
             $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
 
-            $entity->setFechaElim(new \DateTime(date('Y-m-d h:i:s')));
+            $entity->setFechaElim(new \DateTime(date('Y-m-d H:i:s')));
             $entity->setUsuarioElim($obj_usu);
             $entity->setEstado(0);
             //$em->remove($entity);

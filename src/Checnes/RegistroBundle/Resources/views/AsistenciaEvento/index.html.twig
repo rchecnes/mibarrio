@@ -2,6 +2,30 @@
 
 {% block body %}
   
+  {%set message_success = app.session.flashbag.get('success')%}
+  {% if message_success %}
+      <div class="alert alert-success">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_success%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+  {% endif %}
+
+  {%set message_error = app.session.flashbag.get('error')%}
+  {% if message_error %}
+      <div class="alert alert-danger">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_error%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+  {% endif %}
+    
   <table class="table table-bordered table-striped">
     <thead>
       <tr>

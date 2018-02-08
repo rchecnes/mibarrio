@@ -24,11 +24,11 @@
   </tr>
   <tr>
     <th>Fecha Inicio:</th>
-    <td>{{evento.fechainicio |date('d/m/Y') }} {{evento.horainicio | ampm}}</td>
+    <td>{{evento.fechainicio |date('d/m/Y') }} {{evento.horainicio |date("H:i:s") | ampm}}</td>
   </tr>
   <tr>
     <th>Fecha Fin:</th>
-    <td>{{evento.fechafin |date('d/m/Y') }} {{evento.horafinal | ampm}}</td>
+    <td>{{evento.fechafin |date('d/m/Y') }} {{evento.horafinal |date("H:i:s") | ampm}}</td>
   </tr>
 <tr>
     <th>Detalles:</th>

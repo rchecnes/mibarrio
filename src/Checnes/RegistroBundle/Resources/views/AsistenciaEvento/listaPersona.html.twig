@@ -21,7 +21,7 @@
 					<label for="form-field-9"><b>Fecha Inicio y Fin:</b> {{evento.fechainicio |date('d/m/Y') }} - {{evento.fechafin |date('d/m/Y') }}</label>
 				</div>
 				<div>
-					<label for="form-field-11"><b>Hora Inicio y Fin:</b> {{evento.horainicio}} - {{evento.horafinal}}</label>
+					<label for="form-field-11"><b>Hora Inicio y Fin:</b> {{evento.horainicio |date('H:i:s') | ampm}} - {{evento.horafinal |date('H:i:s') | ampm}}</label>
 				</div>
 				<div>
 					<label for="form-field-12"><b>Estado:</b> {{evento.estado.nombre}}</label>

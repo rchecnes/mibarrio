@@ -53,7 +53,7 @@
                       <div class="form-group">
                         <label for="hora_inicio">Hora Inicio:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio}}">
+                            <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio |date('H:i:s')}}">
                             <div class="input-group-addon">
                                <i class="fa fa-clock-o"></i>
                             </div>
@@ -66,7 +66,7 @@
                       <div class="form-group">
                         <label>Hora Fin:</label>
                         <div class="input-group">
-                          <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final" value="{{evento.horafinal}}">
+                          <input type="text" class="form-control timepicker" name="hora_final" id="hora_final" placeholder="Hora Final" value="{{evento.horafinal |date('H:i:s')}}">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>

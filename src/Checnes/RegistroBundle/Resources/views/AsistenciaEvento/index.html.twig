@@ -42,8 +42,8 @@
       <tr>
         <!--<td>{#{entity.id|str_pad(4)}#}</td>-->
         <td>{{entity.asunto| ucwords}}</td>
-        <td>{{entity.fechainicio |date('d/m/Y') }} {{ entity.horainicio | ampm }}</td>
-        <td>{{entity.fechafin |date('d/m/Y') }} {{ entity.horafinal | ampm }}</td>
+        <td>{{entity.fechainicio |date('d/m/Y') }} {{ entity.horainicio |date("H:i:s") | ampm }}</td>
+        <td>{{entity.fechafin |date('d/m/Y') }} {{ entity.horafinal |date("H:i:s") | ampm }}</td>
         <td>
           {% set icons =  'fa-eye bigger-200'%}
           {% set class =  'color-block'%}

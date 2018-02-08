@@ -52,6 +52,7 @@ class EventoController extends Controller
                 $border_color = '#6d9865';
             }
 
+
             $evento[] = array(
                 'title'          =>ucwords($entity->getTipoActividad()->getNombre().': '.$entity->getTipoPersona()),//title for calendar
                 'nombre'         =>"",//nombre for bd
@@ -65,8 +66,8 @@ class EventoController extends Controller
                 'detalle'        =>$entity->getDescripcion(),
                 'tipo_actividad' =>$entity->getTipoActividad()->getId(),
                 'estado'         =>$entity->getEstado()->getId(),
-                'hora_inicio'    =>$entity->getHoraInicio(),
-                'hora_final'     =>$entity->getHoraFinal(),
+                'hora_inicio'    =>strtoupper(date_format($entity->getHoraInicio(),'g:i a')),
+                'hora_final'     =>strtoupper(date_format($entity->getHoraFinal(),'g:i a')),
                 'tipo_persona'   =>$entity->getTipoPersona()
             );
             //print(date_format($entity->getFechaInicio(), 'Y/m/d'));
@@ -131,8 +132,8 @@ class EventoController extends Controller
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaCrea(new \DateTime(date('Y-m-d H:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
-        $entity->setHoraInicio($request->request->get('hora_inicio'));
-        $entity->setHoraFinal($request->request->get('hora_final'));
+        $entity->setHoraInicio(new \DateTime($request->request->get('hora_inicio')) );
+        $entity->setHoraFinal(new \DateTime($request->request->get('hora_final')) );
         $entity->setTipoPersona($request->request->get('tipo_persona'));
         $entity->setAsunto($request->request->get('asunto'));
         $entity->setUsuarioCrea($obj_usu);
@@ -254,8 +255,8 @@ class EventoController extends Controller
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaMod(new \DateTime(date('Y-m-d H:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
-        $entity->setHoraInicio($request->request->get('hora_inicio'));
-        $entity->setHoraFinal($request->request->get('hora_final'));
+        $entity->setHoraInicio(new \DateTime($request->request->get('hora_inicio')));
+        $entity->setHoraFinal(new \DateTime($request->request->get('hora_final')));
         $entity->setTipoPersona($request->request->get('tipo_persona'));
         $entity->setAsunto($request->request->get('asunto'));
         $entity->setUsuarioMod($obj_usu);

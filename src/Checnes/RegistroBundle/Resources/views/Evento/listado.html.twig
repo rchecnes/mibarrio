@@ -28,8 +28,8 @@
         <tbody>
         {% for evento in pagination %}
             <tr>
-            	<td>{{ evento.fechainicio |date("Y-m-d") }} {{ evento.horainicio }}</td>
-            	<td>{{ evento.fechafin |date("Y-m-d") }} {{ evento.horafinal }}</td>
+            	<td>{{ evento.fechainicio |date("Y-m-d") }} {{ evento.horainicio |date("H:i:s") | ampm }}</td>
+            	<td>{{ evento.fechafin |date("Y-m-d") }} {{ evento.horafinal |date("H:i:s") | ampm }}</td>
                 <td>{{ evento.asunto | ucwords }}</td>
                 <td>
                     {% if evento.fechainicio |date("Y-m-d") < 'now'|date('Y-m-d') %}

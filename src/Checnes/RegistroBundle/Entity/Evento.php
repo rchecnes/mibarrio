@@ -29,30 +29,30 @@ class Evento
     private $tipo_persona;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fecha_inicio", type="datetimetz")
+     * @ORM\Column(name="fecha_inicio", type="date")
      */
     private $fecha_inicio;
 
     /**
-     * @var string
+     * @var time
      *
-     * @ORM\Column(name="hora_inicio", type="string", nullable=true)
+     * @ORM\Column(name="hora_inicio", type="time", nullable=true)
      */
     private $hora_inicio;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fecha_fin", type="datetimetz")
+     * @ORM\Column(name="fecha_fin", type="date")
      */
     private $fecha_fin;
 
     /**
-     * @var string
+     * @var time
      *
-     * @ORM\Column(name="hora_final", type="string", nullable=true)
+     * @ORM\Column(name="hora_final", type="time", nullable=true)
      */
     private $hora_final;
 
@@ -102,6 +102,27 @@ class Evento
      * @ORM\Column(name="anio", type="string", length=4)
      */
     private $anio;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="can_asistio", type="integer", nullable=true)
+     */
+    private $cant_asistio;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="can_falto", type="integer", nullable=true)
+     */
+    private $cant_falto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="can_tarde", type="integer", nullable=true)
+     */
+    private $cant_tarde;
 
 
     /**
@@ -174,6 +195,8 @@ class Evento
         return ucwords($this->getTipoActividad()->getNombre()).': '.ucwords($this->getTipoPersona()).'; F: '.$this->getFechaInicio()->format('d/m/Y').' - '.$this->getFechaFin()->format('d/m/Y').'; H: '.$this->getHoraInicio().' - '.$this->getHoraFinal();
     }
 
+    
+
     /**
      * Get id
      *
@@ -235,7 +258,7 @@ class Evento
     /**
      * Set horaInicio
      *
-     * @param string $horaInicio
+     * @param \DateTime $horaInicio
      *
      * @return Evento
      */
@@ -249,7 +272,7 @@ class Evento
     /**
      * Get horaInicio
      *
-     * @return string
+     * @return \DateTime
      */
     public function getHoraInicio()
     {
@@ -283,7 +306,7 @@ class Evento
     /**
      * Set horaFinal
      *
-     * @param string $horaFinal
+     * @param \DateTime $horaFinal
      *
      * @return Evento
      */
@@ -297,7 +320,7 @@ class Evento
     /**
      * Get horaFinal
      *
-     * @return string
+     * @return \DateTime
      */
     public function getHoraFinal()
     {
@@ -446,6 +469,78 @@ class Evento
     public function getAnio()
     {
         return $this->anio;
+    }
+
+    /**
+     * Set cantAsistio
+     *
+     * @param integer $cantAsistio
+     *
+     * @return Evento
+     */
+    public function setCantAsistio($cantAsistio)
+    {
+        $this->cant_asistio = $cantAsistio;
+
+        return $this;
+    }
+
+    /**
+     * Get cantAsistio
+     *
+     * @return integer
+     */
+    public function getCantAsistio()
+    {
+        return $this->cant_asistio;
+    }
+
+    /**
+     * Set cantFalto
+     *
+     * @param integer $cantFalto
+     *
+     * @return Evento
+     */
+    public function setCantFalto($cantFalto)
+    {
+        $this->cant_falto = $cantFalto;
+
+        return $this;
+    }
+
+    /**
+     * Get cantFalto
+     *
+     * @return integer
+     */
+    public function getCantFalto()
+    {
+        return $this->cant_falto;
+    }
+
+    /**
+     * Set cantTarde
+     *
+     * @param integer $cantTarde
+     *
+     * @return Evento
+     */
+    public function setCantTarde($cantTarde)
+    {
+        $this->cant_tarde = $cantTarde;
+
+        return $this;
+    }
+
+    /**
+     * Get cantTarde
+     *
+     * @return integer
+     */
+    public function getCantTarde()
+    {
+        return $this->cant_tarde;
     }
 
     /**

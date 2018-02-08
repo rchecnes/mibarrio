@@ -38,7 +38,7 @@ class AsistenciaEventoController extends Controller
                 INNER JOIN a.tipo_tipo_actividad ta
                 WHERE e.estado IN(1,2)
                 AND ta.nombre_sistema='asistencia'
-                ORDER BY e.estado,e.fecha_inicio DESC";
+                ORDER BY e.fecha_inicio DESC";
         $resp = $em->createQuery($dql);
 
         $paginator  = $this->get('knp_paginator');
@@ -193,7 +193,6 @@ class AsistenciaEventoController extends Controller
         
         $obj_usu = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);                                  
 
-
         for ($i=1; $i <= $count_personas; $i++) { 
             
             $persona_id = $request->request->get('persona_'.$i);
@@ -242,12 +241,16 @@ class AsistenciaEventoController extends Controller
            
            $resp = $this->registrarCuentasCobrar($obj_evnt->getId(), $obj_evnt->getTipoPersona());
 
-           //Actualizamos a serrado
+           //Actualizamos a cerrado
            $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
            $obj_evnt->setEstado($obj_esta);
-           $em->persist($obj_evnt);
+           
         }
+        $obj_evnt->setCantAsistio($request->request->get('cant_asistio'));
+        $obj_evnt->setCantFalto($request->request->get('cant_falto'));
+        $obj_evnt->setCantTarde($request->request->get('cant_tarde'));
 
+        $em->persist($obj_evnt);
         $em->flush();
 
         $session->getFlashBag()->add("success",'Se registro asistencia correctamente!.');

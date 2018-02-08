@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cuentasporcobrar</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cuentasPorCobrar.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_crea</th>
+                <td>{{ cuentasPorCobrar.fechacrea }}</td>
+            </tr>
+            <tr>
+                <th>Periodo</th>
+                <td>{{ cuentasPorCobrar.periodo }}</td>
+            </tr>
+            <tr>
+                <th>Anio</th>
+                <td>{{ cuentasPorCobrar.anio }}</td>
+            </tr>
+            <tr>
+                <th>Impo_base</th>
+                <td>{{ cuentasPorCobrar.impobase }}</td>
+            </tr>
+            <tr>
+                <th>Tipo_mon</th>
+                <td>{{ cuentasPorCobrar.tipomon }}</td>
+            </tr>
+            <tr>
+                <th>Activo</th>
+                <td>{% if cuentasPorCobrar.activo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cuentasporcobrar_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

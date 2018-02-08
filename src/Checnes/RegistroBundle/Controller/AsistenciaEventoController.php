@@ -238,14 +238,16 @@ class AsistenciaEventoController extends Controller
 
         //ld($request->request->get("guardarcerrar"));exit();
         if ($request->request->get("guardarcerrar")=='guardarcerrar') {
-           
-           $resp = $this->registrarCuentasCobrar($obj_evnt->getId(), $obj_evnt->getTipoPersona());
 
-           //Actualizamos a cerrado
-           $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
-           $obj_evnt->setEstado($obj_esta);
-           
+            if ($obj_evnt->getMulta()==1) {
+                $resp = $this->registrarCuentasCobrar($obj_evnt->getId(), $obj_evnt->getTipoPersona());
+
+                //Actualizamos a cerrado
+                $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
+                $obj_evnt->setEstado($obj_esta);
+            }
         }
+        //Actualizamos eventos con asistencia y faltas
         $obj_evnt->setCantAsistio($request->request->get('cant_asistio'));
         $obj_evnt->setCantFalto($request->request->get('cant_falto'));
         $obj_evnt->setCantTarde($request->request->get('cant_tarde'));
@@ -258,8 +260,35 @@ class AsistenciaEventoController extends Controller
         return $this->redirectToRoute("asistenciaevento_index");
     }
 
+    /**
+     *
+     * @Route("/cerrarevento", name="cerrar_evento")
+     * @Method({"GET", "POST"})
+     */
+    public function cerrarAsistenciaAction(Request $request)
+    {
+        $session    = $request->getSession();
+        $em         = $this->getDoctrine()->getManager();
+        $evento_id  = $request->query->get('evento');
 
-    private function registrarCuentasCobrar($evento_id, $tipo_persona){
+        $obj_evnt  = $em->getRepository('ChecnesRegistroBundle:Evento')->find($evento_id);
+        $obj_esta  = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
+
+        $obj_evnt->setEstado($obj_esta);
+        $em->persist($obj_evnt);
+        $em->flush();
+
+        if ($obj_evnt->getMulta() == 1) {
+            
+            $resp = $this->registrarCuentasCobrar($obj_evnt->getId());
+        }
+
+        $session->getFlashBag()->add("success",'La asistencia se cerró  correctamente!.');
+
+        return $this->redirectToRoute("asistenciaevento_index");
+    }
+
+    private function registrarCuentasCobrar($evento_id){
 
         $conn = $this->get('database_connection');
         $em   = $this->getDoctrine()->getManager();
@@ -270,15 +299,19 @@ class AsistenciaEventoController extends Controller
         $usuario_id = $session->get("usuario_id");
         $fecha_crea = date('Y-m-d H:s:i');
 
+        $obj_usu  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id); 
+        $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($evento_id);
+        $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(1);
+
         //Consultamos a las personas que no asistieron al evento
         $sql = "";
 
-        if ($tipo_persona=='general' || $tipo_persona=='dirigente') {
+        if ($obj_evnt->getTipoPersona()=='general' || $obj_evnt->getTipoPersona()=='dirigente') {
             
-            $and_where = ($tipo_persona=='dirigente')?"tipo_persona='dirigente' AND":"";
+            $and_where = ($obj_evnt->getTipoPersona()=='dirigente')?"tipo_persona='dirigente' AND":"";
             $sql = "SELECT id AS persona_id FROM persona WHERE $and_where id NOT IN( SELECT persona_id FROM asistencia_evento WHERE evento_id='$evento_id' AND asistio=1)";
 
-        }elseif($tipo_persona=='seleccionar'){
+        }elseif($obj_evnt->getTipoPersona()=='seleccionar'){
 
             $sql = "SELECT persona_id FROM evento_participante WHERE persona_id NOT IN( SELECT persona_id FROM asistencia_evento WHERE evento_id='$evento_id' AND asistio=1)";
         }
@@ -288,15 +321,13 @@ class AsistenciaEventoController extends Controller
         $array = array();
         $cant = 0;
 
-        $obj_usu  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id); 
-        $obj_evnt = $em->getRepository('ChecnesRegistroBundle:Evento')->find($evento_id);
-        $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(1);
+        
 
         foreach ($resp as $key => $row) {
 
             $obj_pers = $em->getRepository('ChecnesRegistroBundle:Persona')->find($row['persona_id']);
 
-            $impo_sol = 200;
+            $impo_sol = $obj_evnt->getMontoMulta();
             $impo_mon = 'PEN';
 
             $ctacbr = new CuentasPorCobrar();

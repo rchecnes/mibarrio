@@ -251,7 +251,7 @@ class EventoController extends Controller
 
         $entity->setTipoActividad($obj_tipa);
         $entity->setEstado($obj_stat);
-        $entity->setFechaInicio(new \DateTime($request->request->get('fecha')));
+        $entity->setFechaInicio(new \DateTime($request->request->get('fecha_inicio')));
         $entity->setFechaFin(new \DateTime($request->request->get('fecha_fin')));
         $entity->setFechaMod(new \DateTime(date('Y-m-d H:i:s')));
         $entity->setDescripcion($request->request->get('detalle'));
@@ -416,7 +416,7 @@ class EventoController extends Controller
         
         $em = $this->getDoctrine()->getManager();
 
-        $resp = $em->createQuery("SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado=1 ORDER BY e.fecha_inicio DESC");
+        $resp = $em->createQuery("SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado IN(1,2) ORDER BY e.fecha_inicio DESC");
 
         #$em    = $this->get('doctrine.orm.entity_manager');
         #$dql   = "SELECT a FROM AcmeMainBundle:Article a";

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Periodo</th>
+                <th>Anio</th>
+                <th>Importe</th>
+                <th>Tipo_mon</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr>
+                <td>{{ entity.fechacrea | date('d/m/Y') }}</td>
+                <td>{{ entity.periodo }}</td>
+                <td>{{ entity.anio }}</td>
+                <td>{{ entity.impobase }}</td>
+                <td>{{ entity.tipomon }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

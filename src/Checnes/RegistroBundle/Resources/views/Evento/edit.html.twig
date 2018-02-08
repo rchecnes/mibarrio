@@ -16,7 +16,7 @@
           <div class="form-group">
             <!--<label for="nombre">Nombre</label>-->
             <input type="hidden" class="form-control" id="nombre" name="nombre">
-            <input type="hidden" class="form-control" id="fecha" name="fecha" value="{{evento.fechainicio |date('Y-m-d') }}">
+            <input type="hidden" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{evento.fechainicio |date('Y-m-d') }}">
             <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
           </div>
           <div class="row">
@@ -102,6 +102,17 @@
                   </div>
               </div>
               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                  <div class="form-group">
+                      <label>Fecha Fin:</label>
+                      <div class="input-group date">
+                        <div class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                   <div class="bootstrap-timepicker">
                       <div class="form-group">
                         <label>Hora Fin:</label>
@@ -113,17 +124,6 @@
                         </div>
                       </div>
                     </div>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                  <div class="form-group">
-                      <label>Fecha Fin:</label>
-                      <div class="input-group date">
-                        <div class="input-group-addon">
-                          <i class="fa fa-calendar"></i>
-                        </div>
-                        <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
-                      </div>
-                  </div>
               </div>
           </div>
           <div class="form-group">

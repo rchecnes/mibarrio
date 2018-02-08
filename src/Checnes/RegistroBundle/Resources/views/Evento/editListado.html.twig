@@ -21,7 +21,6 @@
 	        <!--<label for="nombre">Nombre</label>-->
 	        <input type="hidden" class="form-control" id="nombre" name="nombre">
 	        <input type="hidden" class="form-control" id="origen" name="origen" value="form_normal">
-	        <input type="hidden" class="form-control" id="fecha" name="fecha" value="{{evento.fechainicio |date('Y-m-d') }}">
 	        <input type="hidden" class="form-control" id="reg_asistencia" name="reg_asistencia">
 	      </div>
 	      <div class="row">
@@ -94,21 +93,45 @@
 	        </div>
 	      </div>
 	      <div class="row">
-	          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-	              <div class="bootstrap-timepicker">
-	                  <div class="form-group">
-	                    <label for="hora_inicio">Hora Inicio:</label>
-	                    <div class="input-group">
-	                        <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio |date('H:i:s')}}">
-	                        <div class="input-group-addon">
-	                           <i class="fa fa-clock-o"></i>
-	                        </div>
+	      		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                  <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label for="fecha_inicio">Fecha Inicio:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control date-picker" id="fecha_inicio" name="fecha_inicio" placeholder="Fecha Inicio" value="{{evento.fechainicio |date('Y-m-d')}}">
+                            <div class="input-group-addon">
+                               <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+              	</div>
+				<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+				  	<div class="bootstrap-timepicker">
+				      <div class="form-group">
+				        <label for="hora_inicio">Hora Inicio:</label>
+				        <div class="input-group">
+				            <input type="text" class="form-control timepicker" id="hora_inicio" name="hora_inicio" placeholder="Hora Inicio" value="{{evento.horainicio |date('H:i:s')}}">
+				            <div class="input-group-addon">
+				               <i class="fa fa-clock-o"></i>
+				            </div>
+				        </div>
+				      </div>
+				  	</div>
+				</div>
+	          	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+	              	<div class="form-group">
+	                  <label>Fecha Fin:</label>
+	                  <div class="input-group date">
+	                    <div class="input-group-addon">
+	                      <i class="fa fa-calendar"></i>
 	                    </div>
+	                    <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
 	                  </div>
 	              </div>
 	          </div>
-	          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-	              <div class="bootstrap-timepicker">
+	          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+	              	<div class="bootstrap-timepicker">
 	                  <div class="form-group">
 	                    <label>Hora Fin:</label>
 	                    <div class="input-group">
@@ -119,18 +142,7 @@
 	                    </div>
 	                  </div>
 	                </div>
-	          </div>
-	          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-	              <div class="form-group">
-	                  <label>Fecha Fin:</label>
-	                  <div class="input-group date">
-	                    <div class="input-group-addon">
-	                      <i class="fa fa-calendar"></i>
-	                    </div>
-	                    <input type="text" class="form-control pull-right date-picker" id="fecha_fin" name="fecha_fin" value="{{evento.fechafin |date('Y-m-d') }}">
-	                  </div>
-	              </div>
-	          </div>
+	          	</div>
 	      	</div>
 	      	<div class="row">
 	          	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

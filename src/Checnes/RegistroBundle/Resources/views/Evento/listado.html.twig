@@ -19,9 +19,9 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Asunto</th>
                 <th>Fecha Ini.</th>
                 <th>Fecha Fin.</th>
-                <th>Asunto</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -32,10 +32,11 @@
             	<td>{{ evento.fechafin |date("Y-m-d") }} {{ evento.horafinal |date("H:i:s") | ampm }}</td>
                 <td>{{ evento.asunto | ucwords }}</td>
                 <td>
-                    {% if evento.fechainicio |date("Y-m-d") < 'now'|date('Y-m-d') %}
-                        <a href="{{ path('evento_showlistado', { 'id': evento.id }) }}" class="color-orange"><i class="ace-icon fa fa-eye bigger-200"></i></a>
+
+                    {%if evento.estado.id==1 %}
+                        <a href="{{ path('evento_showlistado', { 'id': evento.id }) }}" class="color-blue"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
                     {% else %}
-                        <a href="{{ path('evento_editlistado', { 'id': evento.id }) }}"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+                        <a href="{{ path('evento_showlistado', { 'id': evento.id }) }}" class="color-block"><i class="ace-icon fa fa-eye bigger-200 bigger-200"></i></a>
                     {% endif %}
                     
                     

@@ -50,7 +50,11 @@ class Moneda
     private $activo;
 
 
+    public function __toString()
+    {
     
+        return $this->getNombre();
+    }
 
     /**
      * Get id

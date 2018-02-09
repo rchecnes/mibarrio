@@ -1,7 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <a href="{{path('cuentasporcobrar_index')}}" class="btn btn-primary">Volver</a><br><br>
+   
+    <div class="widget-box light-border ui-sortable-handle">
+        <div class="widget-header">
+            <h4 class="widget-title">Caja / Banco</h4>
+            <div class="widget-toolbar">
+                <a href="#" data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="widget-body" style="display: hide;">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="cols col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label>Moneda</label>
+                        <select class="form-control" required="required" id="moneda" name="moneda">
+                            {{hmt_moneda|raw}}
+                        </select>
+                    </div>
+                    <div class="cols col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label>Caja / Banco</label>
+                        <select class="form-control" required="required" id="caja_banco" name="caja_banco">
+                            <option value="">SIN CAJA/BANCO</option>
+                        </select>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--http://ace.jeka.by/-->
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -20,6 +50,48 @@
         {% endfor %}
         </tbody>
     </table>
+        <a href="{{path('cuentasporcobrar_index')}}" class="btn btn-primary">Volver</a><br><br>
+
 
     
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script type="text/javascript">
+    $(document).ready(function(){
+        console.log("hola");
+        
+        getCajaBanco = function(){
+
+            var moneda_id = $("#moneda").val();
+
+            $("#caja_banco").attr('disabled','disabled');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{path('cuentasporcobrar_cajabanco')}}",
+                data: {moneda_id: moneda_id},
+                dataType: "json",
+                success: function( data ) {
+                    
+                    html = '';
+                    for (var i = 0; i< data.length; i++) {
+                        html += '<option value="'+data[i].id+'">'+data[i].nombre+'</option>';
+                    }
+                    html = (html!='')?html:'<option>SIN CAJA/BANCO</option>'
+                    $("#caja_banco").html(html);
+                    $("#caja_banco").removeAttr('disabled');
+                }
+            });
+        }
+
+        getCajaBanco();
+
+        $("#moneda").on('change',function(){
+            getCajaBanco();
+        })
+        
+    })
+</script>
 {% endblock %}

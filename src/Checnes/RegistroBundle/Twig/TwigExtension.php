@@ -25,6 +25,7 @@ class TwigExtension extends \Twig_Extension
             new \Twig_SimpleFilter('str_pad', array($this, 'str_pad')),
             new \Twig_SimpleFilter('ucwords', array($this, 'ucwords')),
             new \Twig_SimpleFilter('ampm', array($this, 'ampm')),
+            new \Twig_SimpleFilter('round', array($this, 'round')),
             //'getMenu' => new \Twig_Filter_Method($this, 'getMenu'),
             //'formatNum'         => new \Twig_Filter_Method($this, 'formatNum')
   
@@ -57,6 +58,9 @@ class TwigExtension extends \Twig_Extension
 
     public function mayuscula($texto){
         return strtoupper($texto);
+    }
+    public function round($numero, $cant, $mil, $dec){
+        return number_format($numero, $cant, $dec, $mil);
     }
 
     public function str_pad($texto,$nums){

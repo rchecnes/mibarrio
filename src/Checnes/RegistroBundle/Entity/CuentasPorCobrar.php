@@ -68,17 +68,16 @@ class CuentasPorCobrar
     private $impo_base;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="tipo_mon", type="string", length=4, nullable=false)
-     */
-    private $tipo_mon;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Estado", inversedBy="cuentas_por_cobrar")
      * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
      */
     private $estado;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Moneda", inversedBy="moneda")
+     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id")
+     */
+    private $moneda;
 
     /**
      * @var bool
@@ -87,7 +86,6 @@ class CuentasPorCobrar
      */
     private $activo;
 
-    
 
     /**
      * Get id
@@ -193,30 +191,6 @@ class CuentasPorCobrar
     public function getImpoBase()
     {
         return $this->impo_base;
-    }
-
-    /**
-     * Set tipoMon
-     *
-     * @param string $tipoMon
-     *
-     * @return CuentasPorCobrar
-     */
-    public function setTipoMon($tipoMon)
-    {
-        $this->tipo_mon = $tipoMon;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoMon
-     *
-     * @return string
-     */
-    public function getTipoMon()
-    {
-        return $this->tipo_mon;
     }
 
     /**
@@ -337,5 +311,29 @@ class CuentasPorCobrar
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set moneda
+     *
+     * @param \Checnes\RegistroBundle\Entity\Moneda $moneda
+     *
+     * @return CuentasPorCobrar
+     */
+    public function setMoneda(\Checnes\RegistroBundle\Entity\Moneda $moneda = null)
+    {
+        $this->moneda = $moneda;
+
+        return $this;
+    }
+
+    /**
+     * Get moneda
+     *
+     * @return \Checnes\RegistroBundle\Entity\Moneda
+     */
+    public function getMoneda()
+    {
+        return $this->moneda;
     }
 }

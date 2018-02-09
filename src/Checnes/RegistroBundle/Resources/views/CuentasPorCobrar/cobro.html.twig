@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{path('cuentasporcobrar_index')}}" class="btn btn-primary">Volver</a><br><br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Persona</th>
+                <th>Importe</th>
+                <th>Pend. Cob.</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in cobro %}
+            <tr>
+                <td>{{ entity.persona.nombre }} {{ entity.persona.apellidopaterno }}</td>
+                <td align="right">{{ entity.moneda.simbolo }} {{ entity.impobase | round(2,',','.')}}</td>
+                <td><input type="text" value="{{entity.impobase | round(2,'','.')}}" class="align-center"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

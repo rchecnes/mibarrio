@@ -189,14 +189,6 @@ class Evento
         $this->asistencia_evento = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function __toString()
-    {
-    
-        return ucwords($this->getTipoActividad()->getNombre()).': '.ucwords($this->getTipoPersona()).'; F: '.$this->getFechaInicio()->format('d/m/Y').' - '.$this->getFechaFin()->format('d/m/Y').'; H: '.$this->getHoraInicio().' - '.$this->getHoraFinal();
-    }
-
-    
-
     /**
      * Get id
      *

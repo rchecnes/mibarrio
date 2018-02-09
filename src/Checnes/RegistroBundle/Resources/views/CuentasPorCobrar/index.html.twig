@@ -1,29 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    
+    <p class="align-right"><b>Nro. Reg. {{ pagination.getTotalItemCount }}</b></p>
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Evento / Asunto</th>
                 <th>Fecha</th>
-                <th>Periodo</th>
-                <th>Anio</th>
                 <th>Importe</th>
-                <th>Tipo_mon</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr>
-                <td>{{ entity.fechacrea | date('d/m/Y') }}</td>
-                <td>{{ entity.periodo }}</td>
-                <td>{{ entity.anio }}</td>
-                <td>{{ entity.impobase }}</td>
-                <td>{{ entity.tipomon }}</td>
+                <td>{{ entity.evento.asunto }}</td>
+                <td>{{ entity.evento.fechainicio | date('d/m/Y') }} {{entity.evento.horainicio | date('H:i:s') | ampm}}</td>
+                <td align="right">{{ entity.moneda.simbolo }} {{ entity.impobase | round(2,',','.') }}</td>
+                <td>
+                    <a href="{{ path('cuentasporcobrar_ver', { 'evento_id': entity.evento.id }) }}" title="Realizar Cobro" class="color-blue">
+                        <i class="ace-icon fa fa-hand-o-right bigger-200"></i>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    <!--Paginado-->
+    <div class="pagination-navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
     
 {% endblock %}

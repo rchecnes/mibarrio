@@ -321,7 +321,7 @@ class AsistenciaEventoController extends Controller
         $array = array();
         $cant = 0;
 
-        
+        $obj_mon = $em->getRepository('ChecnesRegistroBundle:Moneda')->find(1);//Soles
 
         foreach ($resp as $key => $row) {
 
@@ -338,7 +338,7 @@ class AsistenciaEventoController extends Controller
             $ctacbr->setPeriodo(date('m'));
             $ctacbr->setAnio($anio);
             $ctacbr->setImpoBase($impo_sol);
-            $ctacbr->setTipoMon($impo_mon);
+            $ctacbr->setMoneda($obj_mon);
             $ctacbr->setEstado($obj_esta);
             $ctacbr->setActivo(1);
 

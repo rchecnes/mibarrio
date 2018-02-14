@@ -7,6 +7,7 @@ use Checnes\RegistroBundle\Entity\CuentasPorCobrar;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Cuentasporcobrar controller.
@@ -60,15 +61,47 @@ class CuentasPorCobrarController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $evento = $em->getRepository('ChecnesRegistroBundle:Evento')->find($evento_id);
-        
+
+        //Moneda
+        $moneda = $em->getRepository('ChecnesRegistroBundle:Moneda')->findAll(array('activo'=>1));
+        $hmt_moneda = '';
+        foreach ($moneda as $key => $mon) {
+            $hmt_moneda .= '<option value="'.$mon->getId().'">'.$mon->getNombre().'</option>';
+        }
+        $hmt_moneda = ($hmt_moneda!='')?$hmt_moneda:"<option>SIN MONEDA</option>";
+
         $dql = "SELECT c FROM ChecnesRegistroBundle:CuentasPorCobrar c WHERE c.estado=1 AND c.evento=$evento_id";
         $res = $em->createQuery($dql)->getResult();
 
         return $this->render('ChecnesRegistroBundle:CuentasPorCobrar:cobro.html.twig', array(
-            'titulo'  =>ucwords('Cobrar Por - '.$evento->getAsunto().' - '.date_format($evento->getFechaInicio(),'d/m/Y')),
-            'cobro'   => $res
+            'titulo'  => 'Realizar Cobro',
+            'cobro'   => $res,
+            'evento'  => $evento,
+            'hmt_moneda'  => $hmt_moneda
         ));
-    }//strtoupper(date_format($entity->getHoraInicio(),'g:i a'))
+    }
+
+    /**
+     * @Route("/cajabanco", name="cuentasporcobrar_cajabanco")
+     * @Method({"GET"})
+     */
+    public function buscarPersonaAction(Request $request){   
+        
+        $conn = $this->get('database_connection');
+
+        $moneda_id = $request->query->get('moneda_id');
+
+        $sql = "SELECT * FROM caja_banco WHERE moneda_id='$moneda_id' AND activo=1";
+
+        $resp = $conn->executeQuery($sql)->fetchAll();
+
+        $array = array();
+        foreach ($resp as $key => $row) {
+            $array[] = $row;//array('value'=>10,'label'=>'Juan');
+        }
+        //return json_encode($resp);
+        return new JsonResponse($array);
+    }
 
     /**
      * Finds and displays a cuentasPorCobrar entity.

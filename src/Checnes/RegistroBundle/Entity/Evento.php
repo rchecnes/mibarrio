@@ -64,9 +64,9 @@ class Evento
     private $descripcion;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="multa", type="boolean", nullable=true, options={"default":"0"})
+     * @ORM\Column(name="multa", type="integer", nullable=true, options={"default":"0"})
      */
     private $multa;
 
@@ -188,6 +188,8 @@ class Evento
     {
         $this->asistencia_evento = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    
 
     /**
      * Get id
@@ -346,7 +348,7 @@ class Evento
     /**
      * Set multa
      *
-     * @param boolean $multa
+     * @param integer $multa
      *
      * @return Evento
      */
@@ -360,7 +362,7 @@ class Evento
     /**
      * Get multa
      *
-     * @return boolean
+     * @return integer
      */
     public function getMulta()
     {

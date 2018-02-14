@@ -126,6 +126,8 @@ class EventoController extends Controller
         $obj_usu  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
         $obj_stat = $em->getRepository('ChecnesRegistroBundle:Estado')->find($request->request->get('estado'));
 
+        $multa = ($obj_tipa->getTipoTipoActividad()->getNombreSistema()=='tesoreria')?2:$request->request->get('multa');//2=aportacion no es multa
+
         $entity->setTipoActividad($obj_tipa);
         $entity->setEstado($obj_stat);
         $entity->setFechaInicio(new \DateTime($request->request->get('fecha_inicio')));
@@ -138,7 +140,7 @@ class EventoController extends Controller
         $entity->setAsunto($request->request->get('asunto'));
         $entity->setUsuarioCrea($obj_usu);
         $entity->setAnio($anio);
-        $entity->setMulta($request->request->get('multa'));
+        $entity->setMulta($multa);
         $entity->setMontoMulta($request->request->get('monto_multa'));
         $entity->setActivo(1);
         $em->persist($entity);
@@ -402,6 +404,22 @@ class EventoController extends Controller
         foreach ($resp as $key => $row) {
             $array[] = $row;//array('value'=>10,'label'=>'Juan');
         }
+        //return json_encode($resp);
+        return new JsonResponse($array);
+    }
+
+    /**
+     * @Route("/tipotipoac", name="evento_tipotipoactividad")
+     * @Method({"GET"})
+     */
+    public function tipoTipoActividadAction(Request $request){
+        //ld($request->query->get('tipo_actividad'));
+        $em = $this->getDoctrine()->getManager();
+
+        $obj_tiac = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->find($request->query->get('tipo_actividad'));
+
+        $array['tipo']        = $obj_tiac->getTipoTipoActividad()->getId();
+        $array['tip_nom_sis'] = $obj_tiac->getTipoTipoActividad()->getNombreSistema();
         //return json_encode($resp);
         return new JsonResponse($array);
     }

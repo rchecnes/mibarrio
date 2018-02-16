@@ -19,9 +19,17 @@
                 <td>{{ entity.evento.fechainicio | date('d/m/Y') }} {{entity.evento.horainicio | date('H:i:s') | ampm}}</td>
                 <td align="right">{{ entity.moneda.simbolo }} {{ entity.impobase | round(2,',','.') }}</td>
                 <td>
-                    <a href="{{ path('cuentasporcobrar_ver', { 'evento_id': entity.evento.id }) }}" title="Realizar Cobro" class="color-blue">
-                        <i class="ace-icon fa fa-hand-o-right bigger-200"></i>
-                    </a>
+                    {%set cant_pend_cob = getCantPendienteCobroEvento(entity.evento.id) %}
+
+                    {% if cant_pend_cob > 0 %}
+                        <a href="{{ path('cuentasporcobrar_ver', { 'evento_id': entity.evento.id }) }}" title="Realizar Cobro" class="color-blue">
+                            <i class="ace-icon fa fa-hand-o-right bigger-200"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('cuentasporcobrar_ver', { 'evento_id': entity.evento.id }) }}" title="Ver Cobro" class="color-blue">
+                            <i class="ace-icon fa fa-eye bigger-200"></i>
+                        </a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

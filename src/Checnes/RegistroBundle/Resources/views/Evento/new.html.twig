@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="tipo_persona_grupo">
                 <div class="form-group">
                     <label for="tipo">Tipo de persona:</label>
                     <div class="controls">
@@ -54,9 +54,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="grupo_molta_aporte">
               <div class="row">
-                <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5" id="grupo_existe_multa" style="display: block">
+                <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5" id="grupo_existe_multa">
                   <div class="form-group">
                     <label for="tipo">¿Multa?:</label>
                     <div class="controls">
@@ -71,14 +71,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-8 col-sm-7 col-md-7 col-lg-7" id="grupo_multa_monto" style="display: none">
+                <div class="col-xs-8 col-sm-7 col-md-7 col-lg-7" id="grupo_multa_monto">
                   <div class="form-group">
-                    <label for="tipo">Monto de la multa:</label>
+                    <label for="tipo">Monto:</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                            <i class="fa fa-money"></i>
                         </div>
-                        <input type="text" class="form-control align-center" id="monto_multa" name="monto_multa" placeholder="0.00">
+                        <input type="text" class="form-control align-center" id="monto_multa" name="monto_multa" placeholder="0.00" autocomplete="off">
                     </div>
                   </div>
                 </div>
@@ -134,8 +134,8 @@
             <label for="detalle">Estado:</label>
             <select class="form-control" id="estado" name="estado" required="required">
               <option value="1">Emitido</option>
-              <option value="2">Cerrado</option>
-              <option value="3">Anulado</option>
+              <!--<option value="2">Cerrado</option>
+              <option value="3">Anulado</option>-->
             </select>
           </div>
         </div>
@@ -145,7 +145,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <label>Buscar Persona:</label>
               <div class="form-group input-group">
-                <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
+                <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off" disabled="disabled">
                 <span class="input-group-addon">
                   <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
                 </span>
@@ -283,6 +283,7 @@
     $("input:radio[name='multa']").on("click", function(){
       if ($(this).val()=='1') {
         $("#grupo_multa_monto").show();
+        $("#monto_multa").focus();
       }else{
         $("#grupo_multa_monto").hide();
       }
@@ -308,8 +309,19 @@
                 $("#grupo_existe_multa").hide();
                 $("#grupo_multa_monto").show();
                 //Cambiamos titulo multa
-                $("#grupo_multa_monto div>label").html("Monto Aportación:");
+                //$("#grupo_multa_monto div>label").html("Monto Aportación:");
                 $("#monto_multa").focus();
+                //Actualizamos los css
+                $("#tipo_persona_grupo").removeClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+                $("#tipo_persona_grupo").addClass("col-xs-12 col-sm-8 col-md-8 col-lg-8");
+
+                $("#grupo_molta_aporte").removeClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+                $("#grupo_molta_aporte").addClass("col-xs-12 col-sm-4 col-md-4 col-lg-4");
+
+                $("#grupo_multa_monto").removeClass("col-xs-8 col-sm-7 col-md-7 col-lg-7");
+                $("#grupo_multa_monto").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12");
+                
+                
               }else{
                 $("input[name='tipo_persona']").removeAttr("disabled");
                 $("#tipo_persona_general").prop("checked","checked");
@@ -317,7 +329,18 @@
                 $("#grupo_existe_multa").show();
                 $("#grupo_multa_monto").hide();
                 //Cambiamos titulo multa
-                $("#grupo_multa_monto div>label").html("Monto de la multa:");
+                //$("#grupo_multa_monto div>label").html("Monto de la multa:");
+                //Activamos multa no
+                $("#multa_no").prop("checked", true);
+                //Actualizamos los css
+                $("#tipo_persona_grupo").removeClass("col-xs-12 col-sm-8 col-md-8 col-lg-8");
+                $("#tipo_persona_grupo").addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+
+                $("#grupo_molta_aporte").removeClass("col-xs-12 col-sm-4 col-md-4 col-lg-4");
+                $("#grupo_molta_aporte").addClass("col-xs-12 col-sm-6 col-md-6 col-lg-6");
+
+                $("#grupo_multa_monto").removeClass("col-xs-12 col-sm-12 col-md-12 col-lg-12");
+                $("#grupo_multa_monto").addClass("col-xs-8 col-sm-7 col-md-7 col-lg-7");
               }
           }
       });

@@ -6,9 +6,31 @@
 {% endblock %}
 
 {% block body %}
-    <p>
-    	
-    </p>
+    
+    {%set message_success = app.session.flashbag.get('success')%}
+    {% if message_success %}
+      <div class="alert alert-success">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_success%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+    {% endif %}
+
+    {%set message_error = app.session.flashbag.get('error')%}
+    {% if message_error %}
+      <div class="alert alert-danger">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_error%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+    {% endif %}
+
     <table width="100%">
         <tr>
             <td class="align-left"><a href="{{path('evento_newlistado')}}" class="btn btn-primary">Nuevo Evento</a></td>
@@ -16,6 +38,7 @@
         </tr>
     </table>
     <br>
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -28,13 +51,14 @@
         <tbody>
         {% for evento in pagination %}
             <tr>
-            	<td>{{ evento.fechainicio |date("Y-m-d") }} {{ evento.horainicio |date("H:i:s") | ampm }}</td>
-            	<td>{{ evento.fechafin |date("Y-m-d") }} {{ evento.horafinal |date("H:i:s") | ampm }}</td>
-                <td>{{ evento.asunto | ucwords }}</td>
+            	<td>{{ evento.asunto | ucwords }}</td>
+                <td>{{ evento.fechainicio |date("d/m/Y") }} {{ evento.horainicio |date("H:i:s") | ampm }}</td>
+            	<td>{{ evento.fechafin |date("d/m/Y") }} {{ evento.horafinal |date("H:i:s") | ampm }}</td>
                 <td>
-
-                    {%if evento.estado.id==1 %}
-                        <a href="{{ path('evento_showlistado', { 'id': evento.id }) }}" class="color-blue"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
+                    {% set pasarlista  = getPasarLista(evento.fechainicio, evento.horainicio) %}
+                    {#{pasarlista}#}
+                    {%if evento.estado.id==1 and pasarlista !='TARDE' %}
+                        <a href="{{ path('evento_editlistado', { 'id': evento.id }) }}" class="color-blue"><i class="ace-icon fa fa-pencil-square-o bigger-200"></i></a>
                     {% else %}
                         <a href="{{ path('evento_showlistado', { 'id': evento.id }) }}" class="color-block"><i class="ace-icon fa fa-eye bigger-200 bigger-200"></i></a>
                     {% endif %}

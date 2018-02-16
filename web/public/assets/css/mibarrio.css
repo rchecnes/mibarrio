@@ -150,6 +150,10 @@
     font-size: 15px;
 }
 
+.mouse{
+    cursor: pointer;
+}
+
 /**PAGINACION**/
 .pagination-navigation{
     text-align: center!important;

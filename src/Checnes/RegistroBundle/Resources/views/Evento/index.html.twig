@@ -10,7 +10,29 @@
 {% endblock %}
 
 {% block body %}
-    
+    {%set message_success = app.session.flashbag.get('success')%}
+	{% if message_success %}
+	  <div class="alert alert-success">
+	      <button class="close" data-dismiss="alert">
+	          <i class="ace-icon fa fa-times"></i>
+	      </button>
+	      {% for msg  in  message_success%}
+	          {{ msg}}
+	      {% endfor %}
+	  </div>
+	{% endif %}
+
+	{%set message_error = app.session.flashbag.get('error')%}
+	{% if message_error %}
+	  <div class="alert alert-danger">
+	      <button class="close" data-dismiss="alert">
+	          <i class="ace-icon fa fa-times"></i>
+	      </button>
+	      {% for msg  in  message_error%}
+	          {{ msg}}
+	      {% endfor %}
+	  </div>
+	{% endif %}
     <div class="row">
 		<!-- /.col -->
 	    <div class="col-md-12">
@@ -65,13 +87,14 @@
 	    getFormatDate = function(date){
 	    	var date = new Date(date);
 	    
-	    	var dd = strPad(date.getDate(),2,0);
-	    	var mm = strPad(date.getMonth(),2,0);
+	    	//var dd = strPad(date.getDate(),2,0);
+	    	//var mm = strPad(date.getMonth(),2,0);
+	    	var dd = date.getDate();
+	    	var mm = date.getMonth();
 	    	var yy = date.getFullYear();
 
 	    	return yy+'-'+mm+'-'+dd;
-	    }
-    	
+	    }    	
     	
 	    //Date for the calendar events (dummy data)
 	    var date = new Date();
@@ -172,11 +195,20 @@
 		  },
           dayRender: function(date, cell){
 		    
-            var myDate = new Date();
-            myDate.setDate(myDate.getDate()-1);
+            var myDate = new Date(date);
+			//console.log(myDate.getMonth());
+            //Fecha Actual
+			var new_date_act = '{{fecha_actual}}';//y+'-'+m+'-'+d;
+
+
+            //myDate.setDate(myDate.getDate());
+            var new_date_cal = getFormatDate(date._d);
 			
-            if (date < myDate){
-                $(cell).addClass('disabled');
+			//console.log(new_date_cal+' / '+new_date_act);
+			//console.log('{{fecha_actual}}');
+
+            if (new_date_cal < new_date_act){
+                //$(cell).addClass('disabled');
             }
             
 		  },
@@ -202,7 +234,7 @@
 	      },
 	      eventClick: function(calEvent, jsEvent, view){
 	      	var myDate = new Date();
-	      	//console.log(calEvent.estado);
+	      	//console.log(calEvent);
             var activo = false;
 			myDate.setDate(myDate.getDate() - 1);
 
@@ -215,7 +247,8 @@
             }
 
             var url = "{{path('evento_edit')}}";
-            if (activo == false || calEvent.estado=='2') {
+
+            if (activo == false || calEvent.estado=='2' || calEvent.estado=='3') {
                 url = "{{path('evento_show')}}";
             }
 	    	

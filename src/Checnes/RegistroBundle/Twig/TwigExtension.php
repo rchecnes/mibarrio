@@ -41,8 +41,10 @@ class TwigExtension extends \Twig_Extension
             'getNombrePadre'            => new \Twig_Function_Method($this, 'getNombrePadre'),
             'getCantidadHijo'           => new \Twig_Function_Method($this, 'getCantidadHijo'),
             'getNotificacionEvento'     => new \Twig_Function_Method($this, 'getNotificacionEvento'),
-            'getPasarLista'       => new \Twig_Function_Method($this, 'getPasarLista'),
-            'getDispositivo'            => new \Twig_Function_Method($this, 'getDispositivo')
+            'getPasarLista'             => new \Twig_Function_Method($this, 'getPasarLista'),
+            'getDispositivo'            => new \Twig_Function_Method($this, 'getDispositivo'),
+            'getMontoDetalleCobro'      => new \Twig_Function_Method($this, 'getMontoDetalleCobro'),
+            'getCantPendienteCobroEvento' => new \Twig_Function_Method($this, 'getCantPendienteCobroEvento')
             
             
             );
@@ -178,9 +180,11 @@ class TwigExtension extends \Twig_Extension
 
         $sqlev = "  SELECT
                     e.*,
-                    te.nombre AS nomb_tipoevento
+                    te.nombre AS nomb_tipoevento,
+                    tte.nombre_sistema AS nombre_sistema
                     FROM evento e
                     INNER JOIN tipo_actividad te ON(e.tipo_actividad_id=te.id)
+                    INNER JOIN tipo_tipo_actividad tte ON(te.tipo_tipo_actividad_id=tte.id)
                     WHERE e.estado_id IN(1)
                     AND DATE_ADD(fecha_fin, INTERVAL 1 DAY) >= DATE_FORMAT(NOW(), '%Y-%m-%d')
                     AND e.estado_id=1
@@ -195,9 +199,12 @@ class TwigExtension extends \Twig_Extension
 
         foreach ($resp as $key => $ev) {
             
-            $cant_event +=1;
+            if ($this->getPasarLista($ev['fecha_inicio'], $ev['hora_inicio']) !='TARDE' || $ev['nombre_sistema']=='tesoreria') {
+                
+                $cant_event +=1;
 
-            $evento_det[] = $ev;
+                $evento_det[] = $ev;
+            }
         }
 
         $eventos['cantidad'] = $cant_event;
@@ -231,6 +238,8 @@ class TwigExtension extends \Twig_Extension
         if (strtotime('+1 hour' , strtotime($fecha_actual)) < strtotime($fech_ini)) {
             
             return 'TEMPRANO';
+        }else{
+            return 'TARDE'; 
         }
         //$nuevafecha = strtotime ( '+1 hour' , strtotime ( $fecha ) ) ;
     }
@@ -300,6 +309,34 @@ class TwigExtension extends \Twig_Extension
         }
 
         return $dispositivo;  
+    }
+
+    public function getMontoDetalleCobro($cobro_id){
+
+        $sql = "SELECT SUM(impo_base)AS impo_base FROM cuentas_por_cobrar_detalle WHERE cuentas_por_cobrar_id='$cobro_id'";
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $impo_base = 0;
+
+        foreach ($resp as $key => $v) {
+            $impo_base = $v['impo_base'];
+        }
+        
+        return $impo_base;
+    }
+
+    public function getCantPendienteCobroEvento($evento_id){
+
+        $sql = "SELECT COUNT(id)AS cant_pend_cobro FROM cuentas_por_cobrar WHERE evento_id='$evento_id' AND estado_id=1";
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $cant_pend_cobro = 0;
+
+        foreach ($resp as $key => $v) {
+            $cant_pend_cobro = $v['cant_pend_cobro'];
+        }
+        
+        return $cant_pend_cobro;
     }
 
     public function getName()

@@ -74,7 +74,7 @@ class CuentasPorCobrar
     private $estado;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Moneda", inversedBy="moneda")
+     * @ORM\ManyToOne(targetEntity="Moneda", inversedBy="cuentas_por_cobrar")
      * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id")
      */
     private $moneda;

@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="cols col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <label>Moneda</label>
-                        <select class="form-control" required="required" id="moneda" name="moneda">
+                        <select class="form-control" required="required" id="moneda" name="moneda" disabled="disabled">
                             {{hmt_moneda|raw}}
                         </select>
                     </div>
@@ -32,12 +32,13 @@
         </div>
     </div>
     <!--http://ace.jeka.by/-->
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>Persona</th>
                 <th>Importe</th>
-                <th>Pend. Cob.</th>
+                <th style="width: 90px">Pend. Cob.</th>
+                <th style="width: 200px" class="align-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -45,12 +46,29 @@
             <tr>
                 <td>{{ entity.persona.nombre }} {{ entity.persona.apellidopaterno }}</td>
                 <td align="right">{{ entity.moneda.simbolo }} {{ entity.impobase | round(2,',','.')}}</td>
-                <td><input type="text" value="{{entity.impobase | round(2,'','.')}}" class="align-center"></td>
+                <td align="center" id="estado_cobro_{{entity.persona.id}}">
+                    {% set suma_cob = getMontoDetalleCobro(entity.id)%}
+                    {% set pend_cob = entity.impobase - suma_cob %}
+
+                    {%if entity.estado.id == 2 and pend_cob<=0 %}
+                        <span title="Canceló" class="color-green"><i class="ace-icon fa fa-check-circle bigger-200"></i></span>
+                    {%else%}
+                        <input type="text" value="{{pend_cob | round(2,'','.')}}" class="form-control align-center blockeado" id="cobro_{{entity.persona.id}}">
+                    {%endif%}
+                </td>
+                <td align="center">
+                    
+                    {%if entity.estado.id == 1 %}
+                        <span title="Cobrar" id="buttoncob_{{entity.persona.id}}" class="color-blue mouse blockeado" onClick="cobrar({{entity.evento.id}},{{entity.id}},{{entity.persona.id}})">
+                            <i class="ace-icon fa fa-money bigger-200"></i>
+                        </span>
+                    {%endif%}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-        <a href="{{path('cuentasporcobrar_index')}}" class="btn btn-primary">Volver</a><br><br>
+    <a href="{{path('cuentasporcobrar_index')}}" class="btn btn-primary">Volver</a><br><br>
 
 
     
@@ -60,13 +78,14 @@
     {{ parent() }}
 <script type="text/javascript">
     $(document).ready(function(){
-        console.log("hola");
+        //console.log("hola");
         
         getCajaBanco = function(){
 
             var moneda_id = $("#moneda").val();
 
             $("#caja_banco").attr('disabled','disabled');
+            $(".blockeado").attr('disabled','disabled');
 
             $.ajax({
                 type: 'GET',
@@ -82,6 +101,7 @@
                     html = (html!='')?html:'<option>SIN CAJA/BANCO</option>'
                     $("#caja_banco").html(html);
                     $("#caja_banco").removeAttr('disabled');
+                    $(".blockeado").removeAttr('disabled');
                 }
             });
         }
@@ -90,7 +110,38 @@
 
         $("#moneda").on('change',function(){
             getCajaBanco();
-        })
+        });
+
+        cobrar = function(evento_id, cta_cobrar_id, persona_id){
+
+            var moneda_id    = $("#moneda").val();
+            var cajabanco_id = $("#caja_banco").val();
+            var importe      = parseFloat($("#cobro_"+persona_id).val());
+
+
+            $("#caja_banco").attr('disabled','disabled');
+            $(".blockeado").attr('disabled','disabled');
+
+            $.ajax({
+                type: 'POST',
+                url: "{{path('cuentasporcobrar_cobrar')}}",
+                data: {moneda_id: moneda_id, evento_id:evento_id, cajabanco_id:cajabanco_id, cta_cobrar_id:cta_cobrar_id, importe:importe},
+                dataType: "json",
+                success: function( data ) {
+                    
+                    $("#caja_banco").removeAttr('disabled');
+                    $(".blockeado").removeAttr('disabled');
+
+                    if (data.estado=='CERRADO') {
+                        var estado = '<span title="Canceló" class="color-green"><i class="ace-icon fa fa-check-circle bigger-200"></i></span>';
+                        $("#estado_cobro_"+persona_id).html(estado);
+                        $("#buttoncob_"+persona_id).removeClass("blockeado").hide();
+                    }else if(data.estado=='PENDIENTE'){
+                        $("#cobro_"+persona_id).val(data.monto);
+                    }
+                }
+            });
+        }
         
     })
 </script>

@@ -1,0 +1,95 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+	{%set message_success = app.session.flashbag.get('success')%}
+  	{% if message_success %}
+      <div class="alert alert-success">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_success%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+  	{% endif %}
+
+  	{%set message_error = app.session.flashbag.get('error')%}
+  	{% if message_error %}
+      <div class="alert alert-danger">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_error%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+  	{% endif %}
+
+<table width="100%">
+    <tr>
+        <td class="align-left"><a href="{{path('movcajabanco_new')}}?caja_banco_id={{caja_banco_id}}" class="btn btn-success">Nuevo</a></td>
+        <td>&nbsp;<b>Ing: {{getImporteTotalIngresoCajaBanco(caja_banco_id) | round(2,'','.')}}</b></td>
+        <td>&nbsp;<b>Egr: {{getImporteTotalEgresoCajaBanco(caja_banco_id) | round(2,'','.')}}</b></td>
+        <td class="align-right"><b>Nro. Reg. {{ pagination.getTotalItemCount }}</b></td>
+    </tr>
+</table>
+<br>
+<table class="table table-bordered table-striped">
+	<thead>
+        <tr>
+        	<th>Fecha</th>
+            <th>Persona</th>
+            <th>Obs.</th>
+            <th align="center">Tipo</th>
+            <th align="right">Imp.</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in pagination %}
+        <tr>
+        	<td>{{ entity.fechacrea |date("d/m/Y") }}</td>
+        	<td>
+        		{% if entity.persona.nombre is defined %}
+				    {{ entity.persona.nombre }} {{ entity.persona.apellidopaterno }}
+				{% else %}
+				No Especifica
+				{% endif %}
+        	</td>
+        	<td>{{ entity.descripcion }}</td>
+        	<td align="center">
+        		{%if entity.tipo==0%}Saldo Ini.
+        		{%elseif entity.tipo==1%}Ing.
+        		{%elseif entity.tipo==2%}Egr.
+        		{%endif%}
+        	</td>
+            <td align="right">{{ entity.imposol | round(2,'','.') }}</td>
+            
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<table width="100%">
+	<tr>
+		<td align="left" width="10%">
+			<a href="{{path('movcajabanco_index')}}" class="btn btn-primary"><< Volver</a>
+		</td>
+		<td align="center" width="90%">
+			<div class="pagination-navigation">
+  				{{ knp_pagination_render(pagination) }}
+			</div>
+		</td>
+	</tr>
+</table>
+
+{% endblock %}
+
+{% block javascripts %}
+  	{{ parent() }}
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+	});
+	</script>
+{% endblock %}
+
+

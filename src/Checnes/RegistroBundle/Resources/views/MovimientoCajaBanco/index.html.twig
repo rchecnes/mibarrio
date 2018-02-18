@@ -1,0 +1,34 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Moneda</th>
+            <th>Nombre</th>
+            <th>Mon. Act.</th>
+            <th>Acc.</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in cajabanco %}
+        <tr>
+        	<td>{{ entity.moneda.nombre }}</td>
+            <td>{{ entity.nombre }}</td>
+            <td align="right">
+            	{%set total= getImporteTotalCajaBanco(entity.id)%}
+            	{{total | round(2,'','.')}}            	
+            </td>
+            <td align="center">
+            	<a href="{{path('movcajabanco_detalle')}}?cajabanco_id={{entity.id}}" title="Ver Movimientos" class="color-orange">
+            		<i class="ace-icon fa fa-share-square-o bigger-200"></i>
+          		</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+		
+{% endblock %}
+

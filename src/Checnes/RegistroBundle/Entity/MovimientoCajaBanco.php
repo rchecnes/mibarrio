@@ -100,6 +100,19 @@ class MovimientoCajaBanco
      */
     private $impo_dol;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Persona", inversedBy="movimiento_caja_banco")
+     * @ORM\JoinColumn(name="persona_id", referencedColumnName="id", nullable=true)
+     */
+    private $persona;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
+     */
+    private $descripcion;
+
 
     /**
      * Get id
@@ -280,6 +293,30 @@ class MovimientoCajaBanco
     }
 
     /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return MovimientoCajaBanco
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
      * Set cajaBanco
      *
      * @param \Checnes\RegistroBundle\Entity\CajaBanco $cajaBanco
@@ -334,7 +371,7 @@ class MovimientoCajaBanco
      *
      * @return MovimientoCajaBanco
      */
-    public function setEvento(\Checnes\RegistroBundle\Entity\Evento $evento)
+    public function setEvento(\Checnes\RegistroBundle\Entity\Evento $evento = null)
     {
         $this->evento = $evento;
 
@@ -397,5 +434,29 @@ class MovimientoCajaBanco
     public function getCuentasPorCobrarDetalle()
     {
         return $this->cuentas_por_cobrar_detalle;
+    }
+
+    /**
+     * Set persona
+     *
+     * @param \Checnes\RegistroBundle\Entity\Persona $persona
+     *
+     * @return MovimientoCajaBanco
+     */
+    public function setPersona(\Checnes\RegistroBundle\Entity\Persona $persona = null)
+    {
+        $this->persona = $persona;
+
+        return $this;
+    }
+
+    /**
+     * Get persona
+     *
+     * @return \Checnes\RegistroBundle\Entity\Persona
+     */
+    public function getPersona()
+    {
+        return $this->persona;
     }
 }

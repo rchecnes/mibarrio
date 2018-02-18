@@ -1,0 +1,77 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<form role="form" method="POST" action="{{ path('movcajabanco_sav') }} ">
+    <div class="row">
+        <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+                <label for="tipo">Tipo:</label>
+                <select class="form-control" id="tipo" name="tipo" required="required">
+                    <option value="0">Saldo Inicial</option>
+                    <option value="1">Ingreso</option>
+                    <option value="2">Egreso</option>
+                </select>
+            </div>
+        </div>
+        <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+                <label for="tipo">Importe({{cajabanco.moneda.abrev}}):</label>
+                <input type="hidden" class="form-control" id="caja_banco_id" name="caja_banco_id" value="{{cajabanco.id}}">
+                <input type="text" class="form-control" placeholder="Importe" id="importe" name="importe" required="required">
+            </div>
+        </div>
+        <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <label>Buscar Persona:</label>
+            <div class="form-group input-group">
+                <input type="text" class="form-control ui-autocomplete-input" id="bus_persona" name="bus_persona" placeholder="Buscar ..." autocomplete="off">
+                <input type="hidden" class="form-control" id="persona_id" name="persona_id" >
+                <span class="input-group-addon">
+                    <img id="load_busper" src="{{asset('public/img/load.gif')}}" width="20" height="20" style="display: none">
+                </span>
+            </div>
+        </div>
+
+        <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label for="tipo">Descripción:</label>
+              <textarea class="form-control" rows="2" cols="6" placeholder="Ingrese Descripción" id="descripcion" name="descripcion" required="required"></textarea>
+            </div>
+        </div>
+    </div>
+    <p><button type="submit" class="btn btn-primary pull-center" id="enviar" name="enviar">Guardar</button></p>
+</form>
+		
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{asset('public/assets/js/bootstrap-datepicker.min.js')}}"></script>
+  <script src="{{asset('public/assets/js/bootstrap-timepicker.min.js')}}"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $( "#bus_persona" ).autocomplete({
+      source: function( request, response ) {
+        $("#load_busper").show();
+        $("#persona_id").val('');
+        $.ajax({
+            type: 'GET',
+            url: "{{path('evento_buscarpersona')}}",
+            data: {term: request.term,tipoP: $("input[name='tipo_persona']:checked").val()},
+            dataType: "json",
+            success: function( data ) {
+                $("#load_busper").hide();
+                response(data);
+            }
+        });
+      },
+      minLength: 2,
+      select: function(event, ui) {
+          $("#persona_id").val(ui.item.id);
+          return true;
+      }
+    });
+});
+</script>
+{% endblock %}

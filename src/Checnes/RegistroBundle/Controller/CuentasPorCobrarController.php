@@ -132,6 +132,7 @@ class CuentasPorCobrarController extends Controller
         $obj_cta = $em->getRepository('ChecnesRegistroBundle:CuentasPorCobrar')->find($cta_cobrar_id);
         $obj_use = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
         $obj_sta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(1);
+        //$obj_per = $em->getRepository('ChecnesRegistroBundle:Estado')->find(1);
 
         $impo_base = 0;
         $impo_sol  = 0;
@@ -171,6 +172,9 @@ class CuentasPorCobrarController extends Controller
         $movcb->setImpoDol($impo_dol);
         $movcb->setEvento($obj_evn);
         $movcb->setEstado($obj_sta);
+        $movcb->setPersona($obj_cta->getPersona());
+        $movcb->setDescripcion($obj_evn->getAsunto());
+
         $movcb->setCuentasPorCobrarDetalle($detcobro);
         $em->persist($movcb);
 

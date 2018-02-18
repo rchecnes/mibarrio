@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cajabancos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Nro_cuenta</th>
+                <th>Caja_banco</th>
+                <th>Observacion</th>
+                <th>Activo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cajaBanco in cajaBancos %}
+            <tr>
+                <td><a href="{{ path('cajabanco_show', { 'id': cajaBanco.id }) }}">{{ cajaBanco.id }}</a></td>
+                <td>{{ cajaBanco.nombre }}</td>
+                <td>{{ cajaBanco.nrocuenta }}</td>
+                <td>{% if cajaBanco.cajabanco %}Yes{% else %}No{% endif %}</td>
+                <td>{{ cajaBanco.observacion }}</td>
+                <td>{% if cajaBanco.activo %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('cajabanco_show', { 'id': cajaBanco.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('cajabanco_edit', { 'id': cajaBanco.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cajabanco_new') }}">Create a new cajaBanco</a>
+        </li>
+    </ul>
+{% endblock %}

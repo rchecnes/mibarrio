@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cajabanco</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cajaBanco.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ cajaBanco.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Nro_cuenta</th>
+                <td>{{ cajaBanco.nrocuenta }}</td>
+            </tr>
+            <tr>
+                <th>Caja_banco</th>
+                <td>{% if cajaBanco.cajabanco %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Observacion</th>
+                <td>{{ cajaBanco.observacion }}</td>
+            </tr>
+            <tr>
+                <th>Activo</th>
+                <td>{% if cajaBanco.activo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cajabanco_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('cajabanco_edit', { 'id': cajaBanco.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

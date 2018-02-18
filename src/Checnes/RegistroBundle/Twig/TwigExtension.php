@@ -44,7 +44,11 @@ class TwigExtension extends \Twig_Extension
             'getPasarLista'             => new \Twig_Function_Method($this, 'getPasarLista'),
             'getDispositivo'            => new \Twig_Function_Method($this, 'getDispositivo'),
             'getMontoDetalleCobro'      => new \Twig_Function_Method($this, 'getMontoDetalleCobro'),
-            'getCantPendienteCobroEvento' => new \Twig_Function_Method($this, 'getCantPendienteCobroEvento')
+            'getCantPendienteCobroEvento' => new \Twig_Function_Method($this, 'getCantPendienteCobroEvento'),
+            'getImporteTotalCajaBanco' => new \Twig_Function_Method($this, 'getImporteTotalCajaBanco'),
+            'getImporteTotalIngresoCajaBanco' => new \Twig_Function_Method($this, 'getImporteTotalIngresoCajaBanco'),
+            'getImporteTotalEgresoCajaBanco' => new \Twig_Function_Method($this, 'getImporteTotalEgresoCajaBanco'),
+            
             
             
             );
@@ -338,6 +342,53 @@ class TwigExtension extends \Twig_Extension
         
         return $cant_pend_cobro;
     }
+
+    public function getImporteTotalCajaBanco($cajabanco_id){
+
+        $sql = "SELECT SUM(IF(tipo=1 OR tipo=0,impo_sol,0))AS suma_sol_ingreso,SUM(IF(tipo=2,impo_sol,0))AS suma_sol_egreso  FROM movimiento_caja_banco WHERE caja_banco_id='$cajabanco_id' AND estado_id=1";
+
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $total_saldo = 0;
+
+        foreach ($resp as $key => $v) {
+            $total_saldo = (double)($v['suma_sol_ingreso']-$v['suma_sol_egreso']);
+        }
+        
+        return $total_saldo;
+    }
+
+    public function getImporteTotalIngresoCajaBanco($cajabanco_id){
+
+        $sql = "SELECT SUM(IF(tipo=1,impo_sol,0))AS suma_sol_ingreso FROM movimiento_caja_banco WHERE caja_banco_id='$cajabanco_id' AND estado_id=1";
+
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $suma_sol_ingreso = 0;
+
+        foreach ($resp as $key => $v) {
+            $suma_sol_ingreso = (double)$v['suma_sol_ingreso'];
+        }
+        
+        return $suma_sol_ingreso;
+    }
+
+    public function getImporteTotalEgresoCajaBanco($cajabanco_id){
+
+        $sql = "SELECT SUM(IF(tipo=2,impo_sol,0))AS suma_sol_egreso  FROM movimiento_caja_banco WHERE caja_banco_id='$cajabanco_id' AND estado_id=1";
+
+        $resp = $this->conn->executeQuery($sql)->fetchAll();
+
+        $suma_sol_egreso = 0;
+
+        foreach ($resp as $key => $v) {
+            $suma_sol_egreso = (double)$v['suma_sol_egreso'];
+        }
+        
+        return $suma_sol_egreso;
+    }
+
+    
 
     public function getName()
     {

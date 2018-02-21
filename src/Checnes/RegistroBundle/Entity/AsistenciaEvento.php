@@ -96,6 +96,19 @@ class AsistenciaEvento
      */
     private $usuario_mod;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="asistencia_evento")
+     * @ORM\JoinColumn(name="usuario_jusasis_id", referencedColumnName="id", nullable=true)
+     */
+    private $usuario_jusasis;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
+     */
+    private $descripcion;
+
     
     /**
      * Get id
@@ -441,5 +454,53 @@ class AsistenciaEvento
     public function getCerrado()
     {
         return $this->cerrado;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return AsistenciaEvento
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set usuarioJusasis
+     *
+     * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioJusasis
+     *
+     * @return AsistenciaEvento
+     */
+    public function setUsuarioJusasis(\Checnes\RegistroBundle\Entity\Usuario $usuarioJusasis = null)
+    {
+        $this->usuario_jusasis = $usuarioJusasis;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioJusasis
+     *
+     * @return \Checnes\RegistroBundle\Entity\Usuario
+     */
+    public function getUsuarioJusasis()
+    {
+        return $this->usuario_jusasis;
     }
 }

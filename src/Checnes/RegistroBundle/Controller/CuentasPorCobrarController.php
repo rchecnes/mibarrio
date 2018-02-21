@@ -184,7 +184,18 @@ class CuentasPorCobrarController extends Controller
             $monto  = 0;
             $obj_statw = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
             $obj_cta->setEstado($obj_statw);
-            $em->persist($obj_cta);
+            //$em->persist($obj_cta);
+
+            //Justificamos asistencia luego que la persona termine de pagar
+            if ($obj_evn->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'asistencia') {
+                
+                $obj_asist  = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$obj_evn->getId(),'persona'=>$obj_cta->getPersona()));
+                if (is_object($obj_asist)) {
+                    $obj_asist->setAsistio(1);
+                    $obj_asist->setUsuarioJusasis($obj_use);
+                    $obj_asist->setDescripcion('Pago Multa Del Evento');
+                }
+            }
         }else{
             $estado = 'PENDIENTE';
             $monto  = number_format($pend_cobro,2,".","");

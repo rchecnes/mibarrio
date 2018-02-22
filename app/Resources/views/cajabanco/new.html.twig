@@ -1,16 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Cajabanco creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('cajabanco_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    
+    <form method="post" action="{{ path('cajabanco_new')}}">
+        <div class="row">
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(form.nombre)}}
+                {{form_widget(form.nombre) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(form.moneda)}}
+                {{form_widget(form.moneda) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(form.nro_cuenta)}}
+                {{form_widget(form.nro_cuenta) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(form.caja_banco)}}
+                {{form_widget(form.caja_banco) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(form.observacion)}}
+                {{form_widget(form.observacion) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(form.activo)}}
+                {{form_widget(form.activo) }}
+            </div>
+        </div>
+        {{ form_widget(form._token) }}
+        <input type="submit" value="Guardar" class="btn btn-success"/>
+        <a href="{{ path('cajabanco_index') }}" title="Cancelar" class="btn btn-default">Cancelar</a>
+    </form>
 {% endblock %}

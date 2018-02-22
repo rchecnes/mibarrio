@@ -1,47 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Cajabancos list</h1>
+<a href="{{ path('cajabanco_new') }}" class="btn btn-primary">Nuevo</a>
+<br><br>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Caja/Banco</th>
+            <th>Nombre</th>
+            <th align="center">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for cajaBanco in cajaBancos %}
+        <tr>
+            <td>
+                {%if cajaBanco.cajabanco==1%}Banco{%else%}Caja{%endif%}
+            </td>
+            <td>{{ cajaBanco.nombre }}</td>
+            <td align="center">
+                <a href="{{ path('cajabanco_edit', { 'id': cajaBanco.id }) }}" title="Editar" class="color-blue">
+                    <i class="ace-icon fa fa-pencil-square-o bigger-200"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Nro_cuenta</th>
-                <th>Caja_banco</th>
-                <th>Observacion</th>
-                <th>Activo</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for cajaBanco in cajaBancos %}
-            <tr>
-                <td><a href="{{ path('cajabanco_show', { 'id': cajaBanco.id }) }}">{{ cajaBanco.id }}</a></td>
-                <td>{{ cajaBanco.nombre }}</td>
-                <td>{{ cajaBanco.nrocuenta }}</td>
-                <td>{% if cajaBanco.cajabanco %}Yes{% else %}No{% endif %}</td>
-                <td>{{ cajaBanco.observacion }}</td>
-                <td>{% if cajaBanco.activo %}Yes{% else %}No{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('cajabanco_show', { 'id': cajaBanco.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('cajabanco_edit', { 'id': cajaBanco.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('cajabanco_new') }}">Create a new cajaBanco</a>
-        </li>
-    </ul>
 {% endblock %}

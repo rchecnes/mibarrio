@@ -1,0 +1,31 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+<div class="div-table col-sm-12">
+  <div class="row">
+  	{% for entity in tarjetacontrol %}
+  	
+  	<div class="div-td col-lg-4 col-md-4 col-sm-4 col-xs-6">
+  		<p class="align-center" style="font-size: 18px">{{entity.fechainicio |date('d/m/Y')}}</p>
+  	</div>
+  	{% endfor %}
+    <!--<div class="div-tr">
+      <div class="div-td col-sm-4">Table Data: Row-1 Col-1</div>
+      <div class="div-td col-sm-4">Table Data: Row-1 Col-2</div>
+      <div class="div-td col-sm-4">Table Data: Row-1 Col-3</div>
+    </div>
+    <div class="div-tr">
+      <div class="div-td col-sm-4">Table Data: Row-2 Col-1</div>
+      <div class="div-td col-sm-4">Table Data: Row-2 Col-2</div>
+      <div class="div-td col-sm-4">Table Data: Row-2 Col-3</div>
+    </div>
+    <div class="div-tr">
+      <div class="div-td col-sm-4">Table Data: Row-3 Col-1</div>
+      <div class="div-td col-sm-4">Table Data: Row-3 Col-2</div>
+      <div class="div-td col-sm-4">Table Data: Row-3 Col-3</div>
+    </div>-->
+  </div>
+</div>
+
+{% endblock %}

@@ -28,6 +28,7 @@ class CajaBancoController extends Controller
 
         return $this->render('cajabanco/index.html.twig', array(
             'cajaBancos' => $cajaBancos,
+            'titulo' => 'Caja Banco'
         ));
     }
 
@@ -48,12 +49,14 @@ class CajaBancoController extends Controller
             $em->persist($cajaBanco);
             $em->flush();
 
-            return $this->redirectToRoute('cajabanco_show', array('id' => $cajaBanco->getId()));
+            return $this->redirectToRoute('cajabanco_index');
         }
 
         return $this->render('cajabanco/new.html.twig', array(
             'cajaBanco' => $cajaBanco,
             'form' => $form->createView(),
+            'titulo' => 'Nuevo Caja Banco'
+
         ));
     }
 
@@ -88,13 +91,14 @@ class CajaBancoController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('cajabanco_edit', array('id' => $cajaBanco->getId()));
+            return $this->redirectToRoute('cajabanco_index');
         }
 
         return $this->render('cajabanco/edit.html.twig', array(
             'cajaBanco' => $cajaBanco,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'titulo' => 'Nuevo Caja Banco'
         ));
     }
 

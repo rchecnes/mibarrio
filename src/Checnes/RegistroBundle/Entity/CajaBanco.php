@@ -51,14 +51,14 @@ class CajaBanco
     /**
      * @var string
      *
-     * @ORM\Column(name="observacion", type="text")
+     * @ORM\Column(name="observacion", type="text", nullable=true)
      */
     private $observacion;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="activo", type="boolean", length=255, options={"default":"1"})
+     * @ORM\Column(name="activo", type="boolean", nullable=true, options={"default":"1"})
      */
     private $activo;
 

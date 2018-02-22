@@ -1,21 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Cajabanco edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('cajabanco_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <form method="post" action="{{ path('cajabanco_edit', { 'id': cajaBanco.id })}}">
+        <div class="row">
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.nombre)}}
+                {{form_widget(edit_form.nombre) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.moneda)}}
+                {{form_widget(edit_form.moneda) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.nro_cuenta)}}
+                {{form_widget(edit_form.nro_cuenta) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.caja_banco)}}
+                {{form_widget(edit_form.caja_banco) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.observacion)}}
+                {{form_widget(edit_form.observacion) }}
+            </div>
+            <div class="cols col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{form_label(edit_form.activo)}}
+                {{form_widget(edit_form.activo) }}
+            </div>
+        </div>
+        {{ form_widget(edit_form._token) }}
+        <input type="submit" value="Guardar" class="btn btn-success"/>
+        <a href="{{ path('cajabanco_index') }}" title="Cancelar" class="btn btn-default">Cancelar</a>
+    </form>
 {% endblock %}

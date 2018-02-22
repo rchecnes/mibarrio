@@ -209,3 +209,41 @@ input.input-oculto{
     width: 25px !important;
     font-size: 16px !important;
 }
+
+/**BOOSTRAP DIV TABLE**/
+.div-table {
+  border:1px solid #b3b2b2;
+}
+
+.div-tr {
+    border-bottom:1px solid #b3b2b2;
+    width:100%;
+    float:left;
+}
+
+.div-td {
+    border-left:1px solid #b3b2b2;
+    border-right:1px solid #b3b2b2;
+}
+
+
+.div-th {
+    font-weight:bold;
+    text-align:center;
+}
+.div-th {
+  border-left:1px solid #b3b2b2;
+}
+
+@media (max-width: 768px){
+
+    .div-th {
+        border-top:1px solid #b3b2b2;
+        border-left: 0px solid #b3b2b2;
+    }
+    .div-td {
+        border-top:1px solid #b3b2b2;
+        border-left: 0px solid #b3b2b2;
+    }
+}
+/**FIN DIV TABLE**/

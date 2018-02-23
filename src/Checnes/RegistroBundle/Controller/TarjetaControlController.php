@@ -32,37 +32,39 @@ class TarjetaControlController extends Controller
         $tarjetacontrol = array();
         foreach ($resp as $key => $f) {
 
-            $asistio     = 0;
-            $descasistio = '';
-            $sumaaporte  = 0;
-            //$montomulta  = 0;
-            if ($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'asistencia') {
-
-                $obj_asist   = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
-                //$montomulta  = $f->getMontoMulta();
-                $asistio     = $obj_asist->getAsistio();
-                $descasistio = $obj_asist->getDescripcion();
-            }elseif($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'tesoreria'){
+            if (($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema()== 'asistencia' && $f->getEstado()->getId()==2) || ($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema()== 'tesoreria')) {
                 
-                $obj_ctac   = $em->getRepository('ChecnesRegistroBundle:CuentasPorCobrar')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
+                $asistio     = 0;
+                $descasistio = '';
+                $sumaaporte  = 0;
+                //$montomulta  = 0;
+                if ($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'asistencia') {
 
-                $asistio     = $obj_asist->getAsistio();
-                $descasistio = $obj_asist->getDescripcion();
-                $sumaaporte  = $this->getSumaCuemtaCobrar($obj_ctac->getId());
+                    $obj_asist   = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
+                    //$montomulta  = $f->getMontoMulta();
+                    $asistio     = $obj_asist->getAsistio();
+                    $descasistio = $obj_asist->getDescripcion();
+                }elseif($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'tesoreria'){
+                    
+                    $obj_ctac   = $em->getRepository('ChecnesRegistroBundle:CuentasPorCobrar')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
+
+                    $asistio     = $obj_asist->getAsistio();
+                    $descasistio = $obj_asist->getDescripcion();
+                    $sumaaporte  = $this->getSumaCuemtaCobrar($obj_ctac->getId());
+                }
+                
+
+                $tarjetacontrol[] = array('fechainicio'=>$f->getFechaInicio(),
+                                            'asunto'=>$f->getAsunto(),
+                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
+                                            'multa'=>$f->getMulta(),
+                                            'montomulta'=>$f->getMontoMulta(),
+                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'=>$asistio,
+                                            'descasistio'=>$descasistio,
+                                            'sumaaporte'=>$sumaaporte
+                                        );
             }
-            
-
-            $tarjetacontrol[] = array('fechainicio'=>$f->getFechaInicio(),
-                                        'asunto'=>$f->getAsunto(),
-                                        'tipoactividad'=>$f->getTipoActividad()->getNombre(),
-                                        'multa'=>$f->getMulta(),
-                                        'montomulta'=>$f->getMontoMulta(),
-                                        'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
-                                        'asistio'=>$asistio,
-                                        'descasistio'=>$descasistio,
-                                        'sumaaporte'=>$sumaaporte
-                                    );
-            
         }
          
         return $this->render('ChecnesRegistroBundle:TarjetaControl:index.html.twig', array(

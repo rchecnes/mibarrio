@@ -134,6 +134,9 @@
     color: #438EB9;
 }
 
+.weight-600{
+    font-weight: 600;
+}
 .cols{
     padding-bottom: 6px;
 }
@@ -212,38 +215,21 @@ input.input-oculto{
 
 /**BOOSTRAP DIV TABLE**/
 .div-table {
-  border:1px solid #b3b2b2;
+    margin-bottom: 20px;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .div-tr {
-    border-bottom:1px solid #b3b2b2;
-    width:100%;
-    float:left;
+    background-color: #f9f9f9;
 }
 
 .div-td {
-    border-left:1px solid #b3b2b2;
-    border-right:1px solid #b3b2b2;
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border: 1px solid #ddd;
 }
 
-
-.div-th {
-    font-weight:bold;
-    text-align:center;
-}
-.div-th {
-  border-left:1px solid #b3b2b2;
-}
-
-@media (max-width: 768px){
-
-    .div-th {
-        border-top:1px solid #b3b2b2;
-        border-left: 0px solid #b3b2b2;
-    }
-    .div-td {
-        border-top:1px solid #b3b2b2;
-        border-left: 0px solid #b3b2b2;
-    }
-}
 /**FIN DIV TABLE**/

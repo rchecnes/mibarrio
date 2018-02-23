@@ -48,11 +48,20 @@ class TwigExtension extends \Twig_Extension
             'getImporteTotalCajaBanco' => new \Twig_Function_Method($this, 'getImporteTotalCajaBanco'),
             'getImporteTotalIngresoCajaBanco' => new \Twig_Function_Method($this, 'getImporteTotalIngresoCajaBanco'),
             'getImporteTotalEgresoCajaBanco' => new \Twig_Function_Method($this, 'getImporteTotalEgresoCajaBanco'),
+            'espar' => new \Twig_Function_Method($this, 'espar'),
             
             
             
             );
      }
+
+    public function espar($numero){
+        if ($numero%2==0){
+            return 'PAR';
+        }else{
+            return 'IMPAR';
+        }
+    }
 
     public function ampm($time){
         return strtoupper(date("g:i a",strtotime($time)));

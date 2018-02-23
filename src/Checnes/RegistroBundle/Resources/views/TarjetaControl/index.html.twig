@@ -4,11 +4,35 @@
 
 <div class="div-table col-sm-12">
   <div class="row">
+  	{%set c = 1 %}
   	{% for entity in tarjetacontrol %}
   	
-  	<div class="div-td col-lg-4 col-md-4 col-sm-4 col-xs-6">
-  		<p class="align-center" style="font-size: 18px">{{entity.fechainicio |date('d/m/Y')}}</p>
+  	{%set background = '#FFF'%}
+  	{%if espar(c) == 'IMPAR'%}{%set background = '#f9f9f9'%}{%else%}{%endif%}
+  	<div class="div-td col-lg-3 col-md-3 col-sm-4 col-xs-12" style="height: 165px;font-size: 14px;background: {{background}}">
+  		<p class="align-center" style="font-size: 18px"><b >{{entity.fechainicio |date('d/m/Y')}}</b></p>
+  		<p><b class="color-blue">Evento:</b> {{entity.asunto}} / {{entity.tipoactividad}}</p>
+  		{%if entity.nombresistema=='asistencia'%}
+  			<p><b class="color-blue">Multa:</b> {%if entity.multa==1%}{{entity.montomulta | round(2,'','.')}} S/{%else%}<label class="weight-600">No</label>{%endif%}</p>
+  			<p><b class="color-blue">¿Asistio?:</b> {%if entity.asistio==1%}<label class="color-green weight-600">Si <i class="ace-icon fa fa-check bigger-200"></i></label>{%else%}<label class="color-red weight-600"">No</label>{%endif%}{%if entity.descasistio!=''%}, ({{entity.descasistio}}){%endif%}</p>
+  		{%elseif entity.nombresistema=='tesoreria'%}
+  			<p><b class="color-blue">Monto:</b> {{entity.montomulta | round(2,'','.')}} S/</p>
+  			<p><b class="color-blue">¿Pago?:</b>
+  				{%if entity.montomulta-entity.sumaaporte == 0 %}
+  				<label class="color-green weight-600">SI<i class="ace-icon fa fa-check bigger-200"></i></label>
+  				{%else%}
+  					{%if entity.sumaaporte == 0%}
+  					<label class="color-red weight-600"><b>No</b></label>
+  					{%else%}
+  					<label class="color-yellow weight-600">Pendiente</label> ({{entity.montomulta-entity.sumaaporte | round(2,'','.')}} S/)
+  					{%endif%}
+  				{%endif%}
+
+  			</b></p>
+  		{%endif%}
+
   	</div>
+  	{%set c=c+1%}
   	{% endfor %}
     <!--<div class="div-tr">
       <div class="div-td col-sm-4">Table Data: Row-1 Col-1</div>

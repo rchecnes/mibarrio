@@ -124,11 +124,9 @@
                                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                                         <img class="nav-user-photo" src="{{asset('public/img/foto-richard.png')}}" alt="Jason's Photo" />
                                         <span class="user-info">
-                                            <small>{#{ app.user.firstname }#}</small>
-                                            
-                                        </span>
-                                        {#{%set user= app.session.get('user')%}#}
-                                        
+                                        <small>Bienvenido,</small>
+                                            {{app.session.get('nombre')}}
+                                        </span>                
                                         <i class="ace-icon fa fa-caret-down"></i>
                                     </a>
 
@@ -201,7 +199,7 @@
                     </div>
                 </div><!-- /.sidebar-shortcuts -->
 
-                {{getMenuXRol(0, app.session.get('rol_id'))|raw}}
+                {{getMenuXRol(app.session.get('rol_id'))|raw}}
                 
                 
             </div>

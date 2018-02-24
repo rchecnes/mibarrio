@@ -42,15 +42,20 @@ class TarjetaControlController extends Controller
 
                     $obj_asist   = $em->getRepository('ChecnesRegistroBundle:AsistenciaEvento')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
                     //$montomulta  = $f->getMontoMulta();
-                    $asistio     = $obj_asist->getAsistio();
-                    $descasistio = $obj_asist->getDescripcion();
+                    if (is_object($obj_asist)) {
+                        $asistio     = $obj_asist->getAsistio();
+                        $descasistio = $obj_asist->getDescripcion();
+                    }
+                    
                 }elseif($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'tesoreria'){
                     
                     $obj_ctac   = $em->getRepository('ChecnesRegistroBundle:CuentasPorCobrar')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
 
-                    $asistio     = $obj_asist->getAsistio();
-                    $descasistio = $obj_asist->getDescripcion();
-                    $sumaaporte  = $this->getSumaCuemtaCobrar($obj_ctac->getId());
+                    if (is_object($obj_asist)) {
+                        $asistio     = $obj_asist->getAsistio();
+                        $descasistio = $obj_asist->getDescripcion();
+                        $sumaaporte  = $this->getSumaCuemtaCobrar($obj_ctac->getId());
+                    }
                 }
                 
 
@@ -68,7 +73,7 @@ class TarjetaControlController extends Controller
         }
          
         return $this->render('ChecnesRegistroBundle:TarjetaControl:index.html.twig', array(
-            'titulo'=>'Tarjeta De Control',
+            'titulo'=>'Tarjeta De Control - '.$obj_use->getPersona()->getNombre()." ".$obj_use->getPersona()->getApellidoPaterno()." ".$obj_use->getPersona()->getApellidoMaterno(),
             'tarjetacontrol' => $tarjetacontrol
         ));
     }

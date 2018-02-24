@@ -124,7 +124,17 @@ class TwigExtension extends \Twig_Extension
         return $cantidad;
     }
 
-    public function getMenuXRol($padre=0, $rol_id){
+    public function getMenuXRol($rol_id){
+
+        $obj_cmg  = $this->em->getRepository('ChecnesRegistroBundle:CacheMenu')->findOneBy(array('rol'=>$rol_id));
+
+        if (is_object($obj_cmg)) {
+            return $obj_cmg->getMenu();
+        }else{
+            return "<h3>No hay cache menu para este rol</h3>";
+        }
+    }
+    /*public function getMenuXRol($padre=0, $rol_id){
         $sql = "SELECT * FROM menu_x_rol mxr
         INNER JOIN menu m ON(mxr.menu_id=m.id)
         WHERE m.padre=$padre AND mxr.rol_id=$rol_id ORDER BY m.orden DESC";
@@ -145,7 +155,7 @@ class TwigExtension extends \Twig_Extension
                 $active = ($row['defecto'] == 1)?"active":"";
                 $enlace = ($row['enlace'] !='')?$row['enlace']:'#';
                 
-                /*if ($dispositivo == 'mobil') {
+                if ($dispositivo == 'mobil') {
                     if ($enlace !='evento') {
                         $menu .= "<li class='".$active."'>";
                         $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
@@ -153,15 +163,15 @@ class TwigExtension extends \Twig_Extension
                         $menu .= "</a>";
                         $menu .= "</li>";
                     }
-                }else{*/
-                    //if ($enlace !='evento/lista') {
+                }else{
+                    if ($enlace !='evento/lista') {
                         $menu .= "<li class='".$active."'>";
                         $menu .= "<a href='".$this->url_base."/".$enlace."' class='".$active."'>";
                         $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                         $menu .= "</a>";
                         $menu .= "</li>";
-                    //}
-                //}
+                    }
+                }
                 
 
             }else{
@@ -185,7 +195,7 @@ class TwigExtension extends \Twig_Extension
         if($padre==0){$menu=$menu;}
         
         return $menu;
-    }
+    }*/
 
     public function getNotificacionEvento(){
         

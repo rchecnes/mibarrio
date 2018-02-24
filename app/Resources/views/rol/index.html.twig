@@ -2,6 +2,30 @@
 
 {% block body %}
     
+    {%set message_success = app.session.flashbag.get('success')%}
+    {% if message_success %}
+      <div class="alert alert-success">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_success%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+    {% endif %}
+
+    {%set message_error = app.session.flashbag.get('error')%}
+    {% if message_error %}
+      <div class="alert alert-danger">
+          <button class="close" data-dismiss="alert">
+              <i class="ace-icon fa fa-times"></i>
+          </button>
+          {% for msg  in  message_error%}
+              {{ msg}}
+          {% endfor %}
+      </div>
+    {% endif %}
+
     <p>
         <a href="{{ path('rol_new') }}" class="btn btn-primary">Nuevo Rol</a>
     </p>
@@ -24,6 +48,9 @@
                     </a>&nbsp;&nbsp;
                     <a href="{{ path('rol_permiso', { 'id': rol.id }) }}" title="Asignar Permiso">
                         <i class="fa fa-cog bigger-230"></i>
+                    </a>&nbsp;&nbsp;
+                    <a href="{{ path('cachemenu_crear', { 'rol_id': rol.id }) }}" class="color-green">
+                        <i class="fa fa-th bigger-230"></i>
                     </a>
                 </td>
             </tr>

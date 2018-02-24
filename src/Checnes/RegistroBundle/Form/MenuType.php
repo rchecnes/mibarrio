@@ -45,23 +45,18 @@ class MenuType extends AbstractType
             'label'    => 'Clase Ícono:',
             'empty_value'   => 'Ninguno',
             'choices'  => array(
-                    'fa-envelope-o'    => 'fa-envelope-o',
-                    'fa-folder-o'      => 'fa-folder-o',
-                    'fa-folder-open-o' => 'fa-folder-open-o',
-                    'fa-users'         => 'fa-users',
-                    'fa-home'          => 'fa-home',
-                    'fa-laptop'        => 'fa-laptop',
+                    'fa-folder-o'      => 'Folder',
+                    'fa-folder-open-o' => 'Folder Open',
+                    'fa-users'         => 'Users',
+                    'fa-home'          => 'Home',
+                    'fa-laptop'        => 'Lapto',
                     'fa-cog'           => 'fa-cog',
                     'fa-cogs'          => 'fa-cogs',
-                    'fa-calendar'      => 'fa-calendar',
-                    'fa-book'          => 'fa-book',
-                    'fa-eye'           => 'fa-eye',
-                    'fa-bar-chart-o'   => 'fa-bar-chart-o',
-                    'fa-barcode'       => 'fa-barcode',
-                    'fa-flask'         => 'fa-flask',
-                    'fa-beer'          => 'fa-beer',
-                    'fa-bell-o'        => 'fa-bell-o',
-                    'fa-bell'          => 'fa-bell'
+                    'fa-calendar'      => 'Calendar',
+                    'fa-book'          => 'Book',
+                    'fa-list-alt'      => 'List',
+                    'fa-money'         => 'Money',
+                    'fa-check-square-o'=>'Check'
                 ),
             'required' => false
         ))

@@ -24,6 +24,8 @@ class CacheMenuController extends Controller
      */
     public function createAction(Request $request, $rol_id)
     {
+
+        //ld($request->getBaseUrl());exit();
         $session = $request->getSession();
 
         $em = $this->getDoctrine()->getManager();
@@ -32,13 +34,16 @@ class CacheMenuController extends Controller
 		
 		$obj_rol  = $em->getRepository('ChecnesRegistroBundle:Rol')->find($rol_id);
 
+        //$dispositivo = $this->getDispositivo();
+
 		if ($resp) {
 			
 			foreach ($resp as $key => $cm) {
 				
 				$obj_cm  = $em->getRepository('ChecnesRegistroBundle:CacheMenu')->find($cm->getId());
 
-				$obj_cm->setMenu($this->getMenuXRol(0, $rol_id));
+				$obj_cm->setMenuEscritorio($this->getMenuXRol(0, $rol_id, 'escritorio'));
+                $obj_cm->setMenuMovil($this->getMenuXRol(0, $rol_id, 'mobil'));
 				$em->persist($obj_cm);
 				$em->flush();
 			}
@@ -51,7 +56,8 @@ class CacheMenuController extends Controller
 
 			$cachemenu = new CacheMenu();
 			$cachemenu->setRol($obj_rol);
-			$cachemenu->setMenu($this->getMenuXRol(0, $rol_id));
+			$cachemenu->setMenuEscritorio($this->getMenuXRol(0, $rol_id, 'escritorio'));
+            $cachemenu->setMenuMovil($this->getMenuXRol(0, $rol_id, 'mobil'));
 			$em->persist($cachemenu);
 			$em->flush();
 
@@ -61,18 +67,20 @@ class CacheMenuController extends Controller
 		return $this->redirectToRoute("rol_index");
     }
 
-    private function getMenuXRol($padre=0, $rol_id){
+    private function getMenuXRol($padre=0, $rol_id, $dispositivo){
+
+        $request    = $this->getRequest();
 
     	$conn = $this->get('database_connection');
 
-    	$url_base = $GLOBALS['kernel']->getContainer()->get('router')->getContext()->getBaseUrl();
+    	$url_base = $request->getBaseUrl();
 
         $sql = "SELECT * FROM menu_x_rol mxr
         INNER JOIN menu m ON(mxr.menu_id=m.id)
         WHERE m.padre=$padre AND mxr.rol_id=$rol_id ORDER BY m.orden DESC";
         $resp = $conn->executeQuery($sql)->fetchAll();
 
-        $dispositivo = $this->getDispositivo();
+        
 
         if(empty($resp)){return "";}
         $menu = "";
@@ -112,7 +120,7 @@ class CacheMenuController extends Controller
                 $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                 $menu .= "<b class='arrow fa fa-angle-down'></b>";
                 $menu .= "</a>";
-                $menu .= $this->getMenuXRol($row['id'], $rol_id);
+                $menu .= $this->getMenuXRol($row['id'], $rol_id, $dispositivo);
                 $menu .= "</li>";
             }
             $c++;

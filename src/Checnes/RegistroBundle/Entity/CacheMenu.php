@@ -28,11 +28,20 @@ class CacheMenu
     private $rol;
 
     /**
-     * @var string
+     * @var text
      *
-     * @ORM\Column(name="menu", type="text")
+     * @ORM\Column(name="menu_escritorio", type="text")
      */
-    private $menu;
+    private $menu_escritorio;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="movil_movil", type="text")
+     */
+    private $menu_movil;
+
+    
 
     /**
      * Get id
@@ -45,27 +54,51 @@ class CacheMenu
     }
 
     /**
-     * Set menu
+     * Set menuEscritorio
      *
-     * @param string $menu
+     * @param string $menuEscritorio
      *
      * @return CacheMenu
      */
-    public function setMenu($menu)
+    public function setMenuEscritorio($menuEscritorio)
     {
-        $this->menu = $menu;
+        $this->menu_escritorio = $menuEscritorio;
 
         return $this;
     }
 
     /**
-     * Get menu
+     * Get menuEscritorio
      *
      * @return string
      */
-    public function getMenu()
+    public function getMenuEscritorio()
     {
-        return $this->menu;
+        return $this->menu_escritorio;
+    }
+
+    /**
+     * Set menuMovil
+     *
+     * @param string $menuMovil
+     *
+     * @return CacheMenu
+     */
+    public function setMenuMovil($menuMovil)
+    {
+        $this->menu_movil = $menuMovil;
+
+        return $this;
+    }
+
+    /**
+     * Get menuMovil
+     *
+     * @return string
+     */
+    public function getMenuMovil()
+    {
+        return $this->menu_movil;
     }
 
     /**

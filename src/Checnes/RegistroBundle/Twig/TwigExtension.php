@@ -129,7 +129,12 @@ class TwigExtension extends \Twig_Extension
         $obj_cmg  = $this->em->getRepository('ChecnesRegistroBundle:CacheMenu')->findOneBy(array('rol'=>$rol_id));
 
         if (is_object($obj_cmg)) {
-            return $obj_cmg->getMenu();
+            if ($this->getDispositivo()=='mobil') {
+                return $obj_cmg->getMenuMovil();
+            }else{
+                return $obj_cmg->getMenuEscritorio();
+            }
+            
         }else{
             return "<h3>No hay cache menu para este rol</h3>";
         }
@@ -210,7 +215,6 @@ class TwigExtension extends \Twig_Extension
                     INNER JOIN tipo_tipo_actividad tte ON(te.tipo_tipo_actividad_id=tte.id)
                     WHERE e.estado_id IN(1)
                     AND DATE_ADD(fecha_fin, INTERVAL 1 DAY) >= DATE_FORMAT(NOW(), '%Y-%m-%d')
-                    AND e.estado_id=1
                     ORDER BY DATE_FORMAT(e.fecha_inicio,'%Y-%m-%d') DESC";
         //echo $sqlev;
         $resp = $this->conn->executeQuery($sqlev)->fetchAll();
@@ -318,7 +322,7 @@ class TwigExtension extends \Twig_Extension
         if ($tablet_browser > 0) {
             // Si es tablet has lo que necesites
            //print 'es tablet';
-           $dispositivo = 'tablet';
+           $dispositivo = 'movil';
         }
         else if ($mobile_browser > 0) {
             // Si es dispositivo mobil has lo que necesites

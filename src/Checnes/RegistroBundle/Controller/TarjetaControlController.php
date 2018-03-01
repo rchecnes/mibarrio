@@ -60,6 +60,7 @@ class TarjetaControlController extends Controller
                 
 
                 $tarjetacontrol[] = array('fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'=>$f->getId(),
                                             'asunto'=>$f->getAsunto(),
                                             'tipoactividad'=>$f->getTipoActividad()->getNombre(),
                                             'multa'=>$f->getMulta(),

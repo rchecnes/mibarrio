@@ -213,7 +213,7 @@ input.input-oculto{
     font-size: 16px !important;
 }
 
-/**BOOSTRAP DIV TABLE**/
+/**BOOSTRAP DIV TABLE TARJETA CCONTROL**/
 .div-table {
     margin-bottom: 20px;
     background-color: transparent;
@@ -232,4 +232,40 @@ input.input-oculto{
     border: 1px solid #ddd;
 }
 
-/**FIN DIV TABLE**/
+.txt-tcontrol{
+    margin-bottom: 0px !important;
+}
+.caja-tarjeta-control:hover{
+    background:#fff3e6!important;
+    cursor: pointer;
+}
+
+@media (max-width: 468px){
+    .caja-tarjeta-control {
+        height: 130px;
+        font-size: 12px!important;
+    }
+}
+
+@media (min-width: 468px){
+    .caja-tarjeta-control {
+        height: 130px;
+        font-size: 13px!important;
+    }
+}
+
+@media (min-width: 768px){
+    .caja-tarjeta-control {
+        height: 130px;
+        font-size: 13px!important;
+    }
+}
+
+@media (min-width: 1000px){
+    .caja-tarjeta-control{
+        height: 130px;
+        font-size: 13px!important;
+    }
+}
+
+/**FIN DIV TABLE TARJETA DE CONTROL**/

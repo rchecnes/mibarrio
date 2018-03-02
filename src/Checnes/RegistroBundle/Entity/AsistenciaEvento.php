@@ -103,13 +103,14 @@ class AsistenciaEvento
     private $usuario_jusasis;
 
     /**
-     * @var text
+     * @var integer
      *
-     * @ORM\Column(name="descripcion", type="text", nullable=true)
+     * @ORM\Column(name="pago_multa", type="integer", nullable=true, options={"comment":"0=Ninguno; 1=Pago Multa", "default":"0"})
      */
-    private $descripcion;
+    private $pago_multa;
 
     
+
     /**
      * Get id
      *
@@ -118,54 +119,6 @@ class AsistenciaEvento
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return AsistenciaEvento
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fecha_creacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fecha_creacion;
-    }
-
-    /**
-     * Set fechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     *
-     * @return AsistenciaEvento
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->fecha_modificacion = $fechaModificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaModificacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaModificacion()
-    {
-        return $this->fecha_modificacion;
     }
 
     /**
@@ -193,6 +146,30 @@ class AsistenciaEvento
     }
 
     /**
+     * Set tardanza
+     *
+     * @param boolean $tardanza
+     *
+     * @return AsistenciaEvento
+     */
+    public function setTardanza($tardanza)
+    {
+        $this->tardanza = $tardanza;
+
+        return $this;
+    }
+
+    /**
+     * Get tardanza
+     *
+     * @return boolean
+     */
+    public function getTardanza()
+    {
+        return $this->tardanza;
+    }
+
+    /**
      * Set estado
      *
      * @param boolean $estado
@@ -217,6 +194,30 @@ class AsistenciaEvento
     }
 
     /**
+     * Set cerrado
+     *
+     * @param boolean $cerrado
+     *
+     * @return AsistenciaEvento
+     */
+    public function setCerrado($cerrado)
+    {
+        $this->cerrado = $cerrado;
+
+        return $this;
+    }
+
+    /**
+     * Get cerrado
+     *
+     * @return boolean
+     */
+    public function getCerrado()
+    {
+        return $this->cerrado;
+    }
+
+    /**
      * Set anio
      *
      * @param string $anio
@@ -238,102 +239,6 @@ class AsistenciaEvento
     public function getAnio()
     {
         return $this->anio;
-    }
-
-    /**
-     * Set evento
-     *
-     * @param \Checnes\RegistroBundle\Entity\Evento $evento
-     *
-     * @return AsistenciaEvento
-     */
-    public function setEvento(\Checnes\RegistroBundle\Entity\Evento $evento = null)
-    {
-        $this->evento = $evento;
-
-        return $this;
-    }
-
-    /**
-     * Get evento
-     *
-     * @return \Checnes\RegistroBundle\Entity\Evento
-     */
-    public function getEvento()
-    {
-        return $this->evento;
-    }
-
-    /**
-     * Set persona
-     *
-     * @param \Checnes\RegistroBundle\Entity\Persona $persona
-     *
-     * @return AsistenciaEvento
-     */
-    public function setPersona(\Checnes\RegistroBundle\Entity\Persona $persona = null)
-    {
-        $this->persona = $persona;
-
-        return $this;
-    }
-
-    /**
-     * Get persona
-     *
-     * @return \Checnes\RegistroBundle\Entity\Persona
-     */
-    public function getPersona()
-    {
-        return $this->persona;
-    }
-
-    /**
-     * Set usuario
-     *
-     * @param \Checnes\RegistroBundle\Entity\Usuario $usuario
-     *
-     * @return AsistenciaEvento
-     */
-    public function setUsuario(\Checnes\RegistroBundle\Entity\Usuario $usuario = null)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \Checnes\RegistroBundle\Entity\Usuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set tardanza
-     *
-     * @param boolean $tardanza
-     *
-     * @return AsistenciaEvento
-     */
-    public function setTardanza($tardanza)
-    {
-        $this->tardanza = $tardanza;
-
-        return $this;
-    }
-
-    /**
-     * Get tardanza
-     *
-     * @return boolean
-     */
-    public function getTardanza()
-    {
-        return $this->tardanza;
     }
 
     /**
@@ -385,6 +290,78 @@ class AsistenciaEvento
     }
 
     /**
+     * Set pagoMulta
+     *
+     * @param integer $pagoMulta
+     *
+     * @return AsistenciaEvento
+     */
+    public function setPagoMulta($pagoMulta)
+    {
+        $this->pago_multa = $pagoMulta;
+
+        return $this;
+    }
+
+    /**
+     * Get pagoMulta
+     *
+     * @return integer
+     */
+    public function getPagoMulta()
+    {
+        return $this->pago_multa;
+    }
+
+    /**
+     * Set evento
+     *
+     * @param \Checnes\RegistroBundle\Entity\Evento $evento
+     *
+     * @return AsistenciaEvento
+     */
+    public function setEvento(\Checnes\RegistroBundle\Entity\Evento $evento = null)
+    {
+        $this->evento = $evento;
+
+        return $this;
+    }
+
+    /**
+     * Get evento
+     *
+     * @return \Checnes\RegistroBundle\Entity\Evento
+     */
+    public function getEvento()
+    {
+        return $this->evento;
+    }
+
+    /**
+     * Set persona
+     *
+     * @param \Checnes\RegistroBundle\Entity\Persona $persona
+     *
+     * @return AsistenciaEvento
+     */
+    public function setPersona(\Checnes\RegistroBundle\Entity\Persona $persona = null)
+    {
+        $this->persona = $persona;
+
+        return $this;
+    }
+
+    /**
+     * Get persona
+     *
+     * @return \Checnes\RegistroBundle\Entity\Persona
+     */
+    public function getPersona()
+    {
+        return $this->persona;
+    }
+
+    /**
      * Set usuarioCrea
      *
      * @param \Checnes\RegistroBundle\Entity\Usuario $usuarioCrea
@@ -430,54 +407,6 @@ class AsistenciaEvento
     public function getUsuarioMod()
     {
         return $this->usuario_mod;
-    }
-
-    /**
-     * Set cerrado
-     *
-     * @param boolean $cerrado
-     *
-     * @return AsistenciaEvento
-     */
-    public function setCerrado($cerrado)
-    {
-        $this->cerrado = $cerrado;
-
-        return $this;
-    }
-
-    /**
-     * Get cerrado
-     *
-     * @return boolean
-     */
-    public function getCerrado()
-    {
-        return $this->cerrado;
-    }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     *
-     * @return AsistenciaEvento
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
     }
 
     /**

@@ -36,24 +36,24 @@
 <form name="content-form" id="asistencia" name="asistencia"  method="POST" action="{{path('asistenciaevento_guardar')}}">
   <table class="table table-bordered dataTable" role="grid">
   	<tr role="row">
-  		<th>N</th>
+  		<th>Nro</th>
 	  	<th>Nombres</th>
-	  	<th>¿Asis.?</th>
-	  	<th>¿Tarde?</th>
+	  	<th>¿A?&nbsp;<input type="checkbox" name="asistio_todos" id="asistio_todos"></th>
+	  	<th>¿T?&nbsp;<input type="checkbox" name="tarde_todos" id="tardanza_todos"></th>
 	</tr>
 	  {%set contador = 1%}
 	  {%for entity in personas %}
 	  	<tr>
 	  		<td align="center" style="width: 10px">{{entity.numero}}</td>
 	  		<td>{{entity.nombres}}</td>
-	  		<td align="center" style="width: 10px">
+	  		<td align="center" style="width: 55px">
 	  			{%if entity.asistio == true %}
 	  				<input type="checkbox" checked="checked" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
 	  			{%else%}
 	  				<input type="checkbox" name="asistio_{{contador}}" id="asistio_{{contador}}" class="asistio">
 	  			{%endif%}
 	  		</td>
-	  		<td align="center" style="width: 10px">
+	  		<td align="center" style="width: 55px">
 	  		{%if entity.asistio == true %}
 	  			{%if entity.tardanza == true %}
 	  				<input type="checkbox" checked="checked" name="tardanza_{{contador}}" id="tardanza_{{contador}}"  class="tardanza">
@@ -133,6 +133,47 @@
 			$("#cant_falto").val(cant_falto);
 			$("#cant_tarde").val(cant_tarde);
 		}
+
+		$("#asistio_todos").on("click",function(){
+			var activo = true;
+			if ($(this).is(":checked")==true) {
+				activo = true;
+			}else{
+				activo = false;
+			}
+
+			$("input.asistio[type='checkbox']").each(function(){
+				$(this).prop("checked",activo);
+				var id    = $(this).attr('id');
+				var split = id.split('_');
+				if (activo == true) {
+					$("#tardanza_"+split[1]).prop("checked",false).show();
+				}else{
+					$("#tardanza_"+split[1]).prop("checked",false).hide();
+				}
+			});
+
+			$("#tardanza_todos").prop("checked",false);
+
+			contarAsistencia();
+		});
+
+		$("#tardanza_todos").on("click",function(){
+			var activo = true;
+			if ($(this).is(":checked")==true) {
+				activo = true;
+			}else{
+				activo = false;
+			}
+
+			$("input.tardanza[type='checkbox']").each(function(){
+				if ($(this).is(":visible")==true) {
+					$(this).prop("checked",activo);
+				}				
+			});
+
+			contarAsistencia();
+		});
 
 		$(".asistio").on("click", function(){
 			var id = $(this).attr('id');

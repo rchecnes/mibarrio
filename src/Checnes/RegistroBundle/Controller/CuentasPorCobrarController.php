@@ -193,7 +193,7 @@ class CuentasPorCobrarController extends Controller
                 if (is_object($obj_asist)) {
                     $obj_asist->setAsistio(1);
                     $obj_asist->setUsuarioJusasis($obj_use);
-                    $obj_asist->setDescripcion('Pagó Multa');
+                    $obj_asist->setPagoMulta(1);
                 }
             }
         }else{

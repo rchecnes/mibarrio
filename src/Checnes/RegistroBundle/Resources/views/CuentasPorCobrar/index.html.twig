@@ -6,10 +6,10 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Evento / Asunto</th>
+                <th>Asunto</th>
                 <th>Fecha</th>
                 <th>Importe</th>
-                <th>Acciones</th>
+                <th>Acc.</th>
             </tr>
         </thead>
         <tbody>
@@ -17,8 +17,8 @@
             <tr>
                 <td>{{ entity.evento.asunto }}</td>
                 <td>{{ entity.evento.fechainicio | date('d/m/Y') }} {{entity.evento.horainicio | date('H:i:s') | ampm}}</td>
-                <td align="right">{{ entity.moneda.simbolo }} {{ entity.impobase | round(2,',','.') }}</td>
-                <td>
+                <td width="80" class="align-right">{{ entity.moneda.simbolo }} {{ entity.impobase | round(2,',','.') }}</td>
+                <td width="50" class="align-center">
                     {%set cant_pend_cob = getCantPendienteCobroEvento(entity.evento.id) %}
 
                     {% if cant_pend_cob > 0 %}

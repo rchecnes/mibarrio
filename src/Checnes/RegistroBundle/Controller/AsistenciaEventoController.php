@@ -232,11 +232,19 @@ class AsistenciaEventoController extends Controller
                 $entityAsEv->setAnio($anio);
                 $entityAsEv->setUsuarioCrea($obj_usu);
                 $entityAsEv->setEstado(1);
+                $entityAsEv->setPagoMulta(0);
                 $em->persist($entityAsEv);
             }
         }
 
-        //ld($request->request->get("guardarcerrar"));exit();
+        //Actualizamos eventos con asistencia y faltas
+        $obj_evnt->setCantAsistio($request->request->get('cant_asistio'));
+        $obj_evnt->setCantFalto($request->request->get('cant_falto'));
+        $obj_evnt->setCantTarde($request->request->get('cant_tarde'));
+        $em->persist($obj_evnt);
+        $em->flush();
+
+        //Registramos Cuentas por cobrar
         if ($request->request->get("guardarcerrar")=='guardarcerrar') {
 
             if ($obj_evnt->getMulta()==1) {
@@ -245,15 +253,10 @@ class AsistenciaEventoController extends Controller
                 //Actualizamos a cerrado
                 $obj_esta = $em->getRepository('ChecnesRegistroBundle:Estado')->find(2);
                 $obj_evnt->setEstado($obj_esta);
+                $em->persist($obj_evnt);
+                $em->flush();
             }
         }
-        //Actualizamos eventos con asistencia y faltas
-        $obj_evnt->setCantAsistio($request->request->get('cant_asistio'));
-        $obj_evnt->setCantFalto($request->request->get('cant_falto'));
-        $obj_evnt->setCantTarde($request->request->get('cant_tarde'));
-
-        $em->persist($obj_evnt);
-        $em->flush();
 
         $session->getFlashBag()->add("success",'Se registro asistencia correctamente!.');
 

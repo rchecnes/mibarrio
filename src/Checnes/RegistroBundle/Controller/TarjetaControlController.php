@@ -35,7 +35,7 @@ class TarjetaControlController extends Controller
             if (($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema()== 'asistencia' && $f->getEstado()->getId()==2) || ($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema()== 'tesoreria')) {
                 
                 $asistio     = 0;
-                $descasistio = '';
+                $descasistio = "";
                 $sumaaporte  = 0;
                 //$montomulta  = 0;
                 if ($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'asistencia') {
@@ -44,16 +44,14 @@ class TarjetaControlController extends Controller
                     //$montomulta  = $f->getMontoMulta();
                     if (is_object($obj_asist)) {
                         $asistio     = $obj_asist->getAsistio();
-                        $descasistio = $obj_asist->getDescripcion();
+                        $descasistio = ($obj_asist->getPagoMulta()==1)?"Pago Multa":"";
                     }
                     
                 }elseif($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema() == 'tesoreria'){
                     
                     $obj_ctac   = $em->getRepository('ChecnesRegistroBundle:CuentasPorCobrar')->findOneBy(array('evento'=>$f->getId(),'persona'=>$obj_use->getPersona()->getId()));
 
-                    if (is_object($obj_asist)) {
-                        $asistio     = $obj_asist->getAsistio();
-                        $descasistio = $obj_asist->getDescripcion();
+                    if (is_object($obj_ctac)) {
                         $sumaaporte  = $this->getSumaCuemtaCobrar($obj_ctac->getId());
                     }
                 }

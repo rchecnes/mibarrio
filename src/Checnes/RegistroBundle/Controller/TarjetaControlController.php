@@ -62,74 +62,62 @@ class TarjetaControlController extends Controller
                 
                 if ($f->getTipoActividad()->getNombreSistema() == 'faena') {
 
-                    $control_faena[] = array('fechainicio'=>$f->getFechaInicio(),
-                                            'evento_id'=>$f->getId(),
-                                            'asunto'=>$f->getAsunto(),
+                    $control_faena[] = array(
+                                            'fechainicio' =>$f->getFechaInicio(),
+                                            'evento_id'    =>$f->getId(),
+                                            'asunto'       =>$f->getAsunto(),
                                             'tipoactividad'=>$f->getTipoActividad()->getNombre(),
-                                            'multa'=>$f->getMulta(),
-                                            'montomulta'=>$f->getMontoMulta(),
+                                            'multa'        =>$f->getMulta(),
+                                            'montomulta'   =>$f->getMontoMulta(),
                                             'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
-                                            'asistio'=>$asistio,
-                                            'descasistio'=>$descasistio,
-                                            'sumaaporte'=>$sumaaporte
+                                            'asistio'      =>$asistio,
+                                            'descasistio'  =>$descasistio
                                         );
                 }
 
                 if ($f->getTipoActividad()->getNombreSistema() == 'asamblea') {
 
-                    $control_asamblea[] = array('fechainicio'=>$f->getFechaInicio(),
-                                            'evento_id'=>$f->getId(),
-                                            'asunto'=>$f->getAsunto(),
-                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
-                                            'multa'=>$f->getMulta(),
-                                            'montomulta'=>$f->getMontoMulta(),
-                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
-                                            'asistio'=>$asistio,
-                                            'descasistio'=>$descasistio,
-                                            'sumaaporte'=>$sumaaporte
+                    $control_asamblea[] = array(
+                                            'fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'      =>$f->getId(),
+                                            'asunto'         =>$f->getAsunto(),
+                                            'tipoactividad'  =>$f->getTipoActividad()->getNombre(),
+                                            'multa'          =>$f->getMulta(),
+                                            'montomulta'     =>$f->getMontoMulta(),
+                                            'nombresistema'  =>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'        =>$asistio,
+                                            'descasistio'    =>$descasistio
                                         );
                 }
                 if ($f->getTipoActividad()->getNombreSistema() == 'aportacion') {
 
-                    $control_asamblea[] = array('fechainicio'=>$f->getFechaInicio(),
-                                            'evento_id'=>$f->getId(),
-                                            'asunto'=>$f->getAsunto(),
-                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
-                                            'multa'=>$f->getMulta(),
-                                            'montomulta'=>$f->getMontoMulta(),
-                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
-                                            'asistio'=>$asistio,
-                                            'descasistio'=>$descasistio,
-                                            'sumaaporte'=>$sumaaporte
+                    $control_aportacion[] = array(
+                                            'fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'        =>$f->getId(),
+                                            'asunto'           =>$f->getAsunto(),
+                                            'tipoactividad'    =>$f->getTipoActividad()->getNombre(),
+                                            'multa'            =>$f->getMulta(),
+                                            'montomulta'       =>$f->getMontoMulta(),
+                                            'nombresistema'    =>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'sumaaporte'       =>$sumaaporte
                                         );
                 }
 
                 if ($f->getTipoActividad()->getNombreSistema() == 'reunion') {
 
-                    $control_reunion[] = array('fechainicio'=>$f->getFechaInicio(),
-                                            'evento_id'=>$f->getId(),
-                                            'asunto'=>$f->getAsunto(),
-                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
-                                            'multa'=>$f->getMulta(),
-                                            'montomulta'=>$f->getMontoMulta(),
-                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
-                                            'asistio'=>$asistio,
-                                            'descasistio'=>$descasistio,
-                                            'sumaaporte'=>$sumaaporte
+                    $control_reunion[] = array(
+                                            'fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'     =>$f->getId(),
+                                            'asunto'        =>$f->getAsunto(),
+                                            'tipoactividad' =>$f->getTipoActividad()->getNombre(),
+                                            'multa'         =>$f->getMulta(),
+                                            'montomulta'    =>$f->getMontoMulta(),
+                                            'nombresistema' =>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'       =>$asistio,
+                                            'descasistio'   =>$descasistio
                                         );
                 }
 
-                $tarjeta_control[] = array('fechainicio'=>$f->getFechaInicio(),
-                                            'evento_id'=>$f->getId(),
-                                            'asunto'=>$f->getAsunto(),
-                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
-                                            'multa'=>$f->getMulta(),
-                                            'montomulta'=>$f->getMontoMulta(),
-                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
-                                            'asistio'=>$asistio,
-                                            'descasistio'=>$descasistio,
-                                            'sumaaporte'=>$sumaaporte
-                                        );
             }
         }
          

@@ -2,40 +2,148 @@
 
 {% block body %}
 
-<div class="div-table col-sm-12">
-  <div class="row">
-  	{%set c = 1 %}
-  	{% for entity in tarjetacontrol %}
-  	
-  	{%set background = '#FFF'%}
-  	{%if espar(c) == 'IMPAR'%}{%set background = '#f9f9f9'%}{%else%}{%endif%}
-  	<div class="div-td col-lg-3 col-md-3 col-sm-4 col-xs-12 caja-tarjeta-control" style="background: {{background}}">
-  		<p class="txt-tcontrol align-center" style="font-size: 18px"><b >{{entity.fechainicio |date('d/m/Y')}}</b></p>
-      <p class="txt-tcontrol"><b class="color-blue">Evento ID:</b> <b>{{entity.evento_id|str_pad(6)}}</b></p>
-  		<p class="txt-tcontrol"><b class="color-blue">Asunto:</b> {{entity.asunto}} / {{entity.tipoactividad}}</p>
-  		{%if entity.nombresistema=='asistencia'%}
-  			<p class="txt-tcontrol"><b class="color-blue">Multa:</b> {%if entity.multa==1%}{{entity.montomulta | round(2,'','.')}} S/{%else%}<label class="weight-600">No</label>{%endif%}</p>
-  			<p class="txt-tcontrol"><b class="color-blue">¿Asistio?:</b> {%if entity.asistio==1%}<label class="color-green weight-600">Si <i class="ace-icon fa fa-check bigger-100"></i></label>{%else%}<label class="color-red weight-600"">No</label>{%endif%}{%if entity.descasistio!=''%}, ({{entity.descasistio}}){%endif%}</p>
-  		{%elseif entity.nombresistema=='tesoreria'%}
-  			<p class="txt-tcontrol"><b class="color-blue">Monto:</b> {{entity.montomulta | round(2,'','.')}} S/</p>
-  			<p class="txt-tcontrol"><b class="color-blue">¿Pago?:</b>
-  				{%if entity.montomulta-entity.sumaaporte == 0 %}
-  				<label class="color-green weight-600">SI<i class="ace-icon fa fa-check bigger-100"></i></label>
-  				{%else%}
-  					{%if entity.sumaaporte == 0%}
-  					<label class="color-red weight-600"><b>No</b></label>
-  					{%else%}
-  					<label class="color-yellow weight-600">Pendiente</label> ({{entity.montomulta-entity.sumaaporte | round(2,'','.')}} S/)
-  					{%endif%}
-  				{%endif%}
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div id="accordion" class="accordion-style2">
+      <div class="group">
+        <h3 class="accordion-header">FAENA</h3>
+        <div>
+          <div class="div-table col-sm-12">
+            <div class="row">
+              {%set c = 1 %}
+              {% for entity in control_faena %}
+              
+              {%set background = '#FFF'%}
+              {%if espar(c) == 'IMPAR'%}{%set background = '#f9f9f9'%}{%else%}{%endif%}
+              <div class="div-td col-lg-3 col-md-3 col-sm-4 col-xs-12 caja-tarjeta-control" style="background: {{background}}">
+                <p class="txt-tcontrol align-center" style="font-size: 18px"><b >{{entity.fechainicio |date('d/m/Y')}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Evento ID:</b> <b>{{entity.evento_id|str_pad(6)}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Asunto:</b> {{entity.asunto}} / {{entity.tipoactividad}}</p>
+                {%if entity.nombresistema=='asistencia'%}
+                  <p class="txt-tcontrol"><b class="color-blue">Multa:</b> {%if entity.multa==1%}{{entity.montomulta | round(2,'','.')}} S/{%else%}<label class="weight-600">No</label>{%endif%}</p>
+                  <p class="txt-tcontrol"><b class="color-blue">¿Asistio?:</b> {%if entity.asistio==1%}<label class="color-green weight-600">Si <i class="ace-icon fa fa-check bigger-100"></i></label>{%else%}<label class="color-red weight-600"">No</label>{%endif%}{%if entity.descasistio!=''%}, ({{entity.descasistio}}){%endif%}</p>
+                {%endif%}
+              </div>
+              {%set c=c+1%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="group">
+        <h3 class="accordion-header">ASAMBLEA</h3>
+        <div>
+          <div class="div-table col-sm-12">
+            <div class="row">
+              {%set c = 1 %}
+              {% for entity in control_faena %}
+              
+              {%set background = '#FFF'%}
+              {%if espar(c) == 'IMPAR'%}{%set background = '#f9f9f9'%}{%else%}{%endif%}
+              <div class="div-td col-lg-3 col-md-3 col-sm-4 col-xs-12 caja-tarjeta-control" style="background: {{background}}">
+                <p class="txt-tcontrol align-center" style="font-size: 18px"><b >{{entity.fechainicio |date('d/m/Y')}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Evento ID:</b> <b>{{entity.evento_id|str_pad(6)}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Asunto:</b> {{entity.asunto}} / {{entity.tipoactividad}}</p>
+                {%if entity.nombresistema=='asistencia'%}
+                  <p class="txt-tcontrol"><b class="color-blue">Multa:</b> {%if entity.multa==1%}{{entity.montomulta | round(2,'','.')}} S/{%else%}<label class="weight-600">No</label>{%endif%}</p>
+                  <p class="txt-tcontrol"><b class="color-blue">¿Asistio?:</b> {%if entity.asistio==1%}<label class="color-green weight-600">Si <i class="ace-icon fa fa-check bigger-100"></i></label>{%else%}<label class="color-red weight-600"">No</label>{%endif%}{%if entity.descasistio!=''%}, ({{entity.descasistio}}){%endif%}</p>
+                {%endif%}
+              </div>
+              {%set c=c+1%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="group">
+        <h3 class="accordion-header">APORTACION</h3>
+        <div>
+          <div class="div-table col-sm-12">
+            <div class="row">
+              {%set c = 1 %}
+              {% for entity in control_aportacion %}
+              
+              {%set background = '#FFF'%}
+              {%if espar(c) == 'IMPAR'%}{%set background = '#f9f9f9'%}{%else%}{%endif%}
+              <div class="div-td col-lg-3 col-md-3 col-sm-4 col-xs-12 caja-tarjeta-control" style="background: {{background}}">
+                <p class="txt-tcontrol align-center" style="font-size: 18px"><b >{{entity.fechainicio |date('d/m/Y')}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Evento ID:</b> <b>{{entity.evento_id|str_pad(6)}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Asunto:</b> {{entity.asunto}} / {{entity.tipoactividad}}</p>
+                {%if entity.nombresistema=='tesoreria'%}
+                  <p class="txt-tcontrol"><b class="color-blue">Monto:</b> {{entity.montomulta | round(2,'','.')}} S/</p>
+                  <p class="txt-tcontrol"><b class="color-blue">¿Pago?:</b>
+                    {%if entity.montomulta-entity.sumaaporte == 0 %}
+                    <label class="color-green weight-600">SI<i class="ace-icon fa fa-check bigger-100"></i></label>
+                    {%else%}
+                      {%if entity.sumaaporte == 0%}
+                      <label class="color-red weight-600"><b>No</b></label>
+                      {%else%}
+                      <label class="color-yellow weight-600">Pendiente</label> ({{entity.montomulta-entity.sumaaporte | round(2,'','.')}} S/)
+                      {%endif%}
+                    {%endif%}
 
-  			</b></p>
-  		{%endif%}
+                  </b></p>
+                {%endif%}
+              </div>
+              {%set c=c+1%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
 
-  	</div>
-  	{%set c=c+1%}
-  	{% endfor %}
+      <div class="group">
+        <h3 class="accordion-header">REUNION</h3>
+        <div>
+          <div class="div-table col-sm-12">
+            <div class="row">
+              {%set c = 1 %}
+              {% for entity in control_reunion %}
+              
+              {%set background = '#FFF'%}
+              {%if espar(c) == 'IMPAR'%}{%set background = '#f9f9f9'%}{%else%}{%endif%}
+              <div class="div-td col-lg-3 col-md-3 col-sm-4 col-xs-12 caja-tarjeta-control" style="background: {{background}}">
+                <p class="txt-tcontrol align-center" style="font-size: 18px"><b >{{entity.fechainicio |date('d/m/Y')}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Evento ID:</b> <b>{{entity.evento_id|str_pad(6)}}</b></p>
+                <p class="txt-tcontrol"><b class="color-blue">Asunto:</b> {{entity.asunto}} / {{entity.tipoactividad}}</p>
+                {%if entity.nombresistema=='asistencia'%}
+                  <p class="txt-tcontrol"><b class="color-blue">Multa:</b> {%if entity.multa==1%}{{entity.montomulta | round(2,'','.')}} S/{%else%}<label class="weight-600">No</label>{%endif%}</p>
+                  <p class="txt-tcontrol"><b class="color-blue">¿Asistio?:</b> {%if entity.asistio==1%}<label class="color-green weight-600">Si <i class="ace-icon fa fa-check bigger-100"></i></label>{%else%}<label class="color-red weight-600"">No</label>{%endif%}{%if entity.descasistio!=''%}, ({{entity.descasistio}}){%endif%}</p>
+                {%endif%}
+              </div>
+              {%set c=c+1%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $( "#accordion" ).accordion({
+          collapsible: true ,
+          heightStyle: "content",
+          //animate: 250,
+          header: ".accordion-header"
+        })/*.sortable({
+          axis: "y",
+          handle: ".accordion-header",
+          stop: function( event, ui ) {
+            // IE doesn't register the blur when sorting
+            // so trigger focusout handlers to remove .ui-state-focus
+            ui.item.children( ".accordion-header" ).triggerHandler( "focusout" );
+          }
+        })*/;
+  });
+
+</script>
 {% endblock %}

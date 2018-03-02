@@ -103,7 +103,9 @@ class EventoController extends Controller
         $tipo_actividad = $em->getRepository('ChecnesRegistroBundle:TipoActividad')->findAll();
         $html_op_tipac = '';
         foreach ($tipo_actividad as $key => $entity) {
-            $html_op_tipac .= '<option value="'.$entity->getId().'">'.$entity->getNombre().'</option>';
+            if ($entity->getEstado()==1) {
+                $html_op_tipac .= '<option value="'.$entity->getId().'">'.$entity->getNombre().'</option>';
+            }            
         }
 
         $data['tipo_actividad_html'] = $html_op_tipac;

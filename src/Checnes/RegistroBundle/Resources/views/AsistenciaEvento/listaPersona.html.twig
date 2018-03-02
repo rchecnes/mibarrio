@@ -193,6 +193,23 @@
 
 		contarAsistencia();
 
+		//Marcamos el activar todos
+		var cant_asistio = 0;
+		$("input.asistio[type='checkbox']").each(function(){
+			if ($(this).is(':checked')==true) {
+				cant_asistio += 1;
+			}
+		});
+		if (cant_asistio>0) {$("#asistio_todos").prop("checked",true);}
+		
+		var cant_tarde = 0;
+		$("input.tardanza[type='checkbox']").each(function(){
+			if ($(this).is(':checked')==true && $(this).is(':visible')==true) {
+				cant_tarde += 1;
+			}
+		});
+		if (cant_tarde>0) {$("#tardanza_todos").prop("checked",true);}
+
 	})
 </script>
 {% endblock %}

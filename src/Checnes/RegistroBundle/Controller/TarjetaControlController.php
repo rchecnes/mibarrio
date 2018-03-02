@@ -29,7 +29,11 @@ class TarjetaControlController extends Controller
         $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado IN(1,2)";
         $resp = $em->createQuery($dql)->getResult();
 
-        $tarjetacontrol = array();
+        $tarjeta_control  = array();
+        $control_faena    = array();
+        $control_asamblea = array();
+        $control_aportacion = array();
+        $control_reunion = array();
         foreach ($resp as $key => $f) {
 
             if (($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema()== 'asistencia' && $f->getEstado()->getId()==2) || ($f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema()== 'tesoreria')) {
@@ -56,8 +60,66 @@ class TarjetaControlController extends Controller
                     }
                 }
                 
+                if ($f->getTipoActividad()->getNombreSistema() == 'faena') {
 
-                $tarjetacontrol[] = array('fechainicio'=>$f->getFechaInicio(),
+                    $control_faena[] = array('fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'=>$f->getId(),
+                                            'asunto'=>$f->getAsunto(),
+                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
+                                            'multa'=>$f->getMulta(),
+                                            'montomulta'=>$f->getMontoMulta(),
+                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'=>$asistio,
+                                            'descasistio'=>$descasistio,
+                                            'sumaaporte'=>$sumaaporte
+                                        );
+                }
+
+                if ($f->getTipoActividad()->getNombreSistema() == 'asamblea') {
+
+                    $control_asamblea[] = array('fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'=>$f->getId(),
+                                            'asunto'=>$f->getAsunto(),
+                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
+                                            'multa'=>$f->getMulta(),
+                                            'montomulta'=>$f->getMontoMulta(),
+                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'=>$asistio,
+                                            'descasistio'=>$descasistio,
+                                            'sumaaporte'=>$sumaaporte
+                                        );
+                }
+                if ($f->getTipoActividad()->getNombreSistema() == 'aportacion') {
+
+                    $control_asamblea[] = array('fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'=>$f->getId(),
+                                            'asunto'=>$f->getAsunto(),
+                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
+                                            'multa'=>$f->getMulta(),
+                                            'montomulta'=>$f->getMontoMulta(),
+                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'=>$asistio,
+                                            'descasistio'=>$descasistio,
+                                            'sumaaporte'=>$sumaaporte
+                                        );
+                }
+
+                if ($f->getTipoActividad()->getNombreSistema() == 'reunion') {
+
+                    $control_reunion[] = array('fechainicio'=>$f->getFechaInicio(),
+                                            'evento_id'=>$f->getId(),
+                                            'asunto'=>$f->getAsunto(),
+                                            'tipoactividad'=>$f->getTipoActividad()->getNombre(),
+                                            'multa'=>$f->getMulta(),
+                                            'montomulta'=>$f->getMontoMulta(),
+                                            'nombresistema'=>$f->getTipoActividad()->getTipoTipoActividad()->getNombreSistema(),
+                                            'asistio'=>$asistio,
+                                            'descasistio'=>$descasistio,
+                                            'sumaaporte'=>$sumaaporte
+                                        );
+                }
+
+                $tarjeta_control[] = array('fechainicio'=>$f->getFechaInicio(),
                                             'evento_id'=>$f->getId(),
                                             'asunto'=>$f->getAsunto(),
                                             'tipoactividad'=>$f->getTipoActividad()->getNombre(),
@@ -73,7 +135,11 @@ class TarjetaControlController extends Controller
          
         return $this->render('ChecnesRegistroBundle:TarjetaControl:index.html.twig', array(
             'titulo'=>'Tarjeta De Control - '.$obj_use->getPersona()->getNombre()." ".$obj_use->getPersona()->getApellidoPaterno()." ".$obj_use->getPersona()->getApellidoMaterno(),
-            'tarjetacontrol' => $tarjetacontrol
+            'tarjeta_control'  => $tarjeta_control,
+            'control_faena'    => $control_faena,
+            'control_asamblea' => $control_asamblea,
+            'control_aportacion' => $control_aportacion,
+            'control_reunion' => $control_reunion
         ));
     }
 

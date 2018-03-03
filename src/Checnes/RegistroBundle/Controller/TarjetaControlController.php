@@ -26,7 +26,7 @@ class TarjetaControlController extends Controller
         $obj_use  = $em->getRepository('ChecnesRegistroBundle:Usuario')->find($usuario_id);
 
         
-        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado IN(1,2)";
+        $dql  = "SELECT e FROM ChecnesRegistroBundle:Evento e WHERE e.estado IN(1,2) ORDER BY e.fecha_inicio ASC";
         $resp = $em->createQuery($dql)->getResult();
 
         $tarjeta_control  = array();

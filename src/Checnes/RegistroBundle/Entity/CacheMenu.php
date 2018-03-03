@@ -30,18 +30,33 @@ class CacheMenu
     /**
      * @var text
      *
-     * @ORM\Column(name="menu_escritorio", type="text")
+     * @ORM\Column(name="menu_dev_escritorio", type="text")
      */
-    private $menu_escritorio;
+    private $menu_dev_escritorio;
 
     /**
      * @var text
      *
-     * @ORM\Column(name="movil_movil", type="text")
+     * @ORM\Column(name="menu_dev_movil", type="text")
      */
-    private $menu_movil;
+    private $menu_dev_movil;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="menu_prod_escritorio", type="text")
+     */
+    private $menu_prod_escritorio;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="menu_prod_movil", type="text")
+     */
+    private $menu_prod_movil;
 
     
+
 
     /**
      * Get id
@@ -54,51 +69,99 @@ class CacheMenu
     }
 
     /**
-     * Set menuEscritorio
+     * Set menuDevEscritorio
      *
-     * @param string $menuEscritorio
+     * @param string $menuDevEscritorio
      *
      * @return CacheMenu
      */
-    public function setMenuEscritorio($menuEscritorio)
+    public function setMenuDevEscritorio($menuDevEscritorio)
     {
-        $this->menu_escritorio = $menuEscritorio;
+        $this->menu_dev_escritorio = $menuDevEscritorio;
 
         return $this;
     }
 
     /**
-     * Get menuEscritorio
+     * Get menuDevEscritorio
      *
      * @return string
      */
-    public function getMenuEscritorio()
+    public function getMenuDevEscritorio()
     {
-        return $this->menu_escritorio;
+        return $this->menu_dev_escritorio;
     }
 
     /**
-     * Set menuMovil
+     * Set menuDevMovil
      *
-     * @param string $menuMovil
+     * @param string $menuDevMovil
      *
      * @return CacheMenu
      */
-    public function setMenuMovil($menuMovil)
+    public function setMenuDevMovil($menuDevMovil)
     {
-        $this->menu_movil = $menuMovil;
+        $this->menu_dev_movil = $menuDevMovil;
 
         return $this;
     }
 
     /**
-     * Get menuMovil
+     * Get menuDevMovil
      *
      * @return string
      */
-    public function getMenuMovil()
+    public function getMenuDevMovil()
     {
-        return $this->menu_movil;
+        return $this->menu_dev_movil;
+    }
+
+    /**
+     * Set menuProdEscritorio
+     *
+     * @param string $menuProdEscritorio
+     *
+     * @return CacheMenu
+     */
+    public function setMenuProdEscritorio($menuProdEscritorio)
+    {
+        $this->menu_prod_escritorio = $menuProdEscritorio;
+
+        return $this;
+    }
+
+    /**
+     * Get menuProdEscritorio
+     *
+     * @return string
+     */
+    public function getMenuProdEscritorio()
+    {
+        return $this->menu_prod_escritorio;
+    }
+
+    /**
+     * Set menuProdMovil
+     *
+     * @param string $menuProdMovil
+     *
+     * @return CacheMenu
+     */
+    public function setMenuProdMovil($menuProdMovil)
+    {
+        $this->menu_prod_movil = $menuProdMovil;
+
+        return $this;
+    }
+
+    /**
+     * Get menuProdMovil
+     *
+     * @return string
+     */
+    public function getMenuProdMovil()
+    {
+        return $this->menu_prod_movil;
     }
 
     /**

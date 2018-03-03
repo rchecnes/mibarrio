@@ -128,17 +128,30 @@ class TwigExtension extends \Twig_Extension
 
         $obj_cmg  = $this->em->getRepository('ChecnesRegistroBundle:CacheMenu')->findOneBy(array('rol'=>$rol_id));
 
+        $dispositivo = $this->getDispositivo();
+
         if (is_object($obj_cmg)) {
-            if ($this->getDispositivo()=='mobil') {
-                return $obj_cmg->getMenuMovil();
-            }else{
-                return $obj_cmg->getMenuEscritorio();
+
+            if ($this->url_base == '/web/app_dev.php') {
+                if ($dispositivo=='mobil') {
+                    return $obj_cmg->getMenuDevMovil();
+                }else{
+                    return $obj_cmg->getMenuDevEscritorio();
+                }
+            }elseif($this->url_base == '/web'){
+
+                if ($dispositivo=='mobil') {
+                    return $obj_cmg->getMenuProdMovil();
+                }else{
+                    return $obj_cmg->getMenuProdEscritorio();
+                }
             }
-            
+
         }else{
             return "<h3>No hay cache menu para este rol</h3>";
         }
     }
+
     /*public function getMenuXRol($padre=0, $rol_id){
         $sql = "SELECT * FROM menu_x_rol mxr
         INNER JOIN menu m ON(mxr.menu_id=m.id)

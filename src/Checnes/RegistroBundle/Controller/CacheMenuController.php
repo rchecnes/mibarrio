@@ -34,16 +34,16 @@ class CacheMenuController extends Controller
 		
 		$obj_rol  = $em->getRepository('ChecnesRegistroBundle:Rol')->find($rol_id);
 
-        //$dispositivo = $this->getDispositivo();
-
 		if ($resp) {
 			
 			foreach ($resp as $key => $cm) {
 				
 				$obj_cm  = $em->getRepository('ChecnesRegistroBundle:CacheMenu')->find($cm->getId());
 
-				$obj_cm->setMenuEscritorio($this->getMenuXRol(0, $rol_id, 'escritorio'));
-                $obj_cm->setMenuMovil($this->getMenuXRol(0, $rol_id, 'mobil'));
+				$obj_cm->setMenuDevEscritorio($this->getMenuXRol(0, $rol_id, 'escritorio','dev'));
+                $obj_cm->setMenuDevMovil($this->getMenuXRol(0, $rol_id, 'mobil','dev'));
+                $obj_cm->setMenuProdEscritorio($this->getMenuXRol(0, $rol_id, 'escritorio','prod'));
+                $obj_cm->setMenuProdMovil($this->getMenuXRol(0, $rol_id, 'mobil','prod'));
 				$em->persist($obj_cm);
 				$em->flush();
 			}
@@ -67,20 +67,24 @@ class CacheMenuController extends Controller
 		return $this->redirectToRoute("rol_index");
     }
 
-    private function getMenuXRol($padre=0, $rol_id, $dispositivo){
+    private function getMenuXRol($padre=0, $rol_id, $dispositivo, $tipo){
 
         $request    = $this->getRequest();
 
     	$conn = $this->get('database_connection');
 
-    	$url_base = $request->getBaseUrl();
+        if ($tipo == 'dev') {
+            $url_base = "/web/app_dev.php";
+        }elseif($tipo == 'prod'){
+            $url_base = "/web";
+        }else{
+            $url_base = "/web/app_dev.php";
+        }
 
         $sql = "SELECT * FROM menu_x_rol mxr
         INNER JOIN menu m ON(mxr.menu_id=m.id)
         WHERE m.padre=$padre AND mxr.rol_id=$rol_id ORDER BY m.orden DESC";
         $resp = $conn->executeQuery($sql)->fetchAll();
-
-        
 
         if(empty($resp)){return "";}
         $menu = "";
@@ -120,7 +124,7 @@ class CacheMenuController extends Controller
                 $menu .= "<i class='menu-icon fa ".$row['css_icono']."'></i><span class='menu-text'>&nbsp;&nbsp;".$row['nombre']."</span>";
                 $menu .= "<b class='arrow fa fa-angle-down'></b>";
                 $menu .= "</a>";
-                $menu .= $this->getMenuXRol($row['id'], $rol_id, $dispositivo);
+                $menu .= $this->getMenuXRol($row['id'], $rol_id, $dispositivo, $tipo);
                 $menu .= "</li>";
             }
             $c++;
